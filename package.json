@@ -1,0 +1,11 @@
+{
+  "name": "apathy-theme",
+  "theme": "syntax",
+  "version": "1.0.0",
+  "description": "A veresatile, beautiful dark theme  that I've perfected over the years with lots of definitions!",
+  "repository": "https://github.com/atom/apathy-theme",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=0.174.0 <2.0.0"
+  }
+}

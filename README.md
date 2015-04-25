@@ -4,16 +4,16 @@ My awesome Syntax Theme I polished over the years, ported to Atom from Sublime T
 
 
 ### Javascript Colors:
-![JS Screenshot](https://dl-web.dropbox.com/get/Screenshots/Screenshot%202015-04-24%2023.56.22.png?_subject_uid=1406414&w=AAAJRfEr-CgSg-aEZLCIx5GncXn1mjcT2ZPI90_FG3ch1g)
+![JS Screenshot](https://s3.amazonaws.com/f.cl.ly/items/0Y1J0S2N0x2b340g3E1M/Screenshot%202015-04-24%2023.56.22.png)
 
 ### Coffeescript:
-![Coffeescript Screenshot](https://dl-web.dropbox.com/get/Screenshots/Screenshot%202015-04-25%2000.10.27.png?_subject_uid=1406414&w=AABf5ycweXzLZcM8ou8pJTxVW2RDF7ACcFfKMLH2dKflpg)
+![Coffeescript Screenshot](https://www.dropbox.com/s/aetb30siyuw5uku/Screenshot%202015-04-25%2000.10.27.png?dl=1)
 
 
 ### Jasmine:
-![Jasmine Screenshot](https://www.dropbox.com/s/lozoygw89thxyo8/Screenshot%202015-04-24%2023.55.47.png?dl=0)
+![Jasmine Screenshot](https://www.dropbox.com/s/lozoygw89thxyo8/Screenshot%202015-04-24%2023.55.47.png?dl=1)
 
 
 
 ### CSS/SASS/LESS:
-![CSS](https://dl-web.dropbox.com/get/Screenshots/Screenshot%202015-04-24%2023.56.28.png?_subject_uid=1406414&w=AAD5DgiuPNwGdgB4uZ6R7yQ8LPExXk4dIl02x1YLHbJV4g)
+![CSS](https://www.dropbox.com/s/fmcx4nyvyrgg4n9/Screenshot%202015-04-24%2023.56.28.png?dl=1)

@@ -1,15 +1,60 @@
 @import "syntax-variables";
 
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,500,700);
+
 atom-text-editor, :host {
   background-color: @syntax-background-color;
   color: @syntax-text-color;
+  font-family: 'Source Code Pro';
+  // font-family: 'Anonymous Pro';
+  font-weight: 500;
+  // text-rendering: optimizeLegibility;;
+  -webkit-font-smoothing: antialiased !important;
+  text-shadow: hsla(0, 0%, 0%, 0.01) 0 0 1px !important;
+  // letter-spacing: -0.01em !important;
 }
-
+atom-pane:not(.active) atom-text-editor {
+  background-color: @syntax-inactive-bg-color;
+  opacity: .4;
+  color: hsla(0, 100%, 100%, 0.6);
+}
+atom-pane:not(.active) atom-text-editor .underlayer {
+  background-color: @syntax-underlayer-bg-color;
+}
+atom-pane-container atom-pane {
+  background-color: hsl(204, 7%, 14%);
+}
+atom-pane-container atom-pane:not(.active) {
+  opacity: 0.8;
+}
+atom-pane-container atom-pane:before {
+  background-color: hsla(260, 20%, 28%, 0.9);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: ' ';
+}
 atom-text-editor .gutter, :host .gutter {
   background-color: @syntax-gutter-background-color;
   color: @syntax-gutter-text-color;
+  border-right: 1px solid hsla(0, 0%, 0%, 0.9);
+  box-shadow: inset -1px 0px hsla(0, 100%, 100%, 0.2);
 }
-
+atom-text-editor::shadow atom-text-editor-minimap, atom-text-editor atom-text-editor-minimap {
+  background: @minimap-bg-color;
+  box-shadow: inset 0px 17px 56px hsla(0, 0%, 0%, 0.4);
+}
+atom-pane:not(.active) atom-text-editor::shadow atom-text-editor-minimap, atom-text-editor atom-text-editor-minimap {
+  background: hsla(0, 0%, 0%, 0.8);
+}
+atom-text-editor::shadow atom-text-editor-minimap::shadow .minimap-visible-area, atom-text-editor atom-text-editor-minimap::shadow .minimap-visible-area {
+  background-color: hsl(0, 0%, 53%);
+opacity: .2;
+background: linear-gradient(90deg, @minimap-gradient-from 0%, @minimap-gradient-to 50%, @minimap-gradient-from 100%);
+box-shadow: inset 0px 17px 38px hsla(0, 0%, 0%, 0.4);
+}
 atom-text-editor .gutter .line-number.cursor-line, :host .gutter .line-number.cursor-line {
   background-color: @syntax-gutter-background-color-selected;
   color: @syntax-gutter-text-color-selected;
@@ -21,10 +66,16 @@ atom-text-editor .gutter .line-number.cursor-line-no-selection, :host .gutter .l
 
 atom-text-editor .wrap-guide, :host .wrap-guide {
   color: @syntax-wrap-guide-color;
+  background-color: hsl(0, 0%, 0%);
+border-right: 1px solid hsl(259, 25%, 15%);
+border-left: 2px solid hsl(0, 0%, 0%);
 }
 
 atom-text-editor .indent-guide, :host .indent-guide {
-  color: @syntax-indent-guide-color;
+  border-right: 0px solid hsl(0, 0%, 0%);
+  border-left: 1px solid @syntax-indent-guide-color;
+  color: hsla(0, 0%, 0%, 0);
+  border-left-style: dotted;
 }
 
 atom-text-editor .invisible-character, :host .invisible-character {
@@ -50,23 +101,6 @@ atom-text-editor.is-focused .selection .region, :host(.is-focused) .selection .r
 
 atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-editor.is-focused .line.cursor-line, :host(.is-focused) .line-number.cursor-line-no-selection, :host(.is-focused) .line.cursor-line {
   background-color: #2C2830;
-}
-
-.meta.whitespace.leading {
-  color: #ff0000;
-}
-
-.meta.whitespace.trailing {
-  color: #FF0000;
-}
-
-.whitespace {
-  color: #0000ff;
-}
-
-.guide {
-  font-style: italic;
-  color: #EDF2E9;
 }
 
 .comment {
@@ -382,4 +416,24 @@ atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-edi
 .source.js .meta.brace.round {
   font-weight: bold;
   color: #7b95a2;
+}
+
+.source.spec.js {
+  color: hsl(250,7%,97%);
+  .support.class.js {
+    color: #d286a5;
+    font-weight: 700;
+  }
+  string.quoted {
+    color: #cce67a;
+    font-weight: 300;
+  }
+  .storage.type.function {
+    color: #3f7066;
+    font-weight: 500;
+  }
+  .meta.brace.round, .meta.brace.curly, .punctuation.terminator.statement {
+    font-weight: 300;
+    color: #829296;
+  }
 }

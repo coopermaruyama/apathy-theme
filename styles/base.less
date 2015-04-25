@@ -1,14 +1,44 @@
 @import "syntax-variables";
 
-@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:300,500,700);
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Regular.ttf') format('truetype');
+						font-weight: normal;
+						font-style: normal;
+}
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Mediumttf') format('truetype');
+						font-weight: 600;
+						font-style: normal;
+}
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Bold.ttf') format('truetype');
+						font-weight: 700;
+						font-style: normal;
+}
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Light.ttf') format('truetype');
+						font-weight: 300;
+						font-style: normal;
+}
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Black.ttf') format('truetype');
+						font-weight: 900;
+						font-style: normal;
+}
+
 
 atom-text-editor, :host {
   background-color: @syntax-background-color;
   color: @syntax-text-color;
   font-family: 'Source Code Pro';
   // font-family: 'Anonymous Pro';
-  font-weight: 500;
-  // text-rendering: optimizeLegibility;;
+  font-weight: normal;
+  // text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased !important;
   text-shadow: hsla(0, 0%, 0%, 0.01) 0 0 1px !important;
   // letter-spacing: -0.01em !important;
@@ -39,8 +69,8 @@ atom-pane-container atom-pane:before {
 atom-text-editor .gutter, :host .gutter {
   background-color: @syntax-gutter-background-color;
   color: @syntax-gutter-text-color;
-  border-right: 1px solid hsla(0, 0%, 0%, 0.9);
-  box-shadow: inset -1px 0px hsla(0, 100%, 100%, 0.2);
+  box-shadow: inset -1px 0px hsla(0, 100%, 100%, 0.2),
+						  1px 0px hsl(0,0%,0%,0.9);
 }
 atom-text-editor::shadow atom-text-editor-minimap, atom-text-editor atom-text-editor-minimap {
   background: @minimap-bg-color;
@@ -72,10 +102,7 @@ border-left: 2px solid hsl(0, 0%, 0%);
 }
 
 atom-text-editor .indent-guide, :host .indent-guide {
-  border-right: 0px solid hsl(0, 0%, 0%);
-  border-left: 1px solid @syntax-indent-guide-color;
-  color: hsla(0, 0%, 0%, 0);
-  border-left-style: dotted;
+  color:  @syntax-indent-guide-color;
 }
 
 atom-text-editor .invisible-character, :host .invisible-character {

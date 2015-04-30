@@ -1,46 +1,18 @@
 @import "syntax-variables";
 
-@font-face {
-						font-family: 'Source Code Pro';
-						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Regular.ttf') format('truetype');
-						font-weight: normal;
-						font-style: normal;
-}
-@font-face {
-						font-family: 'Source Code Pro';
-						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Mediumttf') format('truetype');
-						font-weight: 600;
-						font-style: normal;
-}
-@font-face {
-						font-family: 'Source Code Pro';
-						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Bold.ttf') format('truetype');
-						font-weight: 700;
-						font-style: normal;
-}
-@font-face {
-						font-family: 'Source Code Pro';
-						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Light.ttf') format('truetype');
-						font-weight: 300;
-						font-style: normal;
-}
-@font-face {
-						font-family: 'Source Code Pro';
-						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Black.ttf') format('truetype');
-						font-weight: 900;
-						font-style: normal;
-}
+
+
 
 
 atom-text-editor, :host {
   background-color: @syntax-background-color;
   color: @syntax-text-color;
   font-family: 'Source Code Pro';
-  // font-family: 'Anonymous Pro';
+  // font-family: 'Inconsolata';
   font-weight: normal;
   // text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased !important;
-  text-shadow: hsla(0, 0%, 0%, 0.01) 0 0 1px !important;
+  -webkit-font-smoothing: subpixel-antialiased !important;
+  text-shadow: none;
   // letter-spacing: -0.01em !important;
 }
 atom-pane:not(.active) atom-text-editor {

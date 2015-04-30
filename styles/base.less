@@ -328,17 +328,139 @@ ol.tree-view.full-menu.list-tree.has-collapsable-children.focusable-panel::befor
   color: #ede0ce;
 }
 
-.source.coffee .variable.other {
-  color: #a1d1e5;
+.markup.deleted.git_gutter {
+  color: #e61f44;
 }
 
-.source.coffee .variable.assignment.coffee {
-  color: #fadf90;
+.markup.inserted.git_gutter {
+  color: #a7da1e;
 }
 
-.source.coffee .meta.delimiter.method.period.coffee {
-  font-weight: bold;
-  color: #c3ffff;
+.markup.changed.git_gutter {
+  color: #f7b83d;
+}
+
+
+
+.string.interpolated {
+  color: #45ffcd;
+}
+
+.string.regexp {
+  font-style: italic;
+  color: #eb9949;
+}
+
+//
+//
+// 	------------------------------------------------------------------
+// 	Javascript
+//
+@js-foreground-color: hsl(60, 10%, 90%);
+@js-alt-color: multiply(@tower-gray, @js-foreground-color);
+@js-desaturated-alt-color: desaturate(@js-alt-color,20%);
+@js-parens-active-color: darken(@js-desaturated-alt-color, 10%);
+:host {
+	.source.js {
+		color: @js-foreground-color;
+		-webkit-font-feature-settings: "swsh";
+	.meta.brace {
+		color: hsl(240, 15%, 70%);
+		font-weight: 700;
+		&.curly, &.round {
+			&:first-of-type,
+			& + &,
+			.leading-whitespace ~ &:nth-last-child(1):not(.round),
+			&:only-child:nth-last-child(2):not(.round),
+			.punctuation.terminator.statement {
+				color: @gray-blend;
+			}
+		}
+	}
+	// WIP
+	//
+	// .meta.brace.curly + .meta.brace.round:nth-child(-n+3),
+	// .leading-whitespace + .meta.brace.round:nth-child(-n+3),
+	// .meta.brace.curly:nth-child(-n+3):only-of-type,
+	// .meta.brace:only-of-type,
+	// .meta.brace:nth-last-child(-n+2):not(:nth-child(n+5)),
+	// .leading-whitespace + .meta.brace.curly:nth-child(-n+3):not(:nth-last-child(n+4)),
+	// .punctuation.terminator.statement {
+	// 	color: @gray-blend;
+	// }
+	.support {
+		&.class {
+			color: @sulu;
+		}
+	}
+	.keyword {
+		color: @red;
+		text-shadow: 0px 0px 1px black;
+		& + span {
+			color: @blue;
+			font-style: normal;
+			font-weight: bold;
+			-webkit-text-stroke-width: .02em;
+		}
+		&.operator {
+			color: @yellow;
+			&:not(:first-child):not(:last-child) {
+				color: @raspberry;
+			}
+			// &:nth-child(2) {
+			// 	color: blue;
+			// }
+		}
+	}
+	.entity.name.function {
+		color: @white;
+		font-weight: 700;
+		&:nth-child(4n+1) {
+			color: spin(saturate(@white, 30%), 40);
+		}
+	}
+	.string.begin + .entity.name.function,
+	.string.begin:first-child,
+	.leading-whitespace + .string.begin,
+	.entity.name.function + .string.end {
+		color: @pink-orange;
+	}
+	.meta.brace.round + .string.quoted * { color: @string-color; }
+	.storage.type.function {
+		color: @scooter;
+	}
+	.meta.function {
+		> .parameters.begin,
+		> parameters.end{
+			color: @tower-gray;
+		}
+	}
+	.meta.delimiter.period {
+		color: @yellow;
+		font-weight: 700;
+	}
+	.function {
+		 // $.ajax({
+		 //   [onComplete]: function()...
+		 // })
+		.meta& {
+			color: @sulu;
+		}
+	}
+	/**
+	 * arguments
+	 */
+	.variable.parameter {
+		font-weight: normal;
+		color: @bright-ube;
+	}
+	.leading-whitespace ~ .keyword.operator {
+		color: spin(saturate(darken(@js-foreground-color, 30%),70%), 330);
+		// font-weight: normal;
+	}
+}
+
+}
 }
 
 .entity.name.section.markdown {

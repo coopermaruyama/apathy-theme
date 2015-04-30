@@ -78,16 +78,21 @@ atom-text-editor .indent-guide, :host .indent-guide {
 }
 
 atom-text-editor .invisible-character, :host .invisible-character {
-  color: @syntax-invisible-character-color;
+  color: fadeout(@syntax-indent-guide-color,15%);
 }
 
 atom-text-editor .search-results .marker .region, :host .search-results .marker .region {
   background-color: transparent;
   border: @syntax-result-marker-color;
+	-webkit-transition: all 0.5s;
+	-webkit-animation: neon3 0.5s ease-in-out infinite alternate;
 }
 
 atom-text-editor .search-results .marker.current-result .region, :host .search-results .marker.current-result .region {
   border: @syntax-result-marker-color-selected;
+	-webkit-transition: all 0.3s;
+	-webkit-animation: neon5 0.3s ease-in-out infinite alternate;
+	
 }
 
 atom-text-editor.is-focused .cursor, :host(.is-focused) .cursor {
@@ -100,58 +105,121 @@ atom-text-editor.is-focused .selection .region, :host(.is-focused) .selection .r
 
 atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-editor.is-focused .line.cursor-line, :host(.is-focused) .line-number.cursor-line-no-selection, :host(.is-focused) .line.cursor-line {
   background-color: #2C2830;
+	& .entity.name.function {
+		-webkit-transition: all 0.3s;
+		-webkit-animation: neon6 0.3s ease-in-out infinite alternate;
+	}
 }
 
 .comment {
   color: #5a6466;
 }
 
+
+/*=========================================================================
+=    SYNTAX STYLES
+=========================================================================*/
+
+// -------------------------------------------------------------------
+// Common
+//
+.source {
+	color: @foreground-color;
+}
+.comment {
+  color: @comment-color;
+	font-weight: 700;
+	.block.documentation {
+		color: lighten(@comment-color, 3%);
+	}
+}
 .string {
-  color: #bebe5f;
+  color: @string-color;
+	.brace + &,
+	.begin ~ &:not(:last-child) {
+		color: @string-color;
+	}
 }
 
-.constant.numeric {
-  color: #ae82ff;
+.constant {
+	&.numeric {
+	  color: @pacific-blue;
+	}
+	.meta.period + &.numeric,
+	&.numeric + .meta.period {
+		color: @pacific-blue;
+	}
+	&.language {
+	  color: @primitive-color;
+	}
+	&.character, &.other {
+	  color: @orange;
+	}
 }
 
-.constant.language {
-  color: #ad38ff;
+
+
+
+
+.punctuation {
+	&.definition.parameters {
+	  font-style: italic;
+	  font-weight: normal;
+	  color: @tower-gray;
+	}
+	
 }
 
-.constant.character, .constant.other {
-  color: #ff5d38;
-}
 
 .variable {
+	color: @orange;
+	font-weight: bold;
+	font-style: italic;
 }
 
 .keyword {
-  color: #e70063;
+	color: @red;
+	font-weight: bold;
+	-webkit-text-stroke: .02em;
+	&.operator {
+		color: @orange;
+	}
 }
 
 .storage {
   color: #ff5d38;
-}
-
-.storage.type {
-  font-weight: bold;
-  color: #26a6a6;
-}
-
-.entity.name.class {
-  text-decoration: underline;
-  color: #ff5d38;
-}
-
-.entity.other.inherited-class {
+	font-weight: bold;
   font-style: italic;
-  text-decoration: underline;
-  color: #ff5d38;
+	&.type {
+	  font-weight: bold;
+	  color: @blue;
+		font-style: normal;
+	}
 }
 
-.entity.name.function {
-  font-weight: bold;
-  color: #d5f214;
+.entity {
+	&.name.class {
+	  text-decoration: underline;
+	  color: #ff5d38;
+	}
+
+	&.other.inherited-class {
+	  font-style: italic;
+	  text-decoration: underline;
+	  color: #ff5d38;
+	}
+
+	&.name.function {
+	  font-weight: 900;
+	  color: @meta-function-color;
+	}
+	&.name.tag {
+	  color: #dedede;
+	}
+
+	&.other.attribute-name {
+	  color: #ff7859;
+	}
 }
 
 .variable.parameter {
@@ -159,28 +227,25 @@ atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-edi
   color: #ffa016;
 }
 
-.entity.name.tag {
-  color: #dedede;
+.support {
+	&.function {
+	  color: @gulf-stream;
+	}
+	&.constant {
+	  color: @baby-blue;
+	}
+	&.type {
+		color: @bismark;
+		font-weight: bold;
+	}
+	&.class {
+	  color: @bismark;
+		font-weight: bold;
+	}
+	&.other.variable {
+	}
 }
 
-.entity.other.attribute-name {
-  color: #ff7859;
-}
-
-.support.function {
-  color: #a0c2ca;
-}
-
-.support.constant {
-  color: #60eafd;
-}
-
-.support.type, .support.class {
-  color: #7ba0a9;
-}
-
-.support.other.variable {
-}
 
 .invalid {
   color: #f8f8f0;

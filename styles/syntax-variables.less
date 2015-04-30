@@ -4,7 +4,7 @@
 // General colors
 @syntax-text-color: rgba(237, 224, 206, 0.91);
 @syntax-cursor-color: #ff1018;
-@syntax-selection-color: hsla(290, 45%, 51%, 0.15);
+@syntax-selection-color: hsla(290, 30%, 61%, 0.28);
 @syntax-background-color: hsl(263, 20%, 9%);
 @syntax-darker-color: hsla(250, 9%, 7%, 1);
 @syntax-underlayer-bg-color: hsl(258, 6%, 6%);
@@ -39,3 +39,244 @@
 @syntax-color-added: #A8FF60;
 @syntax-color-modified: #E9C062;
 @syntax-color-removed: #CC6666;
+
+
+// ----------------------------------------------------------------------------
+// Font
+// ----------------------------------------------------------------------------
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Light.ttf') format('truetype');
+						font-weight: 400;
+						font-style: normal;
+}
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Light.ttf') format('truetype');
+						font-weight: 300;
+						font-style: normal;
+}
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-ExtraLight.ttf') format('truetype');
+						font-weight: 200;
+						font-style: normal;
+}
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Regular.ttf') format('truetype');
+						font-weight: 700;
+						font-style: normal;
+}
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Mediumttf') format('truetype');
+						font-weight: 800;
+						font-style: normal;
+}
+@font-face {
+						font-family: 'Source Code Pro';
+						src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Bold.ttf') format('truetype');
+						font-weight: 900;
+						font-style: normal;
+}
+
+
+
+//------------------------------------------------------------------
+// Syntax colors
+// -----------------------------------------------------------------
+
+//
+// Common color offsets
+//
+@white: hsl(250,2%, 90%);
+@red: hsl(334, 57%, 48%);
+@blue: hsl(189, 80%, 72%);
+@green: hsl(79, 78%, 58%);
+@yellow: hsl(56, 69%, 73%);
+@orange: hsl(36, 95%, 57%);
+@green: hsl(79, 81%, 70%);
+@gray: hsl(0, 0%, 66%);
+//
+//
+//	Base Colors: For common scopes
+//
+@daytime: hsl(63, 15%, 90%);
+@sunrise: hsl(50, 70%, 75%);
+@gulf-stream: hsl(173, 29%, 60%);
+@dune: hsl(57, 18%, 60%);
+@flamingo: hsl(351, 98%, 78%);
+@baby-blue: hsl(187, 98%, 68%);
+@gray-blend: hsl(240, 10%, 30%);
+@dark-gray: hsl(190, 6%, 38%);
+@light-gray: hsl(192, 9%, 55%);
+@tower-gray: hsl(190, 24%, 71%);
+@subtle-color: hsl(265, 10%, 35%);
+@subtle-blue: hsl(200, 15%, 55%);
+@bismark: hsl(199, 21%, 37%);
+@emerald: hsl(140, 70%, 60%);
+@caper: hsl(75, 66%, 80%);
+@colonial-white: hsl(44, 57%, 75%);
+@kobi: hsl(347, 72%, 72%);
+@bright-ube: hsl(300, 90%, 90%);
+@pink-orange: hsl(21, 95%, 60%);
+
+//
+//
+// Highlights: For constants, keywords, etc
+//
+@lavender: hsl(267, 100%, 70%);
+@orange-red: hsl(11, 89%, 60%);
+@raspberry: hsl(334, 100%, 45%);
+@pacific-blue: hsl(189, 100%, 39%);
+@sulu: hsl(80, 77%, 58%);
+@scooter: hsl(190, 60%, 50%);
+//
+//
+// Define Classes
+//
+@foreground-color: @daytime;
+@comment-color: @gray-blend;
+@string-color: @sunrise;
+@string-bright-color: @caper;
+@numeric-color: @emerald;
+@meta-function-color: @tower-gray;
+@primitive-color: @green; // booleans, null, etc
+@keyword-color: @orange;
+
+
+
+// ----------------------------------------------------------------------------
+// Transitions
+// ----------------------------------------------------------------------------
+@-webkit-keyframes neon1 {
+from {
+  text-shadow: 0 0 0px #fff,
+             0 0 3px  #fff,
+             0 0 6.6px  #FF1177,
+             0 0 16.9px  #FF1177,
+
+}
+to {
+  text-shadow:0 0 0.6px #fff,
+             0 0 3.7px  #fff,
+             0 0 7.3px  #FF1177,
+             0 0 17.3px  #FF1177,
+}
+}
+
+@-webkit-keyframes neon2 {
+from {
+  text-shadow: 0 0 10px #fff,
+             0 0 20px  #fff,
+             0 0 30px  #fff,
+             0 0 40px  #228DFF,
+             0 0 70px  #228DFF,
+             0 0 80px  #228DFF,
+             0 0 100px #228DFF,
+             0 0 150px #228DFF;
+}
+to {
+  text-shadow: 0 0 5px #fff,
+             0 0 10px #fff,
+             0 0 15px #fff,
+             0 0 20px #228DFF,
+             0 0 35px #228DFF,
+             0 0 40px #228DFF,
+             0 0 50px #228DFF,
+             0 0 75px #228DFF;
+}
+}
+
+@-webkit-keyframes neon3 {
+from {
+  text-shadow: 0 0 10px #fff,
+             0 0 20px  #fff,
+             0 0 30px  #fff,
+             0 0 40px  #FFDD1B,
+             0 0 70px  #FFDD1B,
+             0 0 80px  #FFDD1B,
+             0 0 100px #FFDD1B,
+             0 0 150px #FFDD1B;
+}
+to {
+  text-shadow: 0 0 5px #fff,
+             0 0 10px #fff,
+             0 0 15px #fff,
+             0 0 20px #FFDD1B,
+             0 0 35px #FFDD1B,
+             0 0 40px #FFDD1B,
+             0 0 50px #FFDD1B,
+             0 0 75px #FFDD1B;
+}
+}
+
+@-webkit-keyframes neon4 {
+from {
+  text-shadow: 0 0 10px #fff,
+             0 0 20px  #fff,
+             0 0 30px  #fff,
+             0 0 40px  #B6FF00,
+             0 0 70px  #B6FF00,
+             0 0 80px  #B6FF00,
+             0 0 100px #B6FF00,
+             0 0 150px #B6FF00;
+}
+to {
+  text-shadow: 0 0 5px #fff,
+             0 0 10px #fff,
+             0 0 15px #fff,
+             0 0 20px #B6FF00,
+             0 0 35px #B6FF00,
+             0 0 40px #B6FF00,
+             0 0 50px #B6FF00,
+             0 0 75px #B6FF00;
+}
+}
+
+@-webkit-keyframes neon5 {
+from {
+  text-shadow: 0 0 10px #fff,
+             0 0 20px  #fff,
+             0 0 30px  #fff,
+             0 0 40px  #FF9900,
+             0 0 70px  #FF9900,
+             0 0 80px  #FF9900,
+             0 0 100px #FF9900,
+             0 0 150px #FF9900;
+}
+to {
+  text-shadow: 0 0 5px #fff,
+             0 0 10px #fff,
+             0 0 15px #fff,
+             0 0 20px #FF9900,
+             0 0 35px #FF9900,
+             0 0 40px #FF9900,
+             0 0 50px #FF9900,
+             0 0 75px #FF9900;
+}
+}
+
+@-webkit-keyframes neon6 {
+from {
+  text-shadow: 0 0 10px #fff,
+             0 0 20px #fff,
+             0 0 30px #fff,
+             0 0 40px #ff00de,
+             0 0 70px #ff00de,
+             0 0 80px #ff00de,
+             0 0 100px #ff00de,
+             0 0 150px #ff00de;
+}
+to {
+  text-shadow: 0 0 5px #fff,
+             0 0 10px #fff,
+             0 0 15px #fff,
+             0 0 20px #ff00de,
+             0 0 35px #ff00de,
+             0 0 40px #ff00de,
+             0 0 50px #ff00de,
+             0 0 75px #ff00de;
+}
+}

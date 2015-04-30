@@ -111,8 +111,20 @@ atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-edi
 	}
 }
 
-.comment {
-  color: #5a6466;
+/**
+ * tree bg
+ */
+ol.tree-view.full-menu.list-tree.has-collapsable-children.focusable-panel::before {
+  background: url(atom://apathy-theme/styles/stars-bg.jpg) 37% bottom/ 943px 1400px no-repeat;
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 1;
+  -webkit-mask-image: -webkit-gradient(linear, left bottom, left 47%, from(rgba(0,0,0,.6)), to(rgba(0,0,0,0)));
+	z-index: 0;
 }
 
 

@@ -111,22 +111,6 @@ atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-edi
 	}
 }
 
-/**
- * tree bg
- */
-ol.tree-view.full-menu.list-tree.has-collapsable-children.focusable-panel::before {
-  background: url(atom://apathy-theme/styles/stars-bg.jpg) 37% bottom/ 943px 1400px no-repeat;
-  content: ' ';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 1;
-  -webkit-mask-image: -webkit-gradient(linear, left bottom, left 47%, from(rgba(0,0,0,.6)), to(rgba(0,0,0,0)));
-	z-index: 0;
-}
-
 
 /*=========================================================================
 =    SYNTAX STYLES
@@ -461,8 +445,47 @@ ol.tree-view.full-menu.list-tree.has-collapsable-children.focusable-panel::befor
 }
 
 }
+
+
+//
+//
+// 	------------------------------------------------------------------
+// 	CSS/SASS/LESS
+//
+.entity.other.attribute-name.class.css {
+  color: #e3e3e3;
 }
 
+
+.less,
+.css,
+.sass,
+.scss {
+	.variable {
+		color: @colonial-white;
+	}
+	.source.scss .punctuation.section.property-list {
+	  color: darken(@subtle-color, 5%);
+	}
+
+	.source.scss .meta.attribute-selector.scss .punctuation.separator.operator.scss, .source.scss .meta.attribute-selector.scss {
+	  color: @subtle-color;
+	}
+	.punctuation.begin&, .punctuation.end& {
+		color: lighten(multiply(@subtle-color, @string-color), 40%);
+	}
+	.comment, .comment.begin, .comment.end {
+			color: @comment-color;
+	}
+}
+
+
+
+//
+//
+// 	------------------------------------------------------------------
+// 	Markdown
+//
 .entity.name.section.markdown {
   color: #ff5d38;
 }
@@ -480,7 +503,8 @@ ol.tree-view.full-menu.list-tree.has-collapsable-children.focusable-panel::befor
 }
 
 .punctuation.definition.string.begin.markdown, .punctuation.definition.string.end.markdown {
-  color: #26A6A6;
+  color: @bismark;
+
 }
 
 .punctuation.definition.metadata.markdown {
@@ -508,48 +532,43 @@ ol.tree-view.full-menu.list-tree.has-collapsable-children.focusable-panel::befor
   color: #00a8c6;
 }
 
-.markup.deleted.git_gutter {
-  color: #e61f44;
+
+
+//
+//
+// 	------------------------------------------------------------------
+// 	Jade
+//
+.constant.id.tag.jade {
+  color: @flamingo;
+}
+.source.jade .tag.jade .complete_tag.jade .constant.language.js {
+  color: #8ea5a0;
 }
 
-.markup.inserted.git_gutter {
-  color: #a7da1e;
-}
 
-.markup.changed.git_gutter {
-  color: #f7b83d;
-}
-
-.entity.other.attribute-name.class.css {
-  color: #e3e3e3;
-}
-
-.source.scss .punctuation.section.property-list {
-  color: rgba(255, 255, 255, 0.25);
-}
-
-.source.scss .meta.attribute-selector.scss .punctuation.separator.operator.scss, .source.scss .meta.attribute-selector.scss {
-  color: rgba(255, 255, 255, 0.33);
-}
-
+//
+//
+// 	------------------------------------------------------------------
+// 	Coffeescript
+//
 .source.coffee.embedded.source {
   color: #dbe1e5;
   background-color: #303838;
 }
 
-.string.interpolated {
-  color: #45ffcd;
+.source.coffee .variable.other {
+  color: #a1d1e5;
 }
 
-.string.regexp {
-  font-style: italic;
-  color: #eb9949;
+.source.coffee .variable.assignment.coffee {
+  color: #fadf90;
 }
 
-.source.jade .tag.jade .complete_tag.jade .constant.language.js {
-  color: #8ea5a0;
+.source.coffee .meta.delimiter.method.period.coffee {
+  font-weight: bold;
+  color: #c3ffff;
 }
-
 .meta.brace.round.coffee {
   font-weight: bold;
   font-style: italic;
@@ -579,6 +598,38 @@ ol.tree-view.full-menu.list-tree.has-collapsable-children.focusable-panel::befor
   color: #a1e617;
 }
 
+//
+//
+//  --------------------------------------------------------------------
+// 	Jasmine
+//
+.source.spec.js {
+  color: @white;
+  .support.class.js {
+    color: @flamingo;
+    font-weight: 700;
+  }
+  string.quoted {
+    color: @dune;
+    font-weight: 300;
+  }
+  .storage.type.function {
+    color: @gulf-stream;
+    font-weight: bold;
+  }
+  .meta.brace.round, .meta.brace.curly, .punctuation.terminator.statement {
+    font-weight: 300;
+    color: @subtle-color;
+  }
+}
+
+
+
+//
+//
+// 	------------------------------------------------------------------
+// 	Linters
+//
 .sublimelinter.mark.warning {
   color: #DDB700;
 }
@@ -603,35 +654,225 @@ ol.tree-view.full-menu.list-tree.has-collapsable-children.focusable-panel::befor
   color: #D02000;
 }
 
-.constant.id.tag.jade {
-  color: #d99fb6;
-}
 
-.source.js .meta.brace.curly, .source.js .punctuation.terminator.statement.js {
-  color: #6B618d;
-}
 
-.source.js .meta.brace.round {
-  font-weight: bold;
-  color: #7b95a2;
-}
 
-.source.spec.js {
-  color: hsl(250,7%,97%);
-  .support.class.js {
-    color: #d286a5;
-    font-weight: 700;
-  }
-  string.quoted {
-    color: #cce67a;
-    font-weight: 300;
-  }
-  .storage.type.function {
-    color: #3f7066;
-    font-weight: 500;
-  }
-  .meta.brace.round, .meta.brace.curly, .punctuation.terminator.statement {
-    font-weight: 300;
-    color: #829296;
-  }
+
+/**
+ * Generated
+ */
+
+@offset: 5%;
+@offset2: 90;
+@base-color: hsl(267, 25%, 76%); //hsl(267, 75%, 56%)
+@primary-color: contrast(@syntax-background-color, #222, #f8f8f8);
+
+/**
+* extracted color definition values from abse color
+* @type {color}
+*/
+@base-hue: hue(@base-color);
+@base-saturation: saturation(@base-color);
+@base-lightness: lightness(@base-color);
+@base-hsvhue: hsvhue(@base-color);
+@base-red: red(@base-color);
+@base-green: green(@base-color);
+@base-blue: blue(@base-color);
+@base-alpha: alpha(@base-color);
+@base-luma: luma(@base-color);
+@base-luminance: luminance(@base-color);
+
+:host .source.jsnope {
+	& .terminator {
+	  color: spin(saturate(screen(@base-color, #00ffff), @offset),  @offset2);
+	}
+	& .terminator .terminator {
+	  color: spin(desaturate(screen(@base-color, #00ffff), -@offset), -@offset2);
+	}
+	& .statement {
+	  color: spin(lighten(overlay(@base-color, #ff00ff), @offset),  @offset2);
+	}
+	& .statement .storage {
+	  color: spin(darken(overlay(@base-color, #ff00ff), -@offset), -@offset2);
+	}
+	& .period {
+	  color: spin(spin(softlight(@base-color, #ffff00), @offset),  @offset2);
+	}
+	& .period .support {
+	  color: spin(saturate(softlight(@base-color, #ffff00), -@offset), -@offset2);
+	}
+	& .function {
+	  color: spin(desaturate(difference(@base-color, #ff0000), @offset),  @offset2);
+	}
+	& .function .meta {
+	  color: spin(lighten(difference(@base-color, #ff0000), -@offset), -@offset2);
+	}
+	& .storage {
+	  color: spin(darken(exclusion(@base-color, #008000), @offset),  @offset2);
+	}
+	& .storage .meta {
+	  color: spin(spin(exclusion(@base-color, #008000), -@offset), -@offset2);
+	}
+	& .type {
+	  color: spin(saturate(average(@base-color, #0000ff), @offset),  @offset2);
+	}
+	& .type .entity {
+	  color: spin(desaturate(average(@base-color, #0000ff), -@offset), -@offset2);
+	}
+	& .paramter {
+	  color: spin(lighten(negation(@base-color, #00ffff), @offset),  @offset2);
+	}
+	& .paramter .keyword {
+	  color: spin(darken(negation(@base-color, #00ffff), -@offset), -@offset2);
+	}
+	& .end {
+	  color: spin(spin(multiply(@base-color, #ff00ff), @offset),  @offset2);
+	}
+	& .end .punctuation {
+	  color: spin(saturate(multiply(@base-color, #ff00ff), -@offset), -@offset2);
+	}
+	& .modifier {
+	  color: spin(desaturate(screen(@base-color, #ffff00), @offset),  @offset2);
+	}
+	& .modifier .string {
+	  color: spin(lighten(screen(@base-color, #ffff00), -@offset), -@offset2);
+	}
+	& .operator {
+	  color: spin(darken(overlay(@base-color, #ff0000), @offset),  @offset2);
+	}
+	& .operator .constant {
+	  color: spin(spin(overlay(@base-color, #ff0000), -@offset), -@offset2);
+	}
+	& .square {
+	  color: spin(saturate(softlight(@base-color, #008000), @offset),  @offset2);
+	}
+	& .square .language {
+	  color: spin(desaturate(softlight(@base-color, #008000), -@offset), -@offset2);
+	}
+	& .null {
+	  color: spin(lighten(difference(@base-color, #0000ff), @offset),  @offset2);
+	}
+	& .null .delimiter {
+	  color: spin(darken(difference(@base-color, #0000ff), -@offset), -@offset2);
+	}
+	& .numeric {
+	  color: spin(spin(exclusion(@base-color, #00ffff), @offset),  @offset2);
+	}
+	& .numeric .terminator {
+	  color: spin(saturate(exclusion(@base-color, #00ffff), -@offset), -@offset2);
+	}
+	& .constant {
+	  color: spin(desaturate(average(@base-color, #ff00ff), @offset),  @offset2);
+	}
+	& .constant .storage {
+	  color: spin(lighten(average(@base-color, #ff00ff), -@offset), -@offset2);
+	}
+	& .language {
+	  color: spin(darken(negation(@base-color, #ffff00), @offset),  @offset2);
+	}
+	& .language .support {
+	  color: spin(spin(negation(@base-color, #ffff00), -@offset), -@offset2);
+	}
+	& .boolean {
+	  color: spin(saturate(multiply(@base-color, #ff0000), @offset),  @offset2);
+	}
+	& .boolean .meta {
+	  color: spin(desaturate(multiply(@base-color, #ff0000), -@offset), -@offset2);
+	}
+	& .regexp {
+	  color: spin(lighten(screen(@base-color, #008000), @offset),  @offset2);
+	}
+	& .regexp .meta {
+	  color: spin(darken(screen(@base-color, #008000), -@offset), -@offset2);
+	}
+	& .object {
+	  color: spin(spin(overlay(@base-color, #0000ff), @offset),  @offset2);
+	}
+	& .object .entity {
+	  color: spin(saturate(overlay(@base-color, #0000ff), -@offset), -@offset2);
+	}
+	& .comma {
+	  color: spin(desaturate(softlight(@base-color, #00ffff), @offset),  @offset2);
+	}
+	& .comma .keyword {
+	  color: spin(lighten(softlight(@base-color, #00ffff), -@offset), -@offset2);
+	}
+	& .characterclass {
+	  color: spin(darken(difference(@base-color, #ff00ff), @offset),  @offset2);
+	}
+	& .characterclass .punctuation {
+	  color: spin(spin(difference(@base-color, #ff00ff), -@offset), -@offset2);
+	}
+	& .definition {
+	  color: spin(saturate(exclusion(@base-color, #ffff00), @offset),  @offset2);
+	}
+	& .definition .string {
+	  color: spin(desaturate(exclusion(@base-color, #ffff00), -@offset), -@offset2);
+	}
+	& .punctuation {
+	  color: spin(lighten(average(@base-color, #ff0000), @offset),  @offset2);
+	}
+	& .punctuation .constant {
+	  color: spin(darken(average(@base-color, #ff0000), -@offset), -@offset2);
+	}
+	& .dom {
+	  color: spin(spin(negation(@base-color, #008000), @offset),  @offset2);
+	}
+	& .dom .language {
+	  color: spin(saturate(negation(@base-color, #008000), -@offset), -@offset2);
+	}
+	& .undefined {
+	  color: spin(desaturate(multiply(@base-color, #0000ff), @offset),  @offset2);
+	}
+	& .undefined .delimiter {
+	  color: spin(lighten(multiply(@base-color, #0000ff), -@offset), -@offset2);
+	}
+	& .method {
+	  color: spin(darken(screen(@base-color, #00ffff), @offset),  @offset2);
+	}
+	& .method .terminator {
+	  color: spin(spin(screen(@base-color, #00ffff), -@offset), -@offset2);
+	}
+	& .delimiter {
+	  color: spin(saturate(overlay(@base-color, #ff00ff), @offset),  @offset2);
+	}
+	& .delimiter .storage {
+	  color: spin(desaturate(overlay(@base-color, #ff00ff), -@offset), -@offset2);
+	}
+	& .punctuation {
+	  color: spin(lighten(softlight(@base-color, #ffff00), @offset),  @offset2);
+	}
+	& .punctuation .support {
+	  color: spin(darken(softlight(@base-color, #ffff00), -@offset), -@offset2);
+	}
+	& .quoted {
+	  color: spin(spin(difference(@base-color, #ff0000), @offset),  @offset2);
+	}
+	& .quoted .meta {
+	  color: spin(saturate(difference(@base-color, #ff0000), -@offset), -@offset2);
+	}
+	& .single {
+	  color: spin(desaturate(exclusion(@base-color, #008000), @offset),  @offset2);
+	}
+	& .single .meta {
+	  color: spin(lighten(exclusion(@base-color, #008000), -@offset), -@offset2);
+	}
+	& .round {
+	  color: spin(darken(average(@base-color, #0000ff), @offset),  @offset2);
+	}
+	& .round .entity {
+	  color: spin(spin(average(@base-color, #0000ff), -@offset), -@offset2);
+	}
+	& .brace {
+	  color: spin(darken(negation(@base-color, #00ffff), @offset),  @offset2);
+	}
+	& .brace .keyword {
+	  color: spin(darken(negation(@base-color, #00ffff), -@offset), -@offset2);
+	}
+	& .curly {
+	  color: spin(spin(multiply(@base-color, #ff00ff), @offset),  @offset2);
+	}
+	& .curly .punctuation {
+	  color: spin(spin(multiply(@base-color, #ff00ff), -@offset), -@offset2);
+	}
 }

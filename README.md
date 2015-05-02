@@ -21,7 +21,7 @@ My awesome syntax theme I polished over the years, ported to Atom from Sublime T
 ![JS Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2g403i3V0w2B2K0v2G2D/Image%202015-05-01%20at%207.36.00%20PM.png)
 
 ### Coffeescript:
-![Coffeescript Screenshot](https://s3.amazonaws.com/f.cl.ly/items/0c1J2r1v3u0Z3f1j3l0t/Image%202015-05-01%20at%201.43.50%20PM.png)
+![Coffeescript Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2e2v1z1Q2S0r443z0u2j/Image%202015-05-01%20at%207.47.31%20PM.png)
 
 ### MeteorJS (w/ tree view styling enabled)
 ![Meteor Screenshot](https://s3.amazonaws.com/f.cl.ly/items/3b3s200N3C151Z101X12/Image%202015-05-01%20at%207.31.18%20PM.png)

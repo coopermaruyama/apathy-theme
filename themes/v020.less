@@ -1,0 +1,270 @@
+// 020
+// This defines all syntax variables that syntax themes must implement when they
+// include a syntax-variables.less file.
+// General colors
+@syntax-text-color: rgba(237, 224, 206, 0.91);
+@syntax-cursor-color: #ff1018;
+@syntax-selection-color: hsla(290, 45%, 51%, 0.15);
+@syntax-background-color: hsl(263, 20%, 9%);
+@syntax-darker-color: hsla(250, 9%, 7%, 1);
+@syntax-underlayer-bg-color: hsl(258, 6%, 6%);
+@syntax-inactive-bg-color: hsl(200, 5%, 11%);
+// Guide colors
+@syntax-wrap-guide-color: #0D0A15;
+@syntax-indent-guide-color: hsl(41, 28%, 21%);
+@syntax-invisible-character-color:hsl(242, 17%, 18%);
+// For find and replace markers
+@syntax-result-marker-color: #2f1b0f;
+@syntax-result-marker-color-selected: rgba(237, 224, 206, 0.21);
+// Gutter colors
+@syntax-gutter-text-color: hsla(34, 45%, 87%, 0.21);;
+@syntax-gutter-text-color-selected: rgba(237, 224, 206, 0.19);
+@syntax-gutter-background-color: hsl(270, 16%, 7%);
+@syntax-gutter-background-color-selected: hsla(280, 45%, 41%, 0.1);
+// Scrollbar
+@scrollbar-bg-color: hsla(230, 2%, 7%, 0.8);
+// Minimap
+@minimap-bg-color: hsla(261, 12%, 9%, 0.4);
+@minimap-gradient-from: hsl(250, 5%, 25%);
+@minimap-gradient-to: hsl(250, 18%, 70%);
+// For git diff info. i.e. in the gutter
+// These are static and were not extracted from your textmate theme
+@syntax-color-renamed: #96CBFE;
+@syntax-color-added: #A8FF60;
+@syntax-color-modified: #E9C062;
+@syntax-color-removed: #CC6666;
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;     }
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;     }
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;     }
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Regular.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;     }
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('atom://apathy-theme/styles/fonts/SourceCodePro-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;     }
+atom-text-editor {
+  &,
+  :host {
+    background-color: #16121c;
+    color: rgba(237, 224, 206, 0.91);
+    font-family: 'Source Code Pro';
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased !important;
+    text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px !important;     }
+  & .gutter,:host .gutter {
+      background-color: #120f15;
+      color: rgba(237, 224, 207, 0.21);
+      box-shadow: inset -1px 0px rgba(255, 255, 255, 0.2), 1px 0px #000000;     }
+  &::shadow &-minimap,& &-minimap {
+      background: rgba(22, 20, 26, 0.4);
+      box-shadow: inset 0px 17px 56px rgba(0, 0, 0, 0.4);     }
+  &::shadow &-minimap::shadow .minimap-visible-area,& &-minimap::shadow .minimap-visible-area {
+      background-color: #878787;
+      opacity: .2;
+      background: linear-gradient(90deg, #3e3d43 0%, #a9a5c0 50%, #3e3d43 100%);
+      box-shadow: inset 0px 17px 38px rgba(0, 0, 0, 0.4);     }
+  & .gutter .line-number.cursor-line,:host .gutter .line-number.cursor-line {
+      background-color: rgba(120, 58, 152, 0.1);
+      color: rgba(237, 224, 206, 0.19);     }
+  & .gutter .line-number.cursor-line-no-selection,:host .gutter .line-number.cursor-line-no-selection {
+      color: rgba(237, 224, 206, 0.19);     }
+  & .wrap-guide,:host .wrap-guide {
+      color: #0d0a15;
+      background-color: #000000;
+      border-right: 1px solid #231d30;
+      border-left: 2px solid #000000;     }
+  & .indent-guide,:host .indent-guide {
+      color: #453b27;     }
+  & .invisible-character,:host .invisible-character {
+      color: #272636;     }
+  & .search-results .marker .region,:host .search-results .marker .region {
+      background-color: transparent;
+      border: #2f1b0f;     }
+  & .search-results .marker.current-result .region,:host .search-results .marker.current-result .region {
+      border: rgba(237, 224, 206, 0.21);     }
+  &.is-focused .cursor,:host(.is-focused) .cursor {
+      border-color: #ff1018;     }
+  &.is-focused .selection .region,:host(.is-focused) .selection .region {
+      background-color: rgba(168, 74, 186, 0.15);     }
+  &.is-focused .line-number.cursor-line-no-selection,&.is-focused .line.cursor-line,:host(.is-focused) .line-number.cursor-line-no-selection,:host(.is-focused) .line.cursor-line {
+      background-color: #2C2830;     }     }
+atom-pane:not(.active) atom-text-editor {
+  background-color: #1b1d1d;
+  opacity: .4;
+  color: rgba(255, 255, 255, 0.6);     }
+atom-pane:not(.active) atom-text-editor .underlayer {
+  background-color: #0f0e10;     }
+atom-pane-container atom-pane {
+  background-color: #212426;     }
+atom-pane-container atom-pane:not(.active) {
+  opacity: 0.8;     }
+atom-pane-container atom-pane:before {
+  background-color: rgba(67, 57, 86, 0.9);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: ' ';     }
+atom-pane:not(.active) atom-text-editor::shadow atom-text-editor-minimap,atom-text-editor atom-text-editor-minimap {
+    background: rgba(0, 0, 0, 0.8);     }
+.comment {
+    color: #5a6466;     }
+.string {
+    color: #bebe5f;     }
+.constant {
+  &.numeric {
+      color: #ae82ff;     }
+  &.language {
+      color: #ad38ff;     }
+  &.character,&.other {
+      color: #ff5d38;     }
+  &.numeric.line-number.find-in-files:not(.match) {
+      color: rgba(143, 190, 0, 0.63);     }
+  &.id.tag.jade {
+      color: #d99fb6;     }     }
+.keyword {
+    color: #e70063;     }
+.storage {
+    color: #ff5d38;     }
+.storage.type {
+    font-weight: bold;
+    color: #26a6a6;     }
+.entity {
+  &.name.class {
+      text-decoration: underline;
+      color: #ff5d38;     }
+  &.other.inherited-class {
+      font-style: italic;
+      text-decoration: underline;
+      color: #ff5d38;     }
+  &.name.function {
+      font-weight: bold;
+      color: #d5f214;     }
+  &.name.tag {
+      color: #dedede;     }
+  &.other.attribute-name {
+      color: #ff7859;     }
+  &.name.filename.find-in-files {
+      color: #E6DB74;     }
+  &.name.section.markdown {
+      color: #ff5d38;     }
+  &.other.attribute-name.class.css {
+      color: #e3e3e3;     }     }
+.variable.parameter {
+    font-style: italic;
+    color: #ffa016;     }
+.support {
+  &.function {
+      color: #a0c2ca;     }
+  &.constant {
+      color: #60eafd;     }
+  &.type,&.class {
+      color: #7ba0a9;     }     }
+.invalid {
+    color: #f8f8f0;
+    background-color: #00a8c6;     }
+.invalid.deprecated {
+    color: #f8f8f0;
+    background-color: #00a8c6;     }
+.meta.structure.dictionary.json {
+    .string.quoted.double.json {
+        color: #bcd42a;
+        color: #ff5d38;     }     }
+.meta.diff,.meta.diff.header {
+    color: #75715E;     }
+.keyword.other {
+    color: #b7b1a9;     }
+.meta.property-value,.support.constant.property-value,.constant.other.color {
+    color: #eeffe0;     }
+.meta.structure.dictionary.value.json {
+    .string.quoted.double.json {
+        color: #bcd42a;     }     }
+.meta.property-value {
+    .punctuation.separator.key-value {
+        color: #ede0ce;     }     }
+.keyword.other.use,.keyword.other.function.use,.keyword.other.namespace,.keyword.other.new,.keyword.other.special-method,.keyword.other.unit,.keyword.other.use-as {
+    color: #26a6a6;     }
+.meta.use .support.class.builtin,.meta.other.inherited-class .support.class.builtin {
+    color: #ede0ce;     }
+.source.coffee {
+    color: #ffffff;
+    .variable.other {
+        color: #a1d1e5;     }
+    .variable.assignment.coffee {
+        color: #fadf90;     }
+    .meta.delimiter.method.period.coffee {
+        font-weight: bold;
+        color: #c3ffff;     }
+    .string.quoted.single.coffee {
+        color: #cce67a;     }
+    .meta.function.coffee {
+        .entity.name.function.coffee {
+            font-weight: bold;
+            color: #a1e617;     }     }     }
+.punctuation.definition.heading.markdown {
+    color: #26A6A6;     }
+.source.scss {
+    .punctuation.section.property-list {
+        color: rgba(255, 255, 255, 0.25);     }     }
+.source.scss .meta.attribute-selector.scss .punctuation.separator.operator.scss,.source.scss .meta.attribute-selector.scss {
+    color: rgba(255, 255, 255, 0.33);     }
+.source.coffee.embedded.source {
+    color: #dbe1e5;
+    background-color: #303838;     }
+.string.interpolated {
+    color: #45ffcd;     }
+.string.regexp {
+    font-style: italic;
+    color: #eb9949;     }
+.source.jade {
+    .tag.jade {
+        .complete_tag.jade {
+            .constant.language.js {
+                color: #8ea5a0;     }     }     }     }
+.meta.brace.round.coffee {
+    font-weight: bold;
+    font-style: italic;
+    color: #94c5f4;     }
+.comment.block.coffee {
+    font-style: italic;
+    color: #606060;
+    .storage.type.annotation.coffeescript {
+        font-weight: bold;
+        color: rgba(90, 144, 123, 0.58);     }     }
+.source.js .meta.brace.curly,.source.js .punctuation.terminator.statement.js {
+    color: #6B618d;     }
+.source.js {
+    .meta.brace.round {
+        font-weight: bold;
+        color: #7b95a2;     }     }
+.source.spec.js {
+    color: #f7f7f8;
+    .support.class.js {
+        color: #d286a5;
+        font-weight: 700;     }
+    string.quoted {
+        color: #cce67a;
+        font-weight: 300;     }
+    .storage.type.function {
+        color: #3f7066;
+        font-weight: 500;     }     }
+.source.spec.js .meta.brace.round,.source.spec.js .meta.brace.curly,.source.spec.js .punctuation.terminator.statement {
+    font-weight: 300;
+    color: #829296;     }

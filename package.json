@@ -1,6 +1,7 @@
 {
   "name": "apathy-theme",
   "theme": "syntax",
+  "main": "./lib/apathy",
   "version": "0.2.0",
   "description": "A veresatile, beautiful dark theme  that I've perfected over the years with lots of definitions!",
   "repository": "https://github.com/coopermaruyama/apathy-theme",
@@ -8,14 +9,7 @@
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
   },
-  "_atomModuleCache": {
-    "version": 1,
-    "dependencies": [],
-    "extensions": {
-      ".json": [
-        "package.json"
-      ]
-    },
-    "folders": []
+  "dependencies": {
+    "atom-space-pen-views": "^2.0.0"
   }
 }

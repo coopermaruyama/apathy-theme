@@ -81,19 +81,7 @@ atom-text-editor .invisible-character, :host .invisible-character {
   color: fadeout(@syntax-indent-guide-color,15%);
 }
 
-atom-text-editor .search-results .marker .region, :host .search-results .marker .region {
-  background-color: transparent;
-  border: @syntax-result-marker-color;
-	-webkit-transition: all 0.5s;
-	-webkit-animation: neon3 0.5s ease-in-out infinite alternate;
-}
 
-atom-text-editor .search-results .marker.current-result .region, :host .search-results .marker.current-result .region {
-  border: @syntax-result-marker-color-selected;
-	-webkit-transition: all 0.3s;
-	-webkit-animation: neon5 0.3s ease-in-out infinite alternate;
-	
-}
 
 atom-text-editor.is-focused .cursor, :host(.is-focused) .cursor {
   border-color: @syntax-cursor-color;
@@ -110,7 +98,41 @@ atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-edi
 		-webkit-animation: neon6 0.3s ease-in-out infinite alternate;
 	}
 }
+/**
+ * Find Results
+ */
+atom-text-editor .search-results .marker .region,
+:host .search-results .marker .region {
+   background-color: transparent;
+   border: @syntax-result-marker-color;
+ 	-webkit-transition: all 0.5s;
+ 	-webkit-animation: neon3 0.5s ease-in-out infinite alternate;
+}
+atom-text-editor .highlight .current-result .region,
+:host .current-result .region,
+atom-text-editor::shadow .current-result .region {
+   border: @syntax-result-marker-color-selected;
+   border-radius: 7px;
+   border: 2px solid hsla(40, 85%, 33%, 0.8);
+   box-sizing: border-box;
+   -webkit-transition: all 0.5s;
+   -webkit-animation: box1 0.5s ease-in-out infinite alternate;
+   border-style: solid;
+   box-sizing: content-box;
+   transform: translate(-1px,-1px);
+   box-shadow: 0px 0px 22px 0px hsl(40, 85%, 44%);
+   background: hsla(40, 1%, 59%,.1);
+}
+atom-text-editor .find-result .region,
+atom-text-editor::shadow .find-result .region {
+   border-radius: 3px;
+   border: 1px solid @syntax-result-marker-color;
+   box-sizing: border-box;
+   -webkit-transition: all 0.5s;
+   -webkit-animation: neon1 0.5s ease-in-out infinite alternate;
+   border-style: solid;
 
+}
 
 /*=========================================================================
 =    SYNTAX STYLES
@@ -197,6 +219,7 @@ atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-edi
 	&.name.class {
 	  text-decoration: underline;
 	  color: #ff5d38;
+    font-weight: 700;
 	}
 
 	&.other.inherited-class {
@@ -345,108 +368,109 @@ atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-edi
 @js-desaturated-alt-color: desaturate(@js-alt-color,20%);
 @js-parens-active-color: darken(@js-desaturated-alt-color, 10%);
 :host {
-	.source.js {
-		color: @js-foreground-color;
-		-webkit-font-feature-settings: "swsh";
-	.meta.brace {
-		color: hsl(240, 15%, 70%);
-		font-weight: 700;
-		&.curly, &.round {
-			&:first-of-type,
-			& + &,
-			.leading-whitespace ~ &:nth-last-child(1):not(.round),
-			&:only-child:nth-last-child(2):not(.round),
-			.punctuation.terminator.statement {
-				color: @gray-blend;
-			}
-		}
-	}
-	// WIP
-	//
-	// .meta.brace.curly + .meta.brace.round:nth-child(-n+3),
-	// .leading-whitespace + .meta.brace.round:nth-child(-n+3),
-	// .meta.brace.curly:nth-child(-n+3):only-of-type,
-	// .meta.brace:only-of-type,
-	// .meta.brace:nth-last-child(-n+2):not(:nth-child(n+5)),
-	// .leading-whitespace + .meta.brace.curly:nth-child(-n+3):not(:nth-last-child(n+4)),
-	// .punctuation.terminator.statement {
-	// 	color: @gray-blend;
-	// }
-	.support {
-		&.class {
-			color: @sulu;
-		}
-	}
-	.keyword {
-		color: @red;
-		text-shadow: 0px 0px 1px black;
-		& + span {
-			color: @blue;
-			font-style: normal;
-			font-weight: bold;
-			-webkit-text-stroke-width: .02em;
-		}
-		&.operator {
-			color: @yellow;
-			&:not(:first-child):not(:last-child) {
-				color: @raspberry;
-			}
-			// &:nth-child(2) {
-			// 	color: blue;
-			// }
-		}
-	}
-	.entity.name.function {
-		color: @white;
-		font-weight: 700;
-		&:nth-child(4n+1) {
-			color: spin(saturate(@white, 30%), 40);
-		}
-	}
-	.string.begin + .entity.name.function,
-	.string.begin:first-child,
-	.leading-whitespace + .string.begin,
-	.entity.name.function + .string.end {
-		color: @pink-orange;
-	}
-	.meta.brace.round + .string.quoted * { color: @string-color; }
-	.storage.type.function {
-		color: @scooter;
-	}
-	.meta.function {
-		> .parameters.begin,
-		> parameters.end{
-			color: @tower-gray;
-		}
-	}
-	.meta.delimiter.period {
-		color: @yellow;
-		font-weight: 700;
-	}
-	.function {
-		 // $.ajax({
-		 //   [onComplete]: function()...
-		 // })
-		.meta& {
-			color: @sulu;
-		}
-	}
-	/**
-	 * arguments
-	 */
-	.variable.parameter {
-		font-weight: normal;
-		color: @bright-ube;
-	}
-	.leading-whitespace ~ .keyword.operator {
-		color: spin(saturate(darken(@js-foreground-color, 30%),70%), 330);
-		// font-weight: normal;
-	}
+  .source.js {
+    color: @js-foreground-color;
+    -webkit-font-feature-settings: "swsh";
+    .meta.brace {
+      color: hsl(240, 15%, 70%);
+      font-weight: 700;
+      &.curly,
+      &.round {
+        &:first-of-type,
+        & + &,
+        .leading-whitespace ~ &:nth-last-child(1):not(.round),
+        &:only-child:nth-last-child(2):not(.round),
+        .punctuation.terminator.statement {
+          color: @gray-blend;
+        }
+      }
+    }
+    .support {
+      &.class {
+        color: @sulu;
+      }
+    }
+    .keyword {
+      color: @red;
+      text-shadow: 0 0 1px black;
+      & + span:not(.string):not(.brace) {
+        color: @blue;
+        font-style: normal;
+        font-weight: bold;
+        -webkit-text-stroke-width: 0.02em;
+      }
+      &.operator {
+        color: @yellow;
+        &:not(:first-child):not(:last-child) {
+          color: @raspberry;
+        }
+      }
+    }
+    .entity.name.function {
+      color: @white;
+      font-weight: 700;
+      &:nth-child(4n+1) {
+        color: spin(saturate(@white, 30%), 40);
+      }
+    }
+    .string.begin + .entity.name.function,
+    .string.begin:first-child,
+    .leading-whitespace + .string.begin,
+    .entity.name.function + .string.end {
+      color: @pink-orange;
+    }
+    .meta.brace.round + .string.quoted * {
+      color: @string-color;
+    }
+    .storage.type.function {
+      color: @scooter;
+    }
+    .meta.function {
+      > .parameters.begin,
+      > parameters.end {
+        color: @tower-gray;
+      }
+    }
+    .meta.delimiter.period {
+      color: @yellow;
+      font-weight: 700;
+    }
+    .function {
+      .meta& {
+        color: @sulu;
+      }
+    }
+    .variable.parameter {
+      font-weight: normal;
+      color: @bright-ube;
+    }
+    .leading-whitespace ~ .keyword.operator {
+      color: spin(saturate(darken(@js-foreground-color, 30%),70%), 330);
+      // font-weight: normal;
+    }
+  }
 }
 
+//
+//
+// -------------------------------------------------------------------------
+//  Meteor JS
+//
+atom-text-editor::shadow .api.meteor {
+  &.template { color: @sulu; font-weight: bold; }
+  &.session { color: @kobi; font-weight: bold; }
+  &.ddp { color: lighten(@scooter,10%); font-weight: bold; }
+  &.core { color: @red; font-weight: bold; }
+  &.blaze { color: @tower-gray; }
+  &.router { color: @light-gray; }
 }
-
-
+atom-text-editor::shadow { .api.mongo.collection {
+  color: @pink-orange;
+  font-weight: bold;
+  .keyword.control + & {
+    font-style: italic;
+    }
+ }}
 //
 //
 // 	------------------------------------------------------------------
@@ -630,11 +654,11 @@ atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-edi
 // 	------------------------------------------------------------------
 // 	Linters
 //
-.sublimelinter.mark.warning {
+.linter.mark.warning {
   color: #DDB700;
 }
 
-.sublimelinter.mark.error {
+.linter.mark.error {
   color: #D02000;
 }
 
@@ -642,237 +666,14 @@ atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-edi
   color: #33333;
 }
 
-.sublimelinter.mark.warning {
+.linter.mark.warning {
   color: #DDB700;
 }
 
-.sublimelinter.gutter-mark {
+.linter.gutter-mark {
   color: #FFFFFF;
 }
 
-.sublimelinter.mark.error {
+.linter.mark.error {
   color: #D02000;
-}
-
-
-
-
-
-/**
- * Generated
- */
-
-@offset: 5%;
-@offset2: 90;
-@base-color: hsl(267, 25%, 76%); //hsl(267, 75%, 56%)
-@primary-color: contrast(@syntax-background-color, #222, #f8f8f8);
-
-/**
-* extracted color definition values from abse color
-* @type {color}
-*/
-@base-hue: hue(@base-color);
-@base-saturation: saturation(@base-color);
-@base-lightness: lightness(@base-color);
-@base-hsvhue: hsvhue(@base-color);
-@base-red: red(@base-color);
-@base-green: green(@base-color);
-@base-blue: blue(@base-color);
-@base-alpha: alpha(@base-color);
-@base-luma: luma(@base-color);
-@base-luminance: luminance(@base-color);
-
-:host .source.jsnope {
-	& .terminator {
-	  color: spin(saturate(screen(@base-color, #00ffff), @offset),  @offset2);
-	}
-	& .terminator .terminator {
-	  color: spin(desaturate(screen(@base-color, #00ffff), -@offset), -@offset2);
-	}
-	& .statement {
-	  color: spin(lighten(overlay(@base-color, #ff00ff), @offset),  @offset2);
-	}
-	& .statement .storage {
-	  color: spin(darken(overlay(@base-color, #ff00ff), -@offset), -@offset2);
-	}
-	& .period {
-	  color: spin(spin(softlight(@base-color, #ffff00), @offset),  @offset2);
-	}
-	& .period .support {
-	  color: spin(saturate(softlight(@base-color, #ffff00), -@offset), -@offset2);
-	}
-	& .function {
-	  color: spin(desaturate(difference(@base-color, #ff0000), @offset),  @offset2);
-	}
-	& .function .meta {
-	  color: spin(lighten(difference(@base-color, #ff0000), -@offset), -@offset2);
-	}
-	& .storage {
-	  color: spin(darken(exclusion(@base-color, #008000), @offset),  @offset2);
-	}
-	& .storage .meta {
-	  color: spin(spin(exclusion(@base-color, #008000), -@offset), -@offset2);
-	}
-	& .type {
-	  color: spin(saturate(average(@base-color, #0000ff), @offset),  @offset2);
-	}
-	& .type .entity {
-	  color: spin(desaturate(average(@base-color, #0000ff), -@offset), -@offset2);
-	}
-	& .paramter {
-	  color: spin(lighten(negation(@base-color, #00ffff), @offset),  @offset2);
-	}
-	& .paramter .keyword {
-	  color: spin(darken(negation(@base-color, #00ffff), -@offset), -@offset2);
-	}
-	& .end {
-	  color: spin(spin(multiply(@base-color, #ff00ff), @offset),  @offset2);
-	}
-	& .end .punctuation {
-	  color: spin(saturate(multiply(@base-color, #ff00ff), -@offset), -@offset2);
-	}
-	& .modifier {
-	  color: spin(desaturate(screen(@base-color, #ffff00), @offset),  @offset2);
-	}
-	& .modifier .string {
-	  color: spin(lighten(screen(@base-color, #ffff00), -@offset), -@offset2);
-	}
-	& .operator {
-	  color: spin(darken(overlay(@base-color, #ff0000), @offset),  @offset2);
-	}
-	& .operator .constant {
-	  color: spin(spin(overlay(@base-color, #ff0000), -@offset), -@offset2);
-	}
-	& .square {
-	  color: spin(saturate(softlight(@base-color, #008000), @offset),  @offset2);
-	}
-	& .square .language {
-	  color: spin(desaturate(softlight(@base-color, #008000), -@offset), -@offset2);
-	}
-	& .null {
-	  color: spin(lighten(difference(@base-color, #0000ff), @offset),  @offset2);
-	}
-	& .null .delimiter {
-	  color: spin(darken(difference(@base-color, #0000ff), -@offset), -@offset2);
-	}
-	& .numeric {
-	  color: spin(spin(exclusion(@base-color, #00ffff), @offset),  @offset2);
-	}
-	& .numeric .terminator {
-	  color: spin(saturate(exclusion(@base-color, #00ffff), -@offset), -@offset2);
-	}
-	& .constant {
-	  color: spin(desaturate(average(@base-color, #ff00ff), @offset),  @offset2);
-	}
-	& .constant .storage {
-	  color: spin(lighten(average(@base-color, #ff00ff), -@offset), -@offset2);
-	}
-	& .language {
-	  color: spin(darken(negation(@base-color, #ffff00), @offset),  @offset2);
-	}
-	& .language .support {
-	  color: spin(spin(negation(@base-color, #ffff00), -@offset), -@offset2);
-	}
-	& .boolean {
-	  color: spin(saturate(multiply(@base-color, #ff0000), @offset),  @offset2);
-	}
-	& .boolean .meta {
-	  color: spin(desaturate(multiply(@base-color, #ff0000), -@offset), -@offset2);
-	}
-	& .regexp {
-	  color: spin(lighten(screen(@base-color, #008000), @offset),  @offset2);
-	}
-	& .regexp .meta {
-	  color: spin(darken(screen(@base-color, #008000), -@offset), -@offset2);
-	}
-	& .object {
-	  color: spin(spin(overlay(@base-color, #0000ff), @offset),  @offset2);
-	}
-	& .object .entity {
-	  color: spin(saturate(overlay(@base-color, #0000ff), -@offset), -@offset2);
-	}
-	& .comma {
-	  color: spin(desaturate(softlight(@base-color, #00ffff), @offset),  @offset2);
-	}
-	& .comma .keyword {
-	  color: spin(lighten(softlight(@base-color, #00ffff), -@offset), -@offset2);
-	}
-	& .characterclass {
-	  color: spin(darken(difference(@base-color, #ff00ff), @offset),  @offset2);
-	}
-	& .characterclass .punctuation {
-	  color: spin(spin(difference(@base-color, #ff00ff), -@offset), -@offset2);
-	}
-	& .definition {
-	  color: spin(saturate(exclusion(@base-color, #ffff00), @offset),  @offset2);
-	}
-	& .definition .string {
-	  color: spin(desaturate(exclusion(@base-color, #ffff00), -@offset), -@offset2);
-	}
-	& .punctuation {
-	  color: spin(lighten(average(@base-color, #ff0000), @offset),  @offset2);
-	}
-	& .punctuation .constant {
-	  color: spin(darken(average(@base-color, #ff0000), -@offset), -@offset2);
-	}
-	& .dom {
-	  color: spin(spin(negation(@base-color, #008000), @offset),  @offset2);
-	}
-	& .dom .language {
-	  color: spin(saturate(negation(@base-color, #008000), -@offset), -@offset2);
-	}
-	& .undefined {
-	  color: spin(desaturate(multiply(@base-color, #0000ff), @offset),  @offset2);
-	}
-	& .undefined .delimiter {
-	  color: spin(lighten(multiply(@base-color, #0000ff), -@offset), -@offset2);
-	}
-	& .method {
-	  color: spin(darken(screen(@base-color, #00ffff), @offset),  @offset2);
-	}
-	& .method .terminator {
-	  color: spin(spin(screen(@base-color, #00ffff), -@offset), -@offset2);
-	}
-	& .delimiter {
-	  color: spin(saturate(overlay(@base-color, #ff00ff), @offset),  @offset2);
-	}
-	& .delimiter .storage {
-	  color: spin(desaturate(overlay(@base-color, #ff00ff), -@offset), -@offset2);
-	}
-	& .punctuation {
-	  color: spin(lighten(softlight(@base-color, #ffff00), @offset),  @offset2);
-	}
-	& .punctuation .support {
-	  color: spin(darken(softlight(@base-color, #ffff00), -@offset), -@offset2);
-	}
-	& .quoted {
-	  color: spin(spin(difference(@base-color, #ff0000), @offset),  @offset2);
-	}
-	& .quoted .meta {
-	  color: spin(saturate(difference(@base-color, #ff0000), -@offset), -@offset2);
-	}
-	& .single {
-	  color: spin(desaturate(exclusion(@base-color, #008000), @offset),  @offset2);
-	}
-	& .single .meta {
-	  color: spin(lighten(exclusion(@base-color, #008000), -@offset), -@offset2);
-	}
-	& .round {
-	  color: spin(darken(average(@base-color, #0000ff), @offset),  @offset2);
-	}
-	& .round .entity {
-	  color: spin(spin(average(@base-color, #0000ff), -@offset), -@offset2);
-	}
-	& .brace {
-	  color: spin(darken(negation(@base-color, #00ffff), @offset),  @offset2);
-	}
-	& .brace .keyword {
-	  color: spin(darken(negation(@base-color, #00ffff), -@offset), -@offset2);
-	}
-	& .curly {
-	  color: spin(spin(multiply(@base-color, #ff00ff), @offset),  @offset2);
-	}
-	& .curly .punctuation {
-	  color: spin(spin(multiply(@base-color, #ff00ff), -@offset), -@offset2);
-	}
 }

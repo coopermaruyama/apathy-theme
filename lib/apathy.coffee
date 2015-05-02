@@ -17,6 +17,11 @@ class Apathy
       default: 'None'
       description: "If significant changes are made, the previous version(s) will be available for you here, as well as some alternate styles"
       enum: ['None', 'v0.2.0']
+    altFont:
+      type: 'string'
+      title: 'Select Font'
+      default: 'Source Code Pro'
+      enum: ['Source Code Pro', 'Inconsolata']
   activate: ->
     @disposables = new CompositeDisposable
     @packageName = require('../package.json').name
@@ -24,6 +29,8 @@ class Apathy
       #{@packageName}.enableTreeViewStyles
     """, => @setTreeViewBackground()
     @disposables.add atom.config.observe "#{@packageName}.altStyle", => @doAltStyle()
+    @disposables.add atom.config.observe "#{@packageName}.altFont", =>
+      @doAltFont()
 
   setTreeViewBackground: ->
     isEnabled = atom.config.get "#{@packageName}.enableTreeViewStyles"
@@ -51,6 +58,13 @@ class Apathy
       # If unsuccessfull enable the default theme.
       @activeStyleSheet?.dispose()
       console.debug 'setting default altStyle'
+  
+  doAltFont: ->
+    @renderedFontStyle?.dispose()
+    selectedFont = atom.config.get "#{@packageName}.altFont"
+    unless selectedFont is atom.config.getDefault "#{@packageName}.altFont"
+      altFontStylePath = "#{__dirname}/../styles/#{@getNormalizedName(selectedFont)}.less"
+      @renderedFontStyle = @applyStylesheet altFontStylePath
  
   getStylePath: (altStyle) ->
      path.join __dirname, "..", "themes", "#{@getNormalizedName(altStyle)}.less"

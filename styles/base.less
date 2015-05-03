@@ -641,9 +641,17 @@ atom-text-editor::shadow { .api.mongo.collection {
     color: @gulf-stream;
     font-weight: bold;
   }
-  .meta.brace.round, .meta.brace.curly, .punctuation.terminator.statement {
-    font-weight: 300;
-    color: @subtle-color;
+  .punctuation.terminator.statement,
+  .meta.brace.curly + .meta.brace.round,
+  .meta.brace.curly:nth-child(-n+2) {
+    font-weight: normal;
+    color: hsl(267, 14%, 35%);
+    text-shadow: 0px -1px hsl(0, 0%, 0%);
+  }
+  .meta.brace.round,
+  .meta.brace.curly,
+  span.meta.brace.round.js:nth-child(n+4) {
+    color: hsl(260, 10%, 60%);
   }
 }
 

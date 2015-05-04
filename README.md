@@ -1,6 +1,6 @@
 # Apathy   ////  Atom Syntax Theme
 
-![Apathy main screenshot](https://s3.amazonaws.com/f.cl.ly/items/001G2H3r3c430v312k32/apathy.png)
+![Apathy main screenshot](https://s3.amazonaws.com/f.cl.ly/items/2H0w160E1T2y332e0f3G/apathy.png)
 
 My awesome syntax theme I polished over the years, ported to Atom from Sublime Text. Includes custom bundled fonts with multiple font-weights and **antialiased font smoothing** for clean rendering of text.
 

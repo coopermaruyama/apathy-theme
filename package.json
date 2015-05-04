@@ -3,7 +3,7 @@
   "theme": "syntax",
   "main": "./lib/apathy",
   "version": "1.0.3",
-  "description": "A versatile, beautiful dark I've polished over the years with lots of definitions! Includes antialiased font, tree view bg, and more",
+  "description": "The last syntax theme you'll ever download.",
   "repository": "https://github.com/coopermaruyama/apathy-theme",
   "license": "MIT",
   "engines": {

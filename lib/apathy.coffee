@@ -11,23 +11,36 @@ class Apathy
       type: 'boolean'
       default: false
       order: 1
+    enableTreeViewBorder:
+      title: 'Enable tree view border'
+      description: 'Makes it really easy to discern nesting'
+      type: 'boolean'
+      default: false
+      order: 2
     altStyle:
       type: 'string'
       title: 'Previous & Alternate color schemes'
       default: 'None'
       description: "If significant changes are made, the previous version(s) will be available for you here, as well as some alternate styles"
       enum: ['None', 'v0.2.0']
+      order: 4
     altFont:
       type: 'string'
       title: 'Select Font'
       default: 'Source Code Pro'
       enum: ['Source Code Pro', 'Inconsolata']
+      order: 3
   activate: ->
     @disposables = new CompositeDisposable
     @packageName = require('../package.json').name
     @disposables.add atom.config.observe """
       #{@packageName}.enableTreeViewStyles
     """, => @setTreeViewBackground()
+    
+    @disposables.add atom.config.observe """
+      #{@packageName}.enableTreeViewBorder
+    """, => @setTreeViewBorder()
+    
     @disposables.add atom.config.observe "#{@packageName}.altStyle", => @doAltStyle()
     @disposables.add atom.config.observe "#{@packageName}.altFont", =>
       @doAltFont()
@@ -39,6 +52,14 @@ class Apathy
       @activeTreeStyle = @applyStylesheet treeViewStylePath
     else
       @activeTreeStyle?.dispose()
+  
+  setTreeViewBorder: ->
+    isEnabled = atom.config.get "#{@packageName}.enableTreeViewBorder"
+    treeViewBorderPath = "#{__dirname}/../styles/tree-view-border.less"
+    if isEnabled
+      @activeTreeBorder = @applyStylesheet treeViewBorderPath
+    else
+      @activeTreeBorder?.dispose()
       
 
   deactivate: ->

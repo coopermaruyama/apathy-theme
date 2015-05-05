@@ -14,9 +14,7 @@
     "purple",
     "meteor",
     "jasmine",
-    "javascript",
-    "custom font",
-    "custom background image"
+    "background image"
   ],
   "dependencies": {
     "atom-space-pen-views": "^2.0.0"

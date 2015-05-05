@@ -1,5 +1,7 @@
 # Apathy   ////  Atom Syntax Theme
 
+[![Join the chat at https://gitter.im/coopermaruyama/apathy-theme](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/coopermaruyama/apathy-theme?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ![Apathy main screenshot](https://s3.amazonaws.com/f.cl.ly/items/2H0w160E1T2y332e0f3G/apathy.png)
 
 My awesome syntax theme I polished over the years, ported to Atom from Sublime Text. Includes custom bundled fonts with multiple font-weights and **antialiased font smoothing** for clean rendering of text.

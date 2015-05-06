@@ -1,12 +1,12 @@
 .tree-view {
 	overflow-y: auto;
   padding-right: 0;
- 
+
 	.selected::before {background: none !important;}
-   .selected > * {
+   .selected > *:first-child {
      text-shadow: -8px 0px 27px hsla(48, 48%, 94%, 0.6), 10px 0px 27px hsl(48, 75%, 94%),10px 0px 27px hsl(48, 75%, 94%),47px 0px 19px hsla(48, 75%, 94%, 0.3);
    }
- 
+
 	li.expanded::after {
 		display: block;
 		width: 100%;
@@ -18,8 +18,9 @@
     border: 2px groove hsla(260, 30%, 23%, 0.9);
     width: 100%;
     border-right: none;
+    border-radius: 10px;
 	}
- 
+
 	li {
     clear: both;
     padding: 0px 10px !important;

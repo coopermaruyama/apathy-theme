@@ -655,7 +655,35 @@ atom-text-editor::shadow { .api.mongo.collection {
   }
 }
 
-
+//
+//
+// -------------------------------------------------------------------
+// Fallback
+//
+atom-text-editor, :host {
+  .line {
+    > .xml {
+      color: hsl(289, 33%, 95%);
+      .entity,
+      .entity.name.tag {
+        font-weight: bold;
+        color:  average(lighten(@light-gray,20%),@pink-orange);
+        -outline-color: lighten(@bright-ube, 10%);
+      }
+      .punctuation {
+        color: @pink-orange;
+        font-weight: 700;
+      }
+      .attribute-name {
+        color: @sulu;
+      }
+      .string,.quoted,.single,.double {
+        && {color: @sunrise;}
+        color: @sunrise;
+      }
+    }
+  }
+}
 
 //
 //

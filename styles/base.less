@@ -184,7 +184,7 @@ atom-text-editor::shadow .find-result .region {
 	  font-weight: normal;
 	  color: @tower-gray;
 	}
-	
+
 }
 
 
@@ -215,6 +215,7 @@ atom-text-editor::shadow .find-result .region {
 }
 
 .entity {
+  color: @orange;
 	&.name.class {
 	  text-decoration: underline;
 	  color: #ff5d38;
@@ -392,7 +393,7 @@ atom-text-editor::shadow .find-result .region {
     .keyword {
       color: @red;
       text-shadow: 0 0 1px black;
-      & + span:not(.string):not(.brace) {
+      & + span:not(.string):not(.brace):not(.terminator):not(.operator) {
         color: @blue;
         font-style: normal;
         font-weight: bold;

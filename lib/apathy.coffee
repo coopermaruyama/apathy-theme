@@ -83,7 +83,7 @@ class Apathy
   doAltFont: ->
     @renderedFontStyle?.dispose()
     selectedFont = atom.config.get "#{@packageName}.altFont"
-    unless selectedFont is atom.config.getDefault "#{@packageName}.altFont"
+    unless selectedFont is atom.config.get "#{@packageName}.altFont", {excludeSources: [atom.config.getUserConfigPath()]}
       altFontStylePath = "#{__dirname}/../styles/#{@getNormalizedName(selectedFont)}.less"
       @renderedFontStyle = @applyStylesheet altFontStylePath
  
@@ -99,7 +99,7 @@ class Apathy
     atom.styles.addStyleSheet source, sourcePath: sourcePath, priority: 1, context: 'atom-text-editor'
 
   noAltSyleSelected: ->
-    @selectedAltStyle() is atom.config.getDefault "#{@packageName}.altStyle"
+    @selectedAltStyle() is atom.config.get "#{@packageName}.altStyle", {excludeSources: [atom.config.getUserConfigPath()]}
     
   selectedAltStyle: ->
     atom.config.get "#{@packageName}.altStyle"

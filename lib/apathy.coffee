@@ -44,6 +44,17 @@ class Apathy
     @disposables.add atom.config.observe "#{@packageName}.altStyle", => @doAltStyle()
     @disposables.add atom.config.observe "#{@packageName}.altFont", =>
       @doAltFont()
+      
+    # ------------------------------------------------
+    #  Workaround for reload issues w/ antialiased font
+    @tempDisposables = new CompositeDisposable
+    paneItems = atom.workspace.getPaneItems()
+    for paneItem in paneItems
+      @tempDisposables.add paneItem.onDidChangeCursorPosition =>
+        console.log "changed pane"
+        atom.workspaceView.eachEditorView (editor) =>
+          atom.views.getView(editor).component.linesComponent.remeasureCharacterWidths()
+        @tempDisposables?.dispose()
 
   setTreeViewBackground: ->
     isEnabled = atom.config.get "#{@packageName}.enableTreeViewStyles"

@@ -120,7 +120,7 @@ class Apathy
     "#{name}"
       .replace ' ', '-'
       .replace /\./g, ''
-      .replace /\b\w\./g, (character) -> character.toLowerCase()
+      .replace /\b\w/g, (character) -> character.toLowerCase()
 
   setThemeConfig: (altStyle) ->
     atom.config.set "#{@packageName}.altStyle", altStyle

@@ -1,0 +1,32 @@
+//
+//
+//  --------------------------------------------------------------------
+// 	Jasmine
+//
+.source.spec.js {
+  color: @white;
+  .support.class.js {
+    color: @flamingo;
+    font-weight: 700;
+  }
+  string.quoted {
+    color: @dune;
+    font-weight: 300;
+  }
+  .storage.type.function {
+    color: @gulf-stream;
+    font-weight: bold;
+  }
+  .punctuation.terminator.statement,
+  .meta.brace.curly + .meta.brace.round,
+  .meta.brace.curly:nth-child(-n+2) {
+    font-weight: normal;
+    color: hsl(267, 14%, 35%);
+    text-shadow: 0px -1px hsl(0, 0%, 0%);
+  }
+  .meta.brace.round,
+  .meta.brace.curly,
+  span.meta.brace.round.js:nth-child(n+4) {
+    color: hsl(260, 10%, 60%);
+  }
+}

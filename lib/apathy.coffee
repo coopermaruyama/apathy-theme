@@ -21,7 +21,8 @@ class Apathy
       type: 'string'
       title: 'Previous & Alternate color schemes'
       default: 'None'
-      description: "If significant changes are made, the previous version(s) will be available for you here, as well as some alternate styles"
+      description: "If significant changes are made, the previous version(s)
+        will be available for you here, as well as some alternate styles"
       enum: ['None', 'v0.2.0']
       order: 4
     altFont:
@@ -53,8 +54,9 @@ class Apathy
       if paneItem.constructor.name is "TextEditor"
         @tempDisposables.add paneItem.onDidChangeCursorPosition =>
           console.log "changed pane"
-          atom.workspaceView.eachEditorView (editor) =>
-            atom.views.getView(editor).component.linesComponent.remeasureCharacterWidths()
+          atom.workspaceView.eachEditorView (editor) ->
+            atom.views.getView(editor)
+              .component.linesComponent.remeasureCharacterWidths()
           @tempDisposables?.dispose()
 
   setTreeViewBackground: ->

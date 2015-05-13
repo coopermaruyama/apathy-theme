@@ -1,0 +1,93 @@
+
+//
+//
+// 	------------------------------------------------------------------
+// 	Javascript
+//
+@js-foreground-color: hsl(60, 10%, 90%);
+@js-alt-color: multiply(@tower-gray, @js-foreground-color);
+@js-desaturated-alt-color: desaturate(@js-alt-color,20%);
+@js-parens-active-color: darken(@js-desaturated-alt-color, 10%);
+:host {
+  .source.js {
+    color: @js-foreground-color;
+    -webkit-font-feature-settings: "swsh";
+    .meta.brace {
+      color: hsl(240, 15%, 70%);
+      font-weight: 700;
+      &.curly,
+      &.round {
+        &:first-of-type,
+        & + &,
+        .leading-whitespace ~ &:nth-last-child(1):not(.round),
+        &:only-child:nth-last-child(2):not(.round),
+        .punctuation.terminator.statement {
+          color: @gray-blend;
+        }
+      }
+    }
+    .support {
+      &.class {
+        color: @sulu;
+      }
+    }
+    .keyword {
+      color: @red;
+      text-shadow: 0 0 1px black;
+      & + span:not(.string):not(.brace):not(.terminator):not(.operator) {
+        color: @blue;
+        font-style: normal;
+        font-weight: bold;
+        -webkit-text-stroke-width: 0.02em;
+      }
+      &.operator {
+        color: @yellow;
+        &:not(:first-child):not(:last-child) {
+          color: @raspberry;
+        }
+      }
+    }
+    .entity.name.function {
+      color: @white;
+      font-weight: 700;
+      &:nth-child(4n+1) {
+        color: spin(saturate(@white, 30%), 40);
+      }
+    }
+    .string.begin + .entity.name.function,
+    .string.begin:first-child,
+    .leading-whitespace + .string.begin,
+    .entity.name.function + .string.end {
+      color: @pink-orange;
+    }
+    .meta.brace.round + .string.quoted * {
+      color: @string-color;
+    }
+    .storage.type.function {
+      color: @scooter;
+    }
+    .meta.function {
+      > .parameters.begin,
+      > parameters.end {
+        color: @tower-gray;
+      }
+    }
+    .meta.delimiter.period {
+      color: @yellow;
+      font-weight: 700;
+    }
+    .function {
+      .meta& {
+        color: @sulu;
+      }
+    }
+    .variable.parameter {
+      font-weight: normal;
+      color: @bright-ube;
+    }
+    .leading-whitespace ~ .keyword.operator {
+      color: spin(saturate(darken(@js-foreground-color, 30%),70%), 330);
+      // font-weight: normal;
+    }
+  }
+}

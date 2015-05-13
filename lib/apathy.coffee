@@ -78,18 +78,15 @@ class Apathy
    @disposables.dispose()
 
   doAltStyle: ->
+    @activeStyleSheet?.dispose()
     # No need to enable the theme if it is already active.
-    if @noAltSyleSelected()
-        @activeStyleSheet?.dispose()
-        return
+    return if @noAltSyleSelected()
     try
       # Try to enable the requested theme.
-      @activeStyleSheet?.dispose()
       @activeStyleSheet = @applyStylesheet @getStylePath(@selectedAltStyle())
       @activeAltStyle = @selectedAltStyle
     catch
       # If unsuccessfull enable the default theme.
-      @activeStyleSheet?.dispose()
       console.debug 'setting default altStyle'
   
   doAltFont: ->

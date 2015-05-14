@@ -3,9 +3,76 @@
 // 	------------------------------------------------------------------
 // 	Jade
 //
-.constant.id.tag.jade {
-  color: @flamingo;
-}
-.source.jade .tag.jade .complete_tag.jade .constant.language.js {
-  color: #8ea5a0;
+[data-grammar~="jade"], .source.jade {
+  color: @white;
+  .constant {
+    @constant-color: @flamingo;
+    color: @white;
+    &.id.tag {
+      color:  average(@sulu, @baby-blue);
+      font-weight: normal;
+    }
+  }
+  .meta.jade {
+    &.tag.attribute {
+      // div(-->class<--="myClass")
+      > &.attribute-name {
+        color: @gulf-stream;
+        font-weight: bold;
+      }
+    }
+    &.tag.any:last-child {
+      > .entity.tag.name:only-child {
+        color: @sulu;
+      }
+    }
+    &.tag.any + &.tag.id {
+      color: @orange;
+    }
+    &.tag.any + &.tag.class {
+      // color: multiply(@orange, @baby-blue);
+    }
+    &.control.flow {
+      color:@sulu;
+      font-weight: normal;
+      // -webkit-text-stroke: .4px @sulu;
+     > .storage.type.function.jade {
+      color:@red;
+      font-weight: bold;
+     }
+     > * {
+       color: @white;
+      //  -webkit-text-stroke: 0 transparent;
+       &.leading-whitespace,
+       &.invisible-character,
+       &.indent-guide {
+         color: @syntax-indent-guide-color;
+       }
+     }
+    }
+  }
+  .entity {
+    &.other.attribute-name {
+      color: @orange;
+      font-weight: bold;
+    }
+    // div, a, span, etc
+    &.tag.name {
+      // color: lighten(@orange, 15%);
+      color: @orange;
+      font-weight:normal;
+    }
+    // unknown tags (spacebars kws?)
+    &.tag.any {
+      color: @sulu;
+      font-weight:normal;
+    }
+  }
+  .tag.jade {
+    .complete_tag.jade {
+      > .constant.language.js {
+        color: hsl(224, 65%, 83%);
+      }
+    }
+  }
 }

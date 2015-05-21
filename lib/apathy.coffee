@@ -54,9 +54,8 @@ class Apathy
       if paneItem.constructor.name is "TextEditor"
         @tempDisposables.add paneItem.onDidChangeCursorPosition =>
           console.log "changed pane"
-          atom.workspaceView.eachEditorView (editor) ->
-            atom.views.getView(editor)
-              .component.linesComponent.remeasureCharacterWidths()
+          atom.views.getView(paneItem)
+            .component.linesComponent.remeasureCharacterWidths()
           @tempDisposables?.dispose()
 
   setTreeViewBackground: ->

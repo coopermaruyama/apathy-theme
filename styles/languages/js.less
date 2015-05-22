@@ -54,14 +54,35 @@
         color: spin(saturate(@white, 30%), 40);
       }
     }
+    //
+    // ------------------------------------------------------------------------
+    // Strings
+    @string-sulu: multiply(@string-color, @sulu);
+    .string.quoted.single {
+      color: saturate(lighten(@string-sulu, 10%), 10%);
+    }
+    .string.quoted.double {
+      color: saturate(lighten(@string-sulu, 10%), 10%);
+    }
     .string.begin + .entity.name.function,
     .string.begin:first-child,
+    .string.end:last-child,
     .leading-whitespace + .string.begin,
     .entity.name.function + .string.end {
-      color: @pink-orange;
+      color: saturate(lighten(@string-sulu, 10%), 10%);
     }
-    .meta.brace.round + .string.quoted * {
-      color: @string-color;
+    .string.quoted.single {
+      &,
+      & > .string.begin,
+      & > .string.end {
+        color: saturate(lighten(@string-sulu, 10%), 10%);
+      }
+    }
+    .meta.brace.round + .string.quoted.single * {
+      color: saturate(lighten(@string-sulu, 10%), 10%);
+    }
+    .meta.brace.round + .string.quoted.double * {
+      color: saturate(lighten(@string-sulu, 10%), 10%);
     }
     .storage.type.function {
       color: @scooter;

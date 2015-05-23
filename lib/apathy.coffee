@@ -76,7 +76,9 @@ class Apathy
       
 
   deactivate: ->
-   @disposables.dispose()
+    @disposables?.dispose()
+    @activeTreeStyle?.dispose()
+    @activeTreeBorder?.dispose()
 
   doAltStyle: ->
     @activeStyleSheet?.dispose()

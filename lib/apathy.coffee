@@ -1,22 +1,58 @@
 fs = require 'fs'
 path = require 'path'
-{CompositeDisposable} = require 'atom'
+{CompositeDisposable, Color} = require 'atom'
 
 class Apathy
 
   config:
+    altFont:
+      type: 'string'
+      title: 'Select Font'
+      default: 'Source Code Pro'
+      enum: ['Source Code Pro', 'Inconsolata']
+      order: 1
+    bgColorDescription:
+      type: 'boolean'
+      title: 'Override Core Colors (NOTE: READ THE NOTES BELOW BEFORE TOUCHING THESE!!)'
+      description: '(checkbox does nothing) Make sure to reload atom (ctrl+alt+cmd+L) after changing a color!'
+      order: 2
+      default: false
+    customSyntaxBgColor:
+      type: 'color'
+      title: 'Override syntax background color'
+      description: 'Changes the background color your text lays on.'
+      default: 'hsl(263, 20%, 9%)'
+      order: 3
+    customInactiveOverlayColor:
+      type: 'color'
+      title: 'Custom overlay background color'
+      description: 'Changes overall color of everything except tabs, tree-view, and the bottom bar.'
+      default: 'hsla(261, 34%, 15%, 0.9)'
+      order: 4
+    customUnderlayerBgColor:
+      type: 'color'
+      title: 'Custom under-layer background color'
+      description: 'Dim color for inactive panes, under text.'
+      default: 'hsl(258, 6%, 6%)'
+      order: 5
+    customInactivePaneBgColor:
+      type: 'color'
+      title: 'Custom inactive pane background color'
+      description: 'Dim color for inactive panes, above text.'
+      default: 'hsl(200, 5%, 11%)'
+      order: 6
     enableTreeViewStyles:
       title: 'Enable tree view background image'
       description: 'Adds a background image to your tree view'
       type: 'boolean'
       default: false
-      order: 1
+      order: 7
     enableTreeViewBorder:
       title: 'Enable tree view border'
       description: 'Makes it really easy to discern nesting'
       type: 'boolean'
       default: false
-      order: 2
+      order: 8
     altStyle:
       type: 'string'
       title: 'Previous & Alternate color schemes'
@@ -24,28 +60,23 @@ class Apathy
       description: "If significant changes are made, the previous version(s)
         will be available for you here, as well as some alternate styles"
       enum: ['None', 'v0.2.0']
-      order: 4
-    altFont:
-      type: 'string'
-      title: 'Select Font'
-      default: 'Source Code Pro'
-      enum: ['Source Code Pro', 'Inconsolata']
-      order: 3
+      order: 9
+
   activate: ->
     @disposables = new CompositeDisposable
     @packageName = require('../package.json').name
     @disposables.add atom.config.observe """
       #{@packageName}.enableTreeViewStyles
     """, => @setTreeViewBackground()
-    
+
     @disposables.add atom.config.observe """
       #{@packageName}.enableTreeViewBorder
     """, => @setTreeViewBorder()
-    
+
     @disposables.add atom.config.observe "#{@packageName}.altStyle", => @doAltStyle()
     @disposables.add atom.config.observe "#{@packageName}.altFont", =>
       @doAltFont()
-      
+
     # ------------------------------------------------
     #  Workaround for reload issues w/ antialiased font
     @tempDisposables = new CompositeDisposable
@@ -53,10 +84,34 @@ class Apathy
     for paneItem in paneItems
       if paneItem.constructor.name is "TextEditor"
         @tempDisposables.add paneItem.onDidChangeCursorPosition =>
-          console.log "changed pane"
           atom.views?.getView?(paneItem)
             .component?.linesComponent?.remeasureCharacterWidths?()
           @tempDisposables?.dispose()
+    # -----------------------------------------------
+    # Apply custom overrides
+    customStylePath = "#{__dirname}/../styles/custom.less"
+    @writeConfig customStylePath
+    # watch for changes
+    customColors = ["customSyntaxBgColor", "customUnderlayerBgColor", "customInactivePaneBgColor", "customInactiveOverlayColor"]
+    for color in customColors
+      @disposables.add atom.config.observe "#{@packageName}.#{color}", =>
+        @writeConfig customStylePath
+
+
+  generateConfig: ->
+    syntaxBgColor = atom.config.get( "#{@packageName}.customSyntaxBgColor").toRGBAString()
+    underlayerBgColor = atom.config.get( "#{@packageName}.customUnderlayerBgColor").toRGBAString()
+    inactivePaneBgColor = atom.config.get( "#{@packageName}.customInactivePaneBgColor").toRGBAString()
+    inactiveOverlayColor = atom.config.get( "#{@packageName}.customInactiveOverlayColor").toRGBAString()
+    theConfig = """
+      @apathy-background-color: #{syntaxBgColor} !important;
+      @apathy-underlayer-bg-color: #{underlayerBgColor} !important;
+      @apathy-inactive-bg-color: #{inactivePaneBgColor} !important;
+      @apathy-inactive-overlay-color: #{inactiveOverlayColor} !important;
+    """
+    return theConfig
+  writeConfig: (path) ->
+    fs.writeFileSync path, @generateConfig()
 
   setTreeViewBackground: ->
     isEnabled = atom.config.get "#{@packageName}.enableTreeViewStyles"
@@ -65,7 +120,7 @@ class Apathy
       @activeTreeStyle = @applyStylesheet treeViewStylePath
     else
       @activeTreeStyle?.dispose()
-  
+
   setTreeViewBorder: ->
     isEnabled = atom.config.get "#{@packageName}.enableTreeViewBorder"
     treeViewBorderPath = "#{__dirname}/../styles/tree-view-border.less"
@@ -73,7 +128,7 @@ class Apathy
       @activeTreeBorder = @applyStylesheet treeViewBorderPath
     else
       @activeTreeBorder?.dispose()
-      
+
 
   deactivate: ->
     @disposables?.dispose()
@@ -91,28 +146,28 @@ class Apathy
     catch
       # If unsuccessfull enable the default theme.
       console.debug 'setting default altStyle'
-  
+
   doAltFont: ->
     @renderedFontStyle?.dispose()
     selectedFont = atom.config.get "#{@packageName}.altFont"
     unless selectedFont is atom.config.get "#{@packageName}.altFont", {excludeSources: [atom.config.getUserConfigPath()]}
       altFontStylePath = "#{__dirname}/../styles/#{@getNormalizedName(selectedFont)}.less"
       @renderedFontStyle = @applyStylesheet altFontStylePath
- 
+
   getStylePath: (altStyle) ->
      path.join __dirname, "..", "themes", "#{@getNormalizedName(altStyle)}.less"
 
   isActiveStyle: (altStyle) ->
      altStyle is @activeAltStyle
 
-  applyStylesheet: (sourcePath) ->
+  applyStylesheet: (sourcePath, preliminaryContent = "") ->
     stylesheetContent = fs.readFileSync sourcePath, 'utf8'
-    source = atom.themes.lessCache.cssForFile sourcePath, stylesheetContent
-    atom.styles.addStyleSheet source, sourcePath: sourcePath, priority: 1, context: 'atom-text-editor'
+    source = atom.themes.lessCache.cssForFile sourcePath, [preliminaryContent, stylesheetContent].join '\n'
+    atom.styles.addStyleSheet source, sourcePath: sourcePath, priority: 0, context: 'atom-text-editor'
 
   noAltSyleSelected: ->
     @selectedAltStyle() is atom.config.get "#{@packageName}.altStyle", {excludeSources: [atom.config.getUserConfigPath()]}
-    
+
   selectedAltStyle: ->
     atom.config.get "#{@packageName}.altStyle"
 

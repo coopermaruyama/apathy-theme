@@ -5,11 +5,17 @@
 @syntax-text-color: rgba(237, 224, 206, 0.91);
 @syntax-cursor-color: #ff1018;
 @syntax-selection-color: hsla(290, 30%, 61%, 0.28);
-@syntax-background-color: hsl(263, 20%, 9%);
-@syntax-darker-color: hsla(250, 9%, 7%, 1);
-@syntax-underlayer-bg-color: hsl(258, 6%, 6%);
-@syntax-inactive-bg-color: hsl(200, 5%, 11%);
 
+@apathy-background-color: hsl(263, 20%, 9%);
+@apathy-underlayer-bg-color: hsl(258, 6%, 6%);
+@apathy-inactive-bg-color: hsl(200, 5%, 11%);
+@apathy-inactive-overlay-color: hsla(261, 34%, 15%, 0.9);
+
+@syntax-background-color: @apathy-background-color;
+@syntax-underlayer-bg-color: @apathy-underlayer-bg-color;
+@syntax-inactive-bg-color: @apathy-inactive-bg-color;
+@syntax-inactive-overlay-color: @apathy-inactive-overlay-color;
+@import "custom";
 // Guide colors
 @syntax-wrap-guide-color: #0D0A15;
 @syntax-indent-guide-color: hsl(41, 28%, 21%);

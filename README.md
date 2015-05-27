@@ -61,7 +61,8 @@ This is a pretty opinionated theme, with more emphasis on design than function, 
 ![Spacebars](https://s3.amazonaws.com/f.cl.ly/items/3J070V2h070X182c3F1R/Image%202015-05-01%20at%207.42.33%20PM.png)
 
 ### Jasmine:
-![Jasmine Screenshot](https://s3.amazonaws.com/f.cl.ly/items/221H441D1p0q3o1b452n/Image%202015-05-01%20at%207.36.58%20PM.png)
+![Jasmine
+Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2P453t1f2E250B1u2U3c/Image%202015-05-26%20at%209.46.57%20PM.png)
 
 **Note:** To get Jasmine colors to work you need to:
   1.  name your files `someFile.spec.js`

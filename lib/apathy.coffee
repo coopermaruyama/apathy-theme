@@ -1,6 +1,7 @@
 fs = require 'fs'
 path = require 'path'
 {CompositeDisposable, Color} = require 'atom'
+ApathyView = require './apathy-view'
 
 class Apathy
 
@@ -11,48 +12,60 @@ class Apathy
       default: 'Source Code Pro'
       enum: ['Source Code Pro', 'Inconsolata']
       order: 1
+    enableLeftWrapGuide:
+      type: 'boolean'
+      title: 'Enable wrap guide on left side'
+      order: 2
+      default: true
+    contentPaddingLeft:
+      type: 'integer'
+      title: 'Padding for left side of buffer in pixels'
+      description: 'Use numbers only.'
+      order: 3
+      default: 30
+      minimum: 0
     bgColorDescription:
       type: 'boolean'
       title: 'Override Core Colors (NOTE: READ THE NOTES BELOW BEFORE TOUCHING THESE!!)'
       description: '(checkbox does nothing) Make sure to reload atom (ctrl+alt+cmd+L) after changing a color!'
-      order: 2
+      order: 4
       default: false
     customSyntaxBgColor:
       type: 'color'
       title: 'Override syntax background color'
       description: 'Changes the background color your text lays on.'
       default: 'hsl(263, 20%, 9%)'
-      order: 3
+      order: 5
     customInactiveOverlayColor:
       type: 'color'
       title: 'Custom overlay background color'
       description: 'Changes overall color of everything except tabs, tree-view, and the bottom bar.'
       default: 'hsla(261, 34%, 15%, 0.9)'
-      order: 4
+      order: 6
     customUnderlayerBgColor:
       type: 'color'
       title: 'Custom under-layer background color'
       description: 'Dim color for inactive panes, under text.'
       default: 'hsl(258, 6%, 6%)'
-      order: 5
+      order: 7
     customInactivePaneBgColor:
       type: 'color'
       title: 'Custom inactive pane background color'
       description: 'Dim color for inactive panes, above text.'
       default: 'hsl(200, 5%, 11%)'
-      order: 6
+      order: 8
     enableTreeViewStyles:
       title: 'Enable tree view background image'
       description: 'Adds a background image to your tree view'
       type: 'boolean'
       default: false
-      order: 7
+      order: 9
     enableTreeViewBorder:
       title: 'Enable tree view border'
       description: 'Makes it really easy to discern nesting'
       type: 'boolean'
       default: false
-      order: 8
+      order: 10
     altStyle:
       type: 'string'
       title: 'Previous & Alternate color schemes'
@@ -60,9 +73,10 @@ class Apathy
       description: "If significant changes are made, the previous version(s)
         will be available for you here, as well as some alternate styles"
       enum: ['None', 'v0.2.0']
-      order: 9
+      order: 11
 
-  activate: ->
+  activate: (state) ->
+    @apathyView = new ApathyView state.apathyViewState
     @disposables = new CompositeDisposable
     @packageName = require('../package.json').name
     @disposables.add atom.config.observe """
@@ -134,6 +148,7 @@ class Apathy
     @disposables?.dispose()
     @activeTreeStyle?.dispose()
     @activeTreeBorder?.dispose()
+    @apathyView?.destroy()
 
   doAltStyle: ->
     @activeStyleSheet?.dispose()

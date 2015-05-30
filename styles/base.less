@@ -443,3 +443,68 @@ atom-text-editor::shadow .find-result .region {
     color: hsl(53, 51%, 42%);
   }
 }
+
+
+//
+//
+// ----------------------------------------------------------------------------
+// Apathy Semantic
+//
+// @hues: 20, 45, 73, 135, 180, 220, 300, 340;
+@hues: 0, 120, 240, 0, 120, 240, 60, 180;
+
+.generate-semantic(@n; @i: 1) when (@i =< @n) {
+  &[data-apathy-index~="@{i}"] {
+    color: hsl(extract(@hues, @i), 85%, 85%);
+    font-weight: normal;
+  }
+  .generate-semantic(@n, (@i + 1));
+}
+
+:host .source .apathy-span,
+:host .source .keyword + span:not(.string):not(.brace):not(.terminator):not(.operator) {
+  font-weight: normal;
+  // .generate-semantic(8);
+  &[data-apathy-index~="1"] {
+    text-shadow: 0px 0px 2px hsl(289, 51%, 42%),
+                 0px 0px 2px hsl(289, 51%, 42%),
+                 0px 0px 20px hsl(289, 51%, 42%),
+                 0px 0px 50px hsl(289, 51%, 42%);
+    font-weight: normal;
+  }
+  &[data-apathy-index~="2"] {
+    text-shadow: 0px 0px 2px hsl(84, 51%, 42%),
+                 0px 0px 2px hsl(84, 51%, 42%),
+                 0px 0px 20px hsl(84, 51%, 42%),
+                 0px 0px 50px hsl(84, 51%, 42%);
+    font-weight: normal;
+  }
+  &[data-apathy-index~="3"] {
+    text-shadow: 0px 0px 2px hsl(22, 51%, 42%),
+                 0px 0px 2px hsl(22, 51%, 42%),
+                 0px 0px 20px hsl(22, 51%, 42%),
+                 0px 0px 50px hsl(22, 51%, 42%);
+    font-weight: normal;
+  }
+  &[data-apathy-index~="4"] {
+    text-shadow: 0px 0px 2px hsl(3, 51%, 42%),
+                 0px 0px 2px hsl(3, 51%, 42%),
+                 0px 0px 20px hsl(3, 51%, 42%),
+                 0px 0px 50px hsl(3, 51%, 42%);
+    font-weight: normal;
+  }
+  &[data-apathy-index~="5"] {
+    text-shadow: 0px 0px 2px hsl(189, 51%, 42%),
+                 0px 0px 2px hsl(189, 51%, 42%),
+                 0px 0px 20px hsl(189, 51%, 42%),
+                 0px 0px 50px hsl(189, 51%, 42%);
+    font-weight: normal;
+  }
+  &[data-apathy-index~="6"] {
+    text-shadow: 0px 0px 2px hsl(53, 51%, 42%),
+                 0px 0px 2px hsl(53, 51%, 42%),
+                 0px 0px 20px hsl(53, 51%, 42%),
+                 0px 0px 50px hsl(53, 51%, 42%);
+    font-weight: normal;
+  }
+}

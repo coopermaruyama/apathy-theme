@@ -52,6 +52,14 @@ class ApathyView
       @textWrapObservers.add editor.onDidStopChanging =>
         editorView = atom.views.getView editor
         @wrapTextNodes editorView, '.line > .source', '<span class="apathy-span"/>'
+    # ____________________________________________________
+    # Remove semantic highlights
+    @viewDisposables.add atom.config.observe "#{@packageName}.semanticHighlighting", (isEnabled) =>
+      @forAllEditorViews (editorView) =>
+        if isEnabled
+          @wrapTextNodes editorView, '.line > .source', '<span class="apathy-span"/>'
+        else
+          @removeSemanticHighlights editorView
       
     # ____________________________________________________
     # HACK: Workaround for cursor position bug when using
@@ -137,7 +145,7 @@ class ApathyView
     # Cursor fix
     cursorLineStyles = """
       <style data-name="apathy-cursor-styles">
-        atom-text-editor /deep/ .line.cursor-line, 
+        atom-text-editor /deep/ .line.cursor-line,
         :host(.is-focused) .line.cursor-line {
           transform: translateX(-#{leftPixels}px);
           padding-left: #{leftPixels}px;
@@ -180,12 +188,14 @@ class ApathyView
   ###
   wrapTextNodes: (editorView, selector, wrapWith) ->
     @customWrappedTextNodes ?= []
+    @apathyWordTracker ?= [] # store number of times a keyword is used.
     self = this
     # FIXME Currently this doesn't happen until the 1st time the cursor
     #       moves, because jQuery.ready fires BEFORE the text has been added
     #       to the buffer. Need to get it to run just once on activation at the
     #       right time.
-    $(editorView.shadowRoot).find(selector).each ->
+    $root = $(editorView.shadowRoot)
+    $root.find(selector).each ->
       contents = $(this).contents()
       $.each contents, (i,val) ->
         if val.nodeType is 3
@@ -194,8 +204,27 @@ class ApathyView
           firstWord = match?[0]
           # wrap the text
           $wrapped = $(this).wrap wrapWith
-          $wrapped.parent().attr 'data-apathy-word', firstWord
           self.customWrappedTextNodes.push $wrapped
+          # --------------------
+          # semantic highligting
+          if atom.config.get "#{self.packageName}.semanticHighlighting"
+            # update how many times this word is used (for semantic stuff).
+            unless $.inArray(firstWord, self.apathyWordTracker) > -1
+              self.apathyWordTracker.push firstWord
+            numMatches =
+              $root.find("[data-apathy-word=#{firstWord}]").length or 1
+            # Apply to DOM
+            $wrapped.parent().attr 'data-apathy-word', firstWord
+            $root.find("[data-apathy-word=#{firstWord}]").each ->
+              $(this).attr 'data-apathy-count', numMatches
+              uniqueWordsCount = self.apathyWordTracker
+              semanticIndex = $.inArray(firstWord, self.apathyWordTracker) % 8
+              if semanticIndex > 0
+                $(this).attr 'data-apathy-index', semanticIndex
+                
+  removeSemanticHighlights: (editorView) ->
+    attrs = 'data-apathy-index data-apathy-count'
+    $(editorView.shadowRoot).find('[data-apathy-index]').removeAttr attrs
   ###*
    * Unwrap nodes wrapped by @wrapTextNodes().
    * @method unwrapTextNodes

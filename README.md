@@ -4,7 +4,10 @@
 
 ![Apathy main screenshot](https://s3.amazonaws.com/f.cl.ly/items/2H0w160E1T2y332e0f3G/apathy.png)
 
-![JS1 Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2g403i3V0w2B2K0v2G2D/Image%202015-05-01%20at%207.36.00%20PM.png)
+
+
+**Adds semantic highlighting to text that grammars leave unscoped!**
+![Semantic Screenshot](https://s3.amazonaws.com/f.cl.ly/items/0D2U261Q1D3G3z010K31/Image%202015-05-29%20at%2011.14.28%20PM.png)
 
 
 A syntax theme I polished over the years, originally in SublimeText. Includes custom bundled fonts with multiple font-weights and **antialiased font smoothing** for clean rendering of text.

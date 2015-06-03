@@ -6,29 +6,7 @@
 
 
 
-**Adds semantic highlighting to text that grammars leave unscoped!**
-![Semantic Screenshot](https://s3.amazonaws.com/f.cl.ly/items/0D2U261Q1D3G3z010K31/Image%202015-05-29%20at%2011.14.28%20PM.png)
-
-
-A syntax theme I polished over the years, originally in SublimeText. Includes custom bundled fonts with multiple font-weights and **antialiased font smoothing** for clean rendering of text.
-
-### Features:
-* Includes 'Source Code Pro' and 'Inconsolata' web font which can be changed via settings panel
-* Thorough definitions for JS/Coffeescript/Meteor developers
-* Custom tree-view background (optional)
-* Optional alternate styles
-* Customizable colors
-
-
-This is a pretty opinionated theme, with more emphasis on design than function, although for me it's the ideal for both. I am aware that not everyone has the same setup but I still want everyone to be able to get the most out of this theme, so it has a settings panel with options to configure stuff (more below).
-
-
-
-### Notes
-  - This will most likely override your current font in 'Settings'. If you don't like the font provided, you can override it in your custom stylesheet.  
-  - I **highly** recommend combining this with **[One Dark](https://github.com/atom/one-dark-ui)** - I personally think they match very well.
-  - This syntax theme styles a few things that is out of its scope (e.g. the tree view), so I wouldn't be surpised if it has issues with some UI themes.
-  - This theme includes the following font weights in case you want to use them in your user stylesheet: 300, 400, 700, 900
+A vivid syntax theme that I polished over the years. Includes custom bundled fonts with multiple font-weights, **antialiased font smoothing** for clean rendering of text, and tons of other features!
 
 
 # README before customizing colors!
@@ -43,8 +21,51 @@ This is a pretty opinionated theme, with more emphasis on design than function, 
 
 
 
+# Features
+
+### 1. _Source Code Pro_ and _Inconsolata_ Font Included:  
+
+**Source Code Pro:**  
+![Source code pro Screenshot](https://s3.amazonaws.com/f.cl.ly/items/3C0y3L400K2S0g2F132o/Image%202015-06-03%20at%202.19.53%20AM.png)
+
+**Inconsolata:**  
+![Inconsolata Screenshot](https://s3.amazonaws.com/f.cl.ly/items/0W0N2F181t2k0Z0a2M3x/Image%202015-06-03%20at%202.20.22%20AM.png)
 
 
+
+### 2. Left wrap guide & customizable padding (optional)  
+![left wrap guide ss](https://s3.amazonaws.com/f.cl.ly/items/0e3O2E2s472q1w15383y/Image%202015-06-03%20at%202.37.21%20AM.png)
+
+
+
+### 3. Semantic highlighting (Optional)
+
+Applied only to text that is grammars leave unscoped:  
+![Semantic Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2p1F2I451d3n3l0Z1M3p/Image%202015-06-03%20at%202.23.51%20AM.png)
+
+
+
+### 4. Custom tree-view background (optional)
+
+![Treeview bg](https://s3.amazonaws.com/f.cl.ly/items/1Y0g3E3G2C1t161A1i1q/treeview.png)
+
+
+
+### 5. Directory structure visual guides (optional)
+
+![Directory guides](https://s3.amazonaws.com/f.cl.ly/items/2L0z3R2K1Y1w3L3x3y2E/Image%202015-06-03%20at%202.26.45%20AM.png)
+
+
+
+Although this is meant to be an opinionated theme, I am aware that not everyone has the same setup but I still want everyone to be able to get the most out of this theme, so it has a settings panel with options to configure stuff (more below).
+
+
+
+### Notes
+  - This will most likely override your current font in 'Settings'. If you don't like the font provided, you can override it in your custom stylesheet.  
+  - This theme is meant to be combined with **[One Dark](https://github.com/atom/one-dark-ui)** - I personally think they match very well.
+  - This syntax theme styles a few things that is out of its scope (e.g. the tree view), so I wouldn't be surpised if it has issues with some UI themes.
+  - This theme includes the following font weights in case you want to use them in your user stylesheet: 300, 400, 700, 900
 
 
 ---
@@ -60,7 +81,7 @@ This is a pretty opinionated theme, with more emphasis on design than function, 
 ### MeteorJS (w/ tree view styling enabled)
 ![Meteor Screenshot](https://s3.amazonaws.com/f.cl.ly/items/3b3s200N3C151Z101X12/Image%202015-05-01%20at%207.31.18%20PM.png)
 
-### Spacebarss:
+### Spacebars:
 ![Spacebars](https://s3.amazonaws.com/f.cl.ly/items/3J070V2h070X182c3F1R/Image%202015-05-01%20at%207.42.33%20PM.png)
 
 ### Jasmine:
@@ -77,7 +98,7 @@ Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2P453t1f2E250B1u2U3c/Image%20
         "^[^.]+.js$": "source.js"
         ".spec.js$": "source.spec.js"
       ```
-  4. I've noticed that opening the settings panel for this package will mess up current settings that use regex, so try to only edit this setting via File > Open your config.
+* I've noticed that opening the settings panel for this package will mess up current settings that use regex, so try to only edit this setting via File > Open your config.
 
 ### CSS/SASS/LESS:
 ![CSS](https://s3.amazonaws.com/f.cl.ly/items/2Q1H1W2R3o2F0C2b043K/Image%202015-05-01%20at%207.41.18%20PM.png)

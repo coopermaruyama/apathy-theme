@@ -4,10 +4,7 @@
   "main": "./lib/apathy",
   "version": "1.4.3",
   "description": "The last syntax theme you'll ever download.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/coopermaruyama/apathy-theme"
-  },
+  "repository": "https://github.com/coopermaruyama/apathy-theme",
   "license": "MIT",
   "readmeFilename": "README.md",
   "engines": {

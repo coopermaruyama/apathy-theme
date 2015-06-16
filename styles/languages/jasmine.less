@@ -9,8 +9,10 @@
     color: @flamingo;
     font-weight: 700;
   }
-  string.quoted {
-    color: @dune;
+  .string.quoted.single,
+  .string.quoted.double,
+  .string.quoted{
+    color: hsl(74, 60%, 53%);
     font-weight: 300;
   }
   .storage.type.function {
@@ -22,19 +24,42 @@
     color: hsl(267, 3%, 40%);
     text-shadow: 0px -1px hsl(0, 0%, 0%);
   }
+  .meta.delimiter.period {
+    color: hsl(34, 100%, 91%);
+  }
+  .meta.brace {
+    color: @comment-color;
+  }
+  .meta.curly.brace ~ span.keyword.operator.js {
+  color: hsl(205, 11%, 59%);
+  }
+  /*-------  Braces used for blocks / callbacks  -------*/
   .meta.brace.curly + .meta.brace.round,
   .meta.brace.curly:nth-child(-n+2) {
     font-weight: normal;
-    color: hsl(267, 14%, 35%);
+    color: hsl(266, 4%, 29%);
     text-shadow: 0px -1px hsl(0, 0%, 0%);
   }
+  /*-------  Braces used in methods  -------*/
   .source + .brace.round,
-  .brace.round + .brace.round {
-    color: pink;
+  .brace.round + .brace.round,
+  .method ~ .brace.round,
+  .support.class + .brace.round {
+    color: hsl(207, 4%, 62%);
   }
-  .meta.brace.round,
-  .meta.brace.curly,
-  span.meta.brace.round.js:nth-child(n+4) {
-    /* color: hsl(260, 10%, 60%); */
+  /*-------  Operator symbols default  -------*/
+  .leading-whitespace ~ .keyword.operator {
+    color: hsl(0, 94%, 56%);
+  }
+  /*-------  object definitions  -------*/
+  // match the '=' in  var obj = {} but NOT 'else {'
+  // match even with a space in between
+  .operator:not(.control) ~ .meta.brace.curly.js,
+  //  match 2 close curlies, for defining objects on 1 line.
+  // match even with a space in between
+  .brace.curly ~ .brace.curly.js:nth-last-child(n+2),
+  // Match the closing curly on multi-line object definitions
+  > .leading-whitespace + .meta.brace.curly:nth-last-child(2) {// only match if followed by semicolon
+    color: hsl(36, 5%, 53%);
   }
 }

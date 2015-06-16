@@ -10,10 +10,27 @@
 @js-parens-active-color: darken(@js-desaturated-alt-color, 10%);
 :host {
   .source.js {
+    /*-------  Main text color  -------*/
     color: @js-foreground-color;
-    /* -webkit-font-feature-settings: "swsh"; */
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // SYMBOLS
+    //
+
+
+    //  - Braces wrapping a function you're working in should be very
+    //  distinguishable. That way it's easy to identify where it ends/begins.
+    //   - When multiple pairs of braces are on the same line, each pair should
+    //  have a different color, yet each opening brace's closing partner should
+    //  be the same color as it. That way it's easy to see what's wrapping what.
+    //  - In places where hierarchy makes it obvious what's inside what (such
+    //  as this LESS file), braces should be dimmed down as to not distract from
+    //  the stuff that matters.
+
+    /*-------  Round/Curly Braces  -------*/
     .meta.brace {
-      color: hsl(240, 15%, 70%);
+      color: hsl(191, 9%, 38%);
       font-weight: 700;
       &.curly,
       &.round {
@@ -26,32 +43,76 @@
         }
       }
     }
+    /*-------  Commas  -------*/
+    .meta.brace.comma {
+      color: @js-alt-color;
+    }
+    /*-------  Semicolon  -------*/
+    .punctuation.terminator.statement {
+      color: hsl(182, 9%, 44%);
+    }
+    /*-------  Period (method/object delimiters)  -------*/
+    .meta.delimiter.method.period {
+      color: @yellow;
+      font-weight: 700;
+    }
+    //
+    //
+    // ------------------------------------------------------------------------
+    // KEYWORDS
+    //
+    /*-------  The Word "function"  -------*/
+    .storage.type.function {
+      font-style: normal;
+      font-weight: bold;
+      -webkit-text-stroke-width: 0;
+    }
+    /*-------  A defined function's name  -------*/
+    // example: 'myFunc' ===> var myFunc = function() {...
+    .entity.name.function {
+      font-weight: 700;
+      color: hsl(48, 60%, 40%);
+    }
+    /*-------  an operator which follows a defined function's name  -------*/
+    // example: the '=' operator in the above example.
+    .entity.name.function + .keyword.operator {
+      -webkit-text-stroke-width: 0.02em;
+      color: hsl(240, 15%, 70%);
+      font-weight: normal;
+    }
+    /*-------  Matches class created with prototype  -------*/
+    // ex: Sound.prototype = { ... }    <===== Matches 'Sound'
     .support {
       &.class {
-        color: @sulu;
+        color: hsl(48, 100%, 54%);
+      }
+      // Matches the word 'prototype'
+      &.constant {
+        color: @blue;
+      }
+      // matches the '=' after 'prototype'
+      &.constant + &.operator {
+        text-shadow: none;
       }
     }
     .keyword {
       color: @red;
       text-shadow: 0 0 1px black;
+      -webkit-text-stroke-width: 0;
       & + span:not(.string):not(.brace):not(.terminator):not(.operator) {
         color: @blue;
         font-style: normal;
         font-weight: bold;
-        -webkit-text-stroke-width: 0.02em;
+        -webkit-text-stroke-width: 0;
       }
       &.operator {
         color: @yellow;
         &:not(:first-child):not(:last-child) {
           color: @raspberry;
         }
-      }
-    }
-    .entity.name.function {
-      color: @white;
-      font-weight: 700;
-      &:nth-child(4n+1) {
-        color: spin(saturate(@white, 30%), 40);
+        &.new {
+          font-weight: normal;
+        }
       }
     }
     //
@@ -92,10 +153,6 @@
       > parameters.end {
         color: @tower-gray;
       }
-    }
-    .meta.delimiter.period {
-      color: @yellow;
-      font-weight: 700;
     }
     .function {
       .meta& {

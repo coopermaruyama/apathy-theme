@@ -6,7 +6,7 @@ class ApathyView
   constructor: (serializedState) ->
     @packageName = require('../package.json').name
     @viewDisposables = new CompositeDisposable()
-    
+
     $ =>
       atom.workspace.observeTextEditors (editor) =>
         self = this
@@ -17,7 +17,7 @@ class ApathyView
         # ____________________________________________________
         # Decorate already open editors
         @decorateEditorView editorView
-    
+
     # ____________________________________________________
     # Events
     # @viewDisposables.add atom.workspace.onDidAddTextEditor (event) =>
@@ -49,9 +49,13 @@ class ApathyView
     # Custom text wraps
     @textWrapObservers ||= new CompositeDisposable()
     @textWrapObservers.add atom.workspace.observeTextEditors (editor) =>
-      @textWrapObservers.add editor.onDidStopChanging =>
-        editorView = atom.views.getView editor
-        @wrapTextNodes editorView, '.line > .source', '<span class="apathy-span"/>'
+      editorView = atom.views.getView editor
+      @wrapTextNodes editorView, '.line > .source', '<span class="apathy-span"/>'
+      @textWrapObservers.add editor.onDidChangeCursorPosition (event) =>
+        cursorEditorView = atom.views.getView event.cursor.editor
+        @wrapTextNodes cursorEditorView, '.line > .source', '<span class="apathy-span"/>'
+
+
     # ____________________________________________________
     # Remove semantic highlights
     @viewDisposables.add atom.config.observe "#{@packageName}.semanticHighlighting", (isEnabled) =>
@@ -60,13 +64,13 @@ class ApathyView
           @wrapTextNodes editorView, '.line > .source', '<span class="apathy-span"/>'
         else
           @removeSemanticHighlights editorView
-      
+
     # ____________________________________________________
     # HACK: Workaround for cursor position bug when using
     #       antialiased font smoothing.
     editor = atom.workspace.getActiveTextEditor()
     @remeasureCharacters editor
-      
+
   # Returns an object that can be retrieved when package is activated
   serialize: ->
     state =
@@ -78,7 +82,7 @@ class ApathyView
         ev.component.linesComponent?.presenter?.characterWidthsByScope
       $.extend state.characterWidths, characterWidths
     return state
-      
+
 
   # Tear down any state and detach
   destroy: ->
@@ -87,12 +91,12 @@ class ApathyView
     @viewDisposables?.dispose()
     @tmpDisposables?.dispose()
     @wrapGuideObserver?.dispose()
-    
+
     @destroyLeftWrapGuides()
     @unwrapTextNodes()
     @forAllEditorViews (editorView) => @setLeftContentPadding editorView, 0
     @clearCursorStylesheets()
-    
+
   ###===========================================================================
   = Apathy Methods =
   ===========================================================================###
@@ -100,7 +104,7 @@ class ApathyView
     for editor in atom.workspace.getTextEditors()
       editorView = atom.views.getView editor
       callback(editorView)
-      
+
   decorateEditorView: (editorView) ->
     # ______________________________
     # add left wrap guide
@@ -116,7 +120,7 @@ class ApathyView
     # custom wrap unselectable .source text nodes
     # wrapTextWith = '<span class="apathy-span"/>'
     # @wrapTextNodes editorView, '.source', wrapTextWith
-    
+
   ###*
    * Adds a wrap guide to the left side of the text.
    * @method addLeftWrapGuides

@@ -7,8 +7,11 @@ atom-panel-container, :host {
 .tree-view-resizer {
   z-index: 2;
   margin-left: 10px;
+  &.tool-panel {
+    background-color: hsl(263, 22%, 11%);
+  }
 }
-.tree-view-resizer .tre-view-resize-hadndle {
+.tree-view-resizer .tre-view-resize-handle {
   z-index: 3;
   width: 15px;
 height: 100%;
@@ -21,10 +24,10 @@ font-family: 'Octicons Regular';
 left: -5px;
 }
 .tree-view-resizer.tool-panel::after {
-  background: hsl(263, 21%, 12%) url(atom://apathy-theme/styles/stars-bg.jpg);
+  background: hsl(263, 1%, 1%) url(atom://apathy-theme/styles/stars-bg.jpg);
   background-position: center bottom;
   background-size: cover;
-  -webkit-mask-box-image: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.9) 100%);
+  -webkit-mask-box-image: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.8) 76%, rgba(0, 0, 0, 1) 100%);
   content: ' ';
   position: absolute;
   top: 0;
@@ -33,7 +36,7 @@ left: -5px;
   bottom: 0;
   z-index: 1;
   pointer-events: none;
-  -webkit-filter: hue-rotate(20deg);
+  -webkit-filter: hue-rotate(20deg) brightness(0.7);
 }
 .tree-view-resizer .tree-view-resize-handle::before {
   content: '\f05e \ \f05e';

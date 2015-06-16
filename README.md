@@ -55,6 +55,8 @@ Applied only to text that is grammars leave unscoped:
 
 ![Directory guides](https://s3.amazonaws.com/f.cl.ly/items/2L0z3R2K1Y1w3L3x3y2E/Image%202015-06-03%20at%202.26.45%20AM.png)
 
+### 6. Now supports semantic highlighting!
+
 
 
 Although this is meant to be an opinionated theme, I am aware that not everyone has the same setup but I still want everyone to be able to get the most out of this theme, so it has a settings panel with options to configure stuff (more below).
@@ -107,24 +109,3 @@ Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2P453t1f2E250B1u2U3c/Image%20
 ![HTML Screenshot](https://s3.amazonaws.com/f.cl.ly/items/0L3E1F1F1r3G2y242a0E/Image%202015-05-01%20at%207.39.59%20PM.png)
 
 
-## Contributing
-
-* I would really appreciate if you guys can mention what things you think can be improved, as well as what things you think shouldn't change because they are already ideal.
-
-* If you can help improve the JS/coffee part of the code, that would also be great.
-
-
-
-
-## What's Next?
-
-[] Semantic Highlighing (already in progress but just not happy with the color scheme)
-
-[] There are a lot of things I've wanted to style in the syntax theme but couldn't, and I'm working on some additional grammars to make this possible. Some examples:
-  - When inside a function block, it would be neat if the function name and closing brackets glowed! This way it's easy to see boundaries. Also want the same when editing a variable.
-  - In semantic highlighting, I want the variables to change color little-by-little as you type the word, and that word becomes more similar to another. e.g. you define `fooBar` which is orange, and if you type `foo` its yellow, `fooB` is a bit more orange, and so on.
-  - Detect typos and make them red.
-
-[] Use font-size to improve code comprehension and readability. Currently it's the same font size throughout.
-
-[] Clean! Code is super messy right now.

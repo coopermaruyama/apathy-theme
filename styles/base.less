@@ -207,7 +207,7 @@ atom-text-editor::shadow .find-result .region {
 .keyword {
 	color: @red;
 	font-weight: bold;
-	-webkit-text-stroke: .02em;
+	-webkit-text-stroke: 0;
 	&.operator {
 		color: @orange;
 	}
@@ -382,6 +382,7 @@ atom-text-editor::shadow .find-result .region {
 @import "languages/css.less";
 @import "languages/markdown.less";
 @import "languages/jade.less";
+@import "languages/js-semantic.less";
 @import "languages/coffeescript.less";
 @import "languages/jasmine.less";
 @import "languages/xml.less";
@@ -390,7 +391,6 @@ atom-text-editor::shadow .find-result .region {
 // @import "languages/c.less";
 // @import "languages/git.less";
 // @import "languages/handlebars.less";
-// @import "languages/js-semantic.less";
 // @import "languages/php.less";
 // @import "languages/python.less";
 // @import "languages/ruby.less";
@@ -460,21 +460,9 @@ atom-text-editor::shadow .find-result .region {
 // ----------------------------------------------------------------------------
 // Apathy Semantic
 //
-// @hues: 20, 45, 73, 135, 180, 220, 300, 340;
-@hues: 0, 120, 240, 0, 120, 240, 60, 180;
-
-.generate-semantic(@n; @i: 1) when (@i =< @n) {
-  &[data-apathy-index~="@{i}"] {
-    color: hsl(extract(@hues, @i), 85%, 85%);
-    font-weight: normal;
-  }
-  .generate-semantic(@n, (@i + 1));
-}
-
-:host .source .apathy-span,
+:host .source:not(.js-semantic) .apathy-span,
 :host .source .keyword + span:not(.string):not(.brace):not(.terminator):not(.operator) {
   font-weight: normal;
-  // .generate-semantic(8);
   &[data-apathy-index~="1"] {
     text-shadow: 0px 0px 2px hsl(289, 51%, 42%),
                  0px 0px 2px hsl(289, 51%, 42%),
@@ -516,5 +504,12 @@ atom-text-editor::shadow .find-result .region {
                  0px 0px 20px hsl(53, 51%, 42%),
                  0px 0px 50px hsl(53, 51%, 42%);
     font-weight: normal;
+  }
+  &[data-apathy-selected="true"] {
+    -webkit-transition: all 1s;
+    -webkit-animation: neon6 1s ease-in-out infinite alternate;
+  }
+  &.apathy-no-glow {
+    text-shadow: none !important;
   }
 }

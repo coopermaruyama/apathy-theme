@@ -174,6 +174,11 @@ class ApathyView
     if @leftWrapGuides?.length > 0
       for wrapGuide in @leftWrapGuides
         $(wrapGuide).remove()
+
+  # -------------------------------------------------
+  # Words to exclude from semantic highlighting
+  excludedWords: ['function', 'var' ,'each', 'extend', '_', 'return', 'unless', 'if', 'else', 'not', 'for', 'while']
+
   ###*
    * Looks for text nodes and wraps them with a tag. Assuming we have the
    *  following HTML:
@@ -195,37 +200,85 @@ class ApathyView
     @apathyWordTracker ?= [] # store number of times a keyword is used.
     self = this
     # FIXME Currently this doesn't happen until the 1st time the cursor
-    #       moves, because jQuery.ready fires BEFORE the text has been added
-    #       to the buffer. Need to get it to run just once on activation at the
-    #       right time.
+    #       moves, to ensure text is rendered in DOM.
     $root = $(editorView.shadowRoot)
+    $root.find('[data-apathy-selected]').each ->
+      $(this).attr 'data-apathy-selected', 'false'
     $root.find(selector).each ->
       contents = $(this).contents()
       $.each contents, (i,val) ->
         if val.nodeType is 3
           # add tag which can be used for CSS
-          match = $(this).text().trim().match /\b[\w]+\b/g
+          theText = $(this).text().trim()
+          return unless theText? # move on if empty
+          match = theText.match /\b[\w]+\b/g
           firstWord = match?[0]
           # wrap the text
           $wrapped = $(this).wrap wrapWith
           self.customWrappedTextNodes.push $wrapped
           # --------------------
           # semantic highligting
-          if atom.config.get "#{self.packageName}.semanticHighlighting"
-            # update how many times this word is used (for semantic stuff).
-            unless $.inArray(firstWord, self.apathyWordTracker) > -1
-              self.apathyWordTracker.push firstWord
-            numMatches =
-              $root.find("[data-apathy-word=#{firstWord}]").length or 1
-            # Apply to DOM
-            $wrapped.parent().attr 'data-apathy-word', firstWord
-            $root.find("[data-apathy-word=#{firstWord}]").each ->
-              $(this).attr 'data-apathy-count', numMatches
-              uniqueWordsCount = self.apathyWordTracker
-              semanticIndex = $.inArray(firstWord, self.apathyWordTracker) % 8
-              if semanticIndex > 0
-                $(this).attr 'data-apathy-index', semanticIndex
-                
+          self.decorateSemantic $root, $wrapped, firstWord
+
+  ###*
+   *  Given a bunch of text nodes as input, determines the importance of each
+   *  by counting occurences and whether the word is selected, and semantically
+   *  highlights all occurences of those words.
+   *
+   *  @param   {Object} $rootNode - jQuery element used as a starting point of
+   *                                which all children will be processed.
+   *  @param   {Object} $textNode - jQuery element containing the text node to
+   *                                possibly semantically highlight.
+   *  @param   {String} firstWord - First word inside $textNode.
+    ###
+  decorateSemantic: ($rootNode, $textNode, firstWord) ->
+    return unless @validateSemantic(firstWord)
+    # count how many times this word is used.
+    unless $.inArray(firstWord, @apathyWordTracker) > -1
+      @apathyWordTracker.push firstWord
+    numMatches =
+      $rootNode.find("[data-apathy-word=#{firstWord}]").length or 1
+    # Check if word is under cursor
+    re = new RegExp firstWord
+    isSelectedWord = re.test @getWordUnderCursor()
+    # Apply to DOM
+    $textNode.parent().attr 'data-apathy-word', firstWord
+    self = this
+    $rootNode.find("[data-apathy-word=#{firstWord}]").each ->
+      $(this).attr 'data-apathy-count', numMatches
+      semanticIndex = $.inArray(firstWord, self.apathyWordTracker) % 6
+      # Only style iff 2 or more matches
+      if semanticIndex > 0 and numMatches >= 2
+        $(this).attr 'data-apathy-index', semanticIndex
+      # Glow if the word is under the cursor.
+      if isSelectedWord
+        $(this).attr 'data-apathy-selected', 'true'
+
+
+  validateSemantic: (theWord) ->
+    # Skip if user disabled this setting.
+    return false unless atom.config.get "#{@packageName}.semanticHighlighting"
+    # Strings only!
+    return false unless typeof theWord is 'string'
+    # require at least 3 letters
+    return false unless theWord?.length > 3
+    # check against invalid words
+    return false if $.inArray(theWord, @excludedWords) > -1
+    # Ok, should be fine
+    return true
+
+  ###*
+   *  Get the word under the 1st cursor in the active text editor. Note that it
+   *  won't return anything if you're in whitespace, or between punctuation or
+   *  something.
+   *  @return  {String} - Word under cursor.
+  ###
+  getWordUnderCursor: ->
+    editor = atom.workspace.getActiveTextEditor()
+    cursorWordBufferRange = editor.cursors[0].getCurrentWordBufferRange()
+    wordUnderCursor = editor.buffer.getTextInRange(cursorWordBufferRange)
+    return wordUnderCursor
+
   removeSemanticHighlights: (editorView) ->
     attrs = 'data-apathy-index data-apathy-count'
     $(editorView.shadowRoot).find('[data-apathy-index]').removeAttr attrs

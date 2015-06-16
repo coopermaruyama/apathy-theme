@@ -66,20 +66,29 @@ atom-text-editor .gutter .line-number.cursor-line-no-selection, :host .gutter .l
   color: @syntax-gutter-text-color-selected;
 }
 
-atom-text-editor .wrap-guide, :host .wrap-guide {
+atom-text-editor .wrap-guide,
+:host .wrap-guide {
   color: @syntax-wrap-guide-color;
-  background-color: hsl(0, 0%, 0%);
-border-right: 1px solid hsl(259, 25%, 15%);
-border-left: 2px solid hsl(0, 0%, 0%);
+  background-color: hsl(264,5%,3%);
+  border-right: none;
+  border-left: 1px solid hsl(264, 24%, 22%);
+  box-shadow: none;
+  z-index: 0;
 }
 
 
-atom-text-editor .invisible-character, :host .invisible-character {
+atom-text-editor .invisible-character,
+:host .invisible-character {
   color: fadeout(@syntax-indent-guide-color,15%);
 }
 
 atom-text-editor .indent-guide, :host .indent-guide {
   color:  @syntax-indent-guide-color;
+  background: none;
+  box-shadow: inset 1px 0 hsl(262, 22%, 18%);
+  &:first-child {
+    box-shadow: none;
+  }
 }
 
 
@@ -93,6 +102,7 @@ atom-text-editor.is-focused .selection .region, :host(.is-focused) .selection .r
 
 atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-editor.is-focused .line.cursor-line, :host(.is-focused) .line-number.cursor-line-no-selection, :host(.is-focused) .line.cursor-line {
   background-color: #2C2830;
+  z-index: 101;
 	& .entity.name.function {
 		-webkit-transition: all 1s;
 		-webkit-animation: neon6 1s ease-in-out infinite alternate;

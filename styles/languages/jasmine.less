@@ -27,25 +27,14 @@
   .meta.delimiter.period {
     color: hsl(34, 100%, 91%);
   }
-  .meta.brace {
-    color: @comment-color;
+  .meta.brace.curly {
+    color: hsl(40, 0%, 30%);
   }
-  .meta.curly.brace ~ span.keyword.operator.js {
-  color: hsl(205, 11%, 59%);
+  .meta.brace.round {
+    color: hsl(280, 22%, 60%);
   }
-  /*-------  Braces used for blocks / callbacks  -------*/
-  .meta.brace.curly + .meta.brace.round,
-  .meta.brace.curly:nth-child(-n+2) {
-    font-weight: normal;
-    color: hsl(266, 4%, 29%);
-    text-shadow: 0px -1px hsl(0, 0%, 0%);
-  }
-  /*-------  Braces used in methods  -------*/
-  .source + .brace.round,
-  .brace.round + .brace.round,
-  .method ~ .brace.round,
-  .support.class + .brace.round {
-    color: hsl(207, 4%, 62%);
+  .meta.brace.square {
+    color: hsl(42, 54%, 75%);
   }
   /*-------  Operator symbols default  -------*/
   .leading-whitespace ~ .keyword.operator {

@@ -71,11 +71,23 @@
       font-weight: bold;
       -webkit-text-stroke-width: 0;
     }
+    /*----- Function declarations ------*/
+    // ex: function myFunc(args) {...} (these can be declared after calls).
+    .meta.function.js {
+      .storage.type.function {
+        color: hsl(190, 30%, 65%); 
+      }
+      .entity.name.function {
+        font-weight: 700;
+        color: hsl(48, 68%, 50%);
+        font-style: italic;
+      }
+    }
     /*-------  A defined function's name  -------*/
     // example: 'myFunc' ===> var myFunc = function() {...
     .entity.name.function {
       font-weight: 700;
-      color: hsl(48, 60%, 40%);
+      color: hsl(48, 74%, 49%);
     }
     /*-------  an operator which follows a defined function's name  -------*/
     // example: the '=' operator in the above example.

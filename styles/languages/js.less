@@ -115,7 +115,7 @@
       color: @red;
       text-shadow: 0 0 1px black;
       -webkit-text-stroke-width: 0;
-      & + span:not(.string):not(.brace):not(.terminator):not(.operator) {
+      &:not(.operator) + span:not(.string):not(.brace):not(.terminator):not(.operator) {
         color: @blue;
         font-style: normal;
         font-weight: bold;

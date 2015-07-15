@@ -256,6 +256,8 @@ class ApathyView
 
 
   validateSemantic: (theWord) ->
+    # Can't decorate if no text editor exists to be decorated!
+    return false unless atom.workspace.getActiveTextEditor()?
     # Skip if user disabled this setting.
     return false unless atom.config.get "#{@packageName}.semanticHighlighting"
     # Strings only!
@@ -275,7 +277,10 @@ class ApathyView
   ###
   getWordUnderCursor: ->
     editor = atom.workspace.getActiveTextEditor()
-    cursorWordBufferRange = editor.cursors[0].getCurrentWordBufferRange()
+    return "" unless editor?
+    editorCursors = editor.cursors
+    return "" unless editorCursors?.length > 0
+    cursorWordBufferRange = editorCursors[0].getCurrentWordBufferRange()
     wordUnderCursor = editor.buffer.getTextInRange(cursorWordBufferRange)
     return wordUnderCursor
 

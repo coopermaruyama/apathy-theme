@@ -40,7 +40,7 @@ class Apathy
       type: 'color'
       title: 'Override syntax background color'
       description: 'Changes the background color your text lays on.'
-      default: 'hsl(263, 20%, 9%)'
+      default: 'hsl(260, 25%, 6%)'
       order: 6
     customInactiveOverlayColor:
       type: 'color'

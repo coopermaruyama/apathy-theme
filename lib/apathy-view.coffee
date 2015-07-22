@@ -8,15 +8,27 @@ class ApathyView
     @viewDisposables = new CompositeDisposable()
 
     $ =>
-      atom.workspace.observeTextEditors (editor) =>
-        self = this
+      @debug 'Got event - jQuery.ready'
+      ###*
+       * Initialize & decorate newly-created TextEditor instances.
+       * @param {TextEditor} editor - Text editor to decorate using config.
+       * @return {Disposable}
+      ###
+      @viewDisposables.add atom.workspace.observeTextEditors (editor) =>
         editorView = atom.views.getView editor
-        $(editorView).load =>
-          console.log 'editorView loaded'
-          @remeasureCharacters editor
-        # ____________________________________________________
-        # Decorate already open editors
         @decorateEditorView editorView
+        @debug 'event triggered - observeTextEditor'
+        setTimeout =>
+          wrapWith = '<span class="apathy-span"/>'
+          @wrapTextNodes(editorView, '.line > .source', wrapWith)
+          @debug 'Wrapped text nodes.'
+          # HACK Fixes misaligned cursors due to character measurement
+          # occuring  before our custom font is actually loaded. Here we
+          # fix this by waiting a bit then forcing another measurement.
+          # TODO Only run this on already-open editors.
+          @remeasureCharacters editor
+          @debug('Remeasured characters')
+        , 5000
 
 
     # --------------------------------------------------------------------------

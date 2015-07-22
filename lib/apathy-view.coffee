@@ -134,6 +134,16 @@ class ApathyView
     $(editorView.shadowRoot).find('.lines').each ->
       self.leftWrapGuides.push $(wrapGuideLeft).prependTo this
   ###*
+   * Removes all previously injected left wrap guides from the view, unless
+   * no guides exist, in which case it does nothing.
+   * @param {View} editorView The view object for the editor.
+   * @return {null}
+  ###
+  removeLeftWrapGuides: (editorView) =>
+    $root = $(editorView.shadowRoot)
+    $root.find('.apathy-wrap-guide').remove()
+    @clearCursorStylesheets(editorView)
+  ###*
    * Sets the 'left' pixel value of left wrap guides, effectively moving both
    *  wrap guides as well as the content within in to the left without causing
    *  the cursor to become misaligned.

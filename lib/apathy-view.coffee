@@ -206,7 +206,7 @@ class ApathyView
       $(this).attr 'data-apathy-selected', 'false'
     $root.find(selector).each ->
       contents = $(this).contents()
-      $.each contents, (i,val) ->
+      $.each contents, (i, val) ->
         if val.nodeType is 3
           # add tag which can be used for CSS
           theText = $(this).text().trim()

@@ -31,20 +31,6 @@ class Apathy
     @disposables.add atom.config.observe "#{@packageName}.altFont", =>
       @doAltFont()
 
-    # configMethods =
-    #   'semanticHighlighting': 'doSemanticHighlights'
-    #   'altFont': 'doAltFont'
-    #   'enableLeftWrapGuide': 'doWrapGuide'
-    #   'contentPaddingLeft': 'updateContentPadding'
-    #   'customSyntaxBgColor': 'updateColors'
-    #   'enableTreeViewStyles': 'setTreeViewBackground'
-    #   'enableTreeViewBorder': 'setTreeViewBorder'
-    #   'altStyle': 'doAltStyles'
-    #
-    # _.each configMethods, (configMethod, configName) =>
-    #   @disposables.add atom.config.observe "#{@packageName}.#{configName}", =>
-    #     @[configMethod]()
-
     # ------------------------------------------------
     #  Workaround for reload issues w/ antialiased font
     @tempDisposables = new CompositeDisposable

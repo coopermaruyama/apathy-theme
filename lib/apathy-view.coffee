@@ -308,3 +308,17 @@ class ApathyView
         editorView.component?.linesComponent?.remeasureCharacterWidths?()
         editorView.component?.remeasureCharacterWidths?()
         @tmpDisposables?.dispose()
+
+  # ----------------------------------------------------------------------------
+  # Debugging helpers
+  #
+  # To view debugging info, run the following in console:
+  # > apathy = atom.packages.getActivePackage('apathy-theme').mainModule
+  # > apathy.apathyView.getDebugLog()
+  debug: (message) =>
+    atom.notifications.addInfo "Apathy Theme: #{message}"
+    @debugLog.push("Apathy Theme: #{message}")
+
+  debugLog: []
+
+  getDebugLog: => @debugLog.join("\n")

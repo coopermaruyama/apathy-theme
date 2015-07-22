@@ -18,14 +18,9 @@ class ApathyView
         # Decorate already open editors
         @decorateEditorView editorView
 
-    # ____________________________________________________
-    # Events
-    # @viewDisposables.add atom.workspace.onDidAddTextEditor (event) =>
-    #   editorView = atom.views.getView event.textEditor
-    #   # do all decorations
-    #   @decorateEditorView editorView
-    # ____________________________________________________
-    # wrap guide setting
+
+    # --------------------------------------------------------------------------
+    # Wrap Guide: toggle
     wrapKeyPath = "#{@packageName}.enableLeftWrapGuide"
     @wrapGuideObserver ?= new CompositeDisposable()
     @wrapGuideObserver.add atom.config.observe(

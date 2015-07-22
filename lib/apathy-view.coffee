@@ -6,6 +6,7 @@ class ApathyView
   constructor: (serializedState) ->
     @packageName = require('../package.json').name
     @viewDisposables = new CompositeDisposable()
+    self = this
 
     $ =>
       @debug 'Got event - jQuery.ready'
@@ -34,49 +35,64 @@ class ApathyView
     # --------------------------------------------------------------------------
     # Wrap Guide: toggle
     wrapKeyPath = "#{@packageName}.enableLeftWrapGuide"
-    @wrapGuideObserver ?= new CompositeDisposable()
-    @wrapGuideObserver.add atom.config.observe(
-        wrapKeyPath
-        (isEnabled) =>
-          if isEnabled
-            @forAllEditorViews (editorView) => @addLeftWrapGuides editorView
-          else
-            @destroyLeftWrapGuides()
-    )
-    # ____________________________________________________
+    @wrapGuideDisposables ?= new CompositeDisposable()
+    wrapGuideConfigObserver =
+      atom.config.onDidChange wrapKeyPath, (isEnabled) =>
+        @debug 'got event - config.enableLeftWrapGuide changed.'
+        if isEnabled
+          @forAllEditorViews (editorView) =>
+            theEditor = editorView.model
+            editorScope = theEditor.getLastCursor().getScopeDescriptor()
+            @updateWrapGuides(editorView, editorScope)
+        else
+          @destroyLeftWrapGuides()
+    @wrapGuideDisposables.add(wrapGuideConfigObserver)
+
+    # --------------------------------------------------------------------------
     # Content padding setting
     cfgLeftPadding = "#{@packageName}.contentPaddingLeft"
-    @viewDisposables.add atom.config.observe(
-      "#{@packageName}.contentPaddingLeft"
-      (newValue) =>
+    leftPaddingConfigObserver =
+      atom.config.onDidChange cfgLeftPadding, (newValue) =>
+        softWrapEnabled = @getSetting('editor.softWrap')
+        return unless softWrapEnabled?
         @forAllEditorViews (editorView) =>
           @setLeftContentPadding editorView, newValue
-    )
-    # ____________________________________________________
-    # Custom text wraps
-    @textWrapObservers ||= new CompositeDisposable()
-    @textWrapObservers.add atom.workspace.observeTextEditors (editor) =>
-      editorView = atom.views.getView editor
-      @wrapTextNodes editorView, '.line > .source', '<span class="apathy-span"/>'
-      @textWrapObservers.add editor.onDidChangeCursorPosition (event) =>
-        cursorEditorView = atom.views.getView event.cursor.editor
-        @wrapTextNodes cursorEditorView, '.line > .source', '<span class="apathy-span"/>'
+    @viewDisposables.add(leftPaddingConfigObserver)
+
+    # --------------------------------------------------------------------------
+    # Semantic highlights enabled/disabled
+    semHighlightPath = "#{@packageName}.semanticHighlighting"
+    highlightConfigObserver =
+      atom.config.onDidChange semHighlightPath, (isEnabled) =>
+        @forAllEditorViews (editorView) =>
+          if isEnabled
+            wrapWith = '<span class="apathy-span"/>'
+            @wrapTextNodes(editorView, '.line > .source', wrapWith)
+          else
+            @removeSemanticHighlights(editorView)
+    @viewDisposables.add(highlightConfigObserver)
+
+    # --------------------------------------------------------------------------
+    # Event: user enables/disables soft wrap.
+    softWrapConfigObserver =
+      atom.config.onDidChange "editor.softWrap", (isEnabled) =>
+        @debug 'got event - editor.softwrap config changed'
+        @forAllEditorViews (editorView) =>
+          editorModel = editorView.model
+          editorScope = editorModel.getLastCursor().getScopeDescriptor()
+          @updateWrapGuides(editorView, editorScope)
+    @viewDisposables.add(softWrapConfigObserver)
 
 
-    # ____________________________________________________
-    # Remove semantic highlights
-    @viewDisposables.add atom.config.observe "#{@packageName}.semanticHighlighting", (isEnabled) =>
-      @forAllEditorViews (editorView) =>
-        if isEnabled
-          @wrapTextNodes editorView, '.line > .source', '<span class="apathy-span"/>'
-        else
-          @removeSemanticHighlights editorView
-
-    # ____________________________________________________
-    # HACK: Workaround for cursor position bug when using
-    #       antialiased font smoothing.
-    editor = atom.workspace.getActiveTextEditor()
-    @remeasureCharacters editor
+    # Text editor observers
+    @editorDisposables = new CompositeDisposable()
+    @viewDisposables.add atom.workspace.observeTextEditors (editor) =>
+      softWrapDisposable = editor.onDidChangeSoftWrapped =>
+        editorView = atom.views.getView(editor)
+        editorScope = editor.getLastCursor().getScopeDescriptor()
+        @updateWrapGuides(editorView, editorScope)
+      @editorDisposables.add(softWrapDisposable)
+      editor.onDidDestroy -> softWrapDisposable.dispose()
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
@@ -84,7 +100,7 @@ class ApathyView
       characterWidths: {}
     editors = atom.workspace.getTextEditors()
     $.each editors, (editor) ->
-      ev = atom.views.getView editor
+      ev = atom.views.getView(editor)
       characterWidths =
         ev.component.linesComponent?.presenter?.characterWidthsByScope
       $.extend state.characterWidths, characterWidths
@@ -97,49 +113,90 @@ class ApathyView
     @textWrapObservers?.dispose()
     @viewDisposables?.dispose()
     @tmpDisposables?.dispose()
-    @wrapGuideObserver?.dispose()
+    @wrapGuideDisposables?.dispose()
 
     @destroyLeftWrapGuides()
     @unwrapTextNodes()
-    @forAllEditorViews (editorView) => @setLeftContentPadding editorView, 0
-    @clearCursorStylesheets()
+    @forAllEditorViews (editorView) =>
+      @setLeftContentPadding editorView, 0
+      @clearCursorStylesheets(editorView)
 
   ###===========================================================================
   = Apathy Methods =
   ===========================================================================###
-  forAllEditorViews: (callback) ->
+  forAllEditors: (callback) ->
     for editor in atom.workspace.getTextEditors()
-      editorView = atom.views.getView editor
-      callback(editorView)
+      callback(editor)
 
-  decorateEditorView: (editorView) ->
-    # ______________________________
-    # add left wrap guide
-    leftWrapGuideEnabled =
-      atom.config.get "#{@packageName}.enableLeftWrapGuide"
-    @addLeftWrapGuides editorView if leftWrapGuideEnabled
-    # ____________________________________________________
-    # Add left content padding
-    leftContentPadding =
-      atom.config.get "#{@packageName}.contentPaddingLeft"
-    @setLeftContentPadding editorView, leftContentPadding if leftContentPadding?
+  forAllEditorViews: (callback) ->
+    @forAllEditors (editor) ->
+      callback(atom.views.getView(editor))
+
+  getSetting: (configPath, external = false) =>
+    fullConfigPath =
+      if external then configPath else "#{@packageName}.#{configPath}"
+    return atom.config.get(fullConfigPath)
+
+  decorateEditorView: (editorView) =>
+    @updateWrapGuides(editorView)
+    @debug 'method called: decorateEditorView'
     # ___________________________________________
     # custom wrap unselectable .source text nodes
     # wrapTextWith = '<span class="apathy-span"/>'
     # @wrapTextNodes editorView, '.source', wrapTextWith
 
   ###*
+   * Perform all actions relevant to the wrap guides for the passed-in view.
+   * Should be called after any event occurs that should affect the state of
+   * the wrap guides, such as disabling soft wrap or left wrap guide padding.
+   * @param {obj} editorView The view of any {TextEditor} instance.
+   * @return {null}
+  ###
+  updateWrapGuides: (editorView, editorScope) =>
+    unless editorView?
+      throw new Error('updateWrapGuides: editorView undefined')
+      @debug 'ERROR: editorView undefined in updateWrapGuides!'
+      return
+    @debug 'method called: updateWrapGuides'
+    editor = editorView.model
+    # Get config
+    cfgOptions = {scope: editorScope}
+    leftWrapGuideEnabled =
+      atom.config.get "#{@packageName}.enableLeftWrapGuide", cfgOptions
+    softWrapEnabled = editor.isSoftWrapped()
+    leftContentPadding =
+      atom.config.get "#{@packageName}.contentPaddingLeft", cfgOptions
+    @debug "leftContentPadding: #{leftContentPadding}"
+    @debug "softWraEnabled: #{softWrapEnabled}"
+    @debug "leftWrapGuideEnabled: #{leftWrapGuideEnabled}"
+    # Add or remove wrap guide accordingly.
+    if leftWrapGuideEnabled and softWrapEnabled
+      @debug "Should add left wrap guides: true"
+      @addLeftWrapGuides(editorView)
+      if leftContentPadding?
+        @setLeftContentPadding(editorView, leftContentPadding)
+    else
+      @debug "Should add left wrap guides: false"
+      @removeLeftWrapGuides editorView
+      @clearCursorStylesheets(editorView)
+
+  ###*
    * Adds a wrap guide to the left side of the text.
    * @method addLeftWrapGuides
   ###
-  addLeftWrapGuides: (editorView) ->
-    self = this
+  addLeftWrapGuides: (editorView) =>
     @leftWrapGuides ?= []
+    @debug 'called: addLeftWrapGuides'
+    $existing = $('.scroll-view .apathy-wrap-guide', editorView.shadowRoot)
+    console.log('existing', $existing)
+    return if $existing.length
     wrapGuideLeft = """
-      <div class=\"wrap-guide apathy-wrap-guide" style=\"left: -5px; display: block; background-color:hsl(256,9%,6%);\"></div>
+      <div class=\"wrap-guide apathy-wrap-guide" style=\"left: -5px; display: block;\"></div>
     """
-    $(editorView.shadowRoot).find('.lines').each ->
-      self.leftWrapGuides.push $(wrapGuideLeft).prependTo this
+    $lines = $('.scroll-view .lines', editorView.shadowRoot)
+    wrapGuideElement = $(wrapGuideLeft).prependTo($lines)
+    @leftWrapGuides.push(wrapGuideElement)
+
   ###*
    * Removes all previously injected left wrap guides from the view, unless
    * no guides exist, in which case it does nothing.
@@ -158,12 +215,13 @@ class ApathyView
    * @param  {Number}      leftPixels - Spacing between gutter and left wrap
    *                                     guide in pixels.
     ###
-  setLeftContentPadding: (editorView, leftPixels = 30) ->
-    $shadow = $(editorView.shadowRoot)
-    $shadow.find('.lines').each ->
-      $(this).css 'left', leftPixels
-    # ____________________________________________________
-    # Cursor fix
+  setLeftContentPadding: (editorView, leftPixels = 30) =>
+    @clearCursorStylesheets(editorView)
+    @debug 'called setLeftContentPadding'
+    editor = editorView.model
+    lineHeight = editor.getLineHeightInPixels()
+
+    # Generated stylesheet to fix offsets caused by left padding.
     cursorLineStyles = """
       <style data-name="apathy-cursor-styles">
         atom-text-editor /deep/ .line.cursor-line,
@@ -196,15 +254,16 @@ class ApathyView
         }
       </style>
     """
-    unless $('style[data-name=apathy-cursor-styles]').length > 0
-      $(cursorLineStyles).appendTo('body')
-      $(cursorLineStyles).appendTo $shadow
+    stylesName = 'style[data-name=apathy-cursor-styles]'
+    unless $(stylesName, editorView.stylesElement).length > 0
+      $(cursorLineStyles).appendTo(editorView.stylesElement)
   ###*
    * Destroy styles added to body to offset cursor line styles.
    * @method clearCursorStylesheets
   ###
-  clearCursorStylesheets: ->
-    $('style[data-name=apathy-cursor-styles]').remove()
+  clearCursorStylesheets: (editorView) ->
+    @debug 'Clearing cursor styles'
+    $('style[data-name=apathy-cursor-styles]', editorView.stylesElement).remove()
   ###*
    * Destroy left wrap guides. Must be called on deactivate, otherwise if users
    *  switch themes from apathy to something else, the guides will stay.

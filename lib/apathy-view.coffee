@@ -171,9 +171,10 @@ class ApathyView
    * @method destroyLeftWrapGuides
   ###
   destroyLeftWrapGuides: ->
-    if @leftWrapGuides?.length > 0
-      for wrapGuide in @leftWrapGuides
-        $(wrapGuide).remove()
+    @debug 'destroying wrap guides'
+    if @leftWrapGuides?.length
+      $(wrapGuide).remove() for wrapGuide in @leftWrapGuides
+
 
   # -------------------------------------------------
   # Words to exclude from semantic highlighting

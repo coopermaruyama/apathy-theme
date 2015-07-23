@@ -31,18 +31,6 @@ class Apathy
     @disposables.add atom.config.observe "#{@packageName}.altFont", =>
       @doAltFont()
 
-    # ------------------------------------------------
-    #  Workaround for reload issues w/ antialiased font
-    @tempDisposables = new CompositeDisposable
-    paneItems = atom.workspace.getPaneItems()
-    for paneItem in paneItems
-      if paneItem.constructor.name is "TextEditor"
-        @tempDisposables.add paneItem.onDidChangeCursorPosition =>
-          atom.views?.getView?(paneItem)
-            .component?.linesComponent?.remeasureCharacterWidths?()
-          @tempDisposables?.dispose()
-    # -----------------------------------------------
-    # Apply custom overrides
     customStylePath = "#{__dirname}/../styles/custom.less"
     @writeConfig customStylePath
     # watch for changes

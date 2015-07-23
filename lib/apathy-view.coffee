@@ -87,10 +87,13 @@ class ApathyView
     # Text editor observers
     @editorDisposables = new CompositeDisposable()
     @viewDisposables.add atom.workspace.observeTextEditors (editor) =>
+      editorView = atom.views.getView(editor)
+      editorScope = editor.getLastCursor().getScopeDescriptor()
       softWrapDisposable = editor.onDidChangeSoftWrapped =>
-        editorView = atom.views.getView(editor)
-        editorScope = editor.getLastCursor().getScopeDescriptor()
         @updateWrapGuides(editorView, editorScope)
+      semanticDisposable = editor.onDidStopChanging =>
+        wrapWith = '<span class="apathy-span"/>'
+        @wrapTextNodes(editorView, '.line > .source', wrapWith)
       @editorDisposables.add(softWrapDisposable)
       editor.onDidDestroy -> softWrapDisposable.dispose()
 
@@ -301,16 +304,15 @@ class ApathyView
   wrapTextNodes: (editorView, selector, wrapWith) ->
     @customWrappedTextNodes ?= []
     @apathyWordTracker ?= [] # store number of times a keyword is used.
+    @debug 'called: wrapTextNodes'
     self = this
-    # FIXME Currently this doesn't happen until the 1st time the cursor
-    #       moves, to ensure text is rendered in DOM.
     $root = $(editorView.shadowRoot)
-    $root.find('[data-apathy-selected]').each ->
-      $(this).attr 'data-apathy-selected', 'false'
+    $root.find('[data-apathy-selected]').attr('data-apathy-selected', 'false')
     $root.find(selector).each ->
-      contents = $(this).contents()
-      $.each contents, (i, val) ->
-        if val.nodeType is 3
+      $(this)
+        .contents()
+        .filter (i, val) -> val.nodeType is 3
+        .each (i, val) ->
           # add tag which can be used for CSS
           theText = $(this).text().trim()
           return unless theText? # move on if empty

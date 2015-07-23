@@ -65,13 +65,26 @@ enableTreeViewBorder:
   type: 'boolean'
   default: false
   order: 11
-altStyle:
+syntaxSaturation:
   type: 'string'
-  title: 'Previous & Alternate color schemes'
-  default: 'None'
-  description: "If significant changes are made, the previous version(s)
-    will be available for you here, as well as some alternate styles"
-  enum: ['None']#, 'v0.2.0']
-  order: 12
+  title: 'Syntax Saturation (requires reload)'
+  default: '90%'
+  description: 'How colorful do you want your syntax highlights?'
+  enum: ['70%', '80%', '90%', '100%', '110%', '120%', '130%']
+  order: 13
+syntaxBrightness:
+  type: 'string'
+  title: 'Syntax Brightness (requires reload)'
+  default: '90%'
+  description: 'How bright?'
+  enum: ['70%', '80%', '90%', '100%', '110%', '120%', '130%']
+  order: 14
+syntaxContrast:
+  type: 'string'
+  title: 'Syntax Contrast (requires reload)'
+  default: '90%'
+  description: 'How much contrast?'
+  enum: ['70%', '80%', '90%', '100%', '110%', '120%', '130%']
+  order: 15
 
 module.exports = ApathyConfig

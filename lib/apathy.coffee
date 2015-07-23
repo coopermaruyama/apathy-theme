@@ -40,16 +40,25 @@ class Apathy
         @writeConfig customStylePath
 
 
-  generateConfig: ->
-    syntaxBgColor = atom.config.get( "#{@packageName}.customSyntaxBgColor").toRGBAString()
-    underlayerBgColor = atom.config.get( "#{@packageName}.customUnderlayerBgColor").toRGBAString()
-    inactivePaneBgColor = atom.config.get( "#{@packageName}.customInactivePaneBgColor").toRGBAString()
-    inactiveOverlayColor = atom.config.get( "#{@packageName}.customInactiveOverlayColor").toRGBAString()
+  generateConfig: =>
+    getConfig = (theConfig) => atom.config.get("#{@packageName}.#{theConfig}")
+    getColorConfig = (theConfig) =>
+      atom.config.get("#{@packageName}.#{theConfig}").toRGBAString()
+    syntaxBgColor = getColorConfig( "customSyntaxBgColor")
+    underlayerBgColor = getColorConfig( "customUnderlayerBgColor")
+    inactivePaneBgColor = getColorConfig( "customInactivePaneBgColor")
+    inactiveOverlayColor = getColorConfig( "customInactiveOverlayColor")
+    syntaxBrightness = getConfig("syntaxBrightness")
+    syntaxSaturation = getConfig("syntaxSaturation")
+    syntaxContrast = getConfig("syntaxContrast")
     theConfig = """
       @apathy-background-color: #{syntaxBgColor} !important;
       @apathy-underlayer-bg-color: #{underlayerBgColor} !important;
       @apathy-inactive-bg-color: #{inactivePaneBgColor} !important;
       @apathy-inactive-overlay-color: #{inactiveOverlayColor} !important;
+      @config-syntax-brightness : #{syntaxBrightness};
+      @config-syntax-saturation : #{syntaxSaturation};
+      @config-syntax-contrast : #{syntaxContrast};
     """
     return theConfig
   writeConfig: (path) ->

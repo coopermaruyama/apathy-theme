@@ -156,6 +156,7 @@ atom-text-editor::shadow .find-result .region {
 //
 .source {
 	color: @foreground-color;
+  -webkit-filter: saturate(@syntax-saturate) brightness(@syntax-brightness) contrast(@syntax-contrast);
 }
 .comment {
   color: @comment-color;

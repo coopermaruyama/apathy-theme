@@ -29,7 +29,7 @@ class ApathyView
           # TODO Only run this on already-open editors.
           @remeasureCharacters editor
           @debug('Remeasured characters')
-        , 5000
+        , 500
 
 
     # --------------------------------------------------------------------------
@@ -216,47 +216,50 @@ class ApathyView
    *                                     guide in pixels.
     ###
   setLeftContentPadding: (editorView, leftPixels = 30) =>
-    @clearCursorStylesheets(editorView)
-    @debug 'called setLeftContentPadding'
-    editor = editorView.model
-    lineHeight = editor.getLineHeightInPixels()
-
-    # Generated stylesheet to fix offsets caused by left padding.
-    cursorLineStyles = """
-      <style data-name="apathy-cursor-styles">
-        atom-text-editor /deep/ .line.cursor-line,
-        :host(.is-focused) .line.cursor-line {
-          transform: translateX(-#{leftPixels}px);
-          padding-left: #{leftPixels}px;
-        }
-        atom-text-editor /deep/ .lines, :host .lines {
-          left: #{leftPixels}px !important;
-        }
-        :host .jshint-line::after {
-          content: ' ';
-          position: absolute;
-          width: #{leftPixels}px;
-          top: 0;
-          bottom: 0;
-          background-color: inherit;
-          left: -#{leftPixels}px;
-        }
-        atom-text-editor .highlights .region:after {
-          content: ' ';
-          position: absolute;
-          width: 100%;
-          top: 0;
-          bottom: 0;
-          background-color: inherit;
-          transform: translateX(-#{editor.getWidth()}px) translateY(#{lineHeight}px);
-          right: 0;
-          left: 0;
-        }
-      </style>
-    """
-    stylesName = 'style[data-name=apathy-cursor-styles]'
-    unless $(stylesName, editorView.stylesElement).length > 0
-      $(cursorLineStyles).appendTo(editorView.stylesElement)
+    setTimeout =>
+      @debug "did event - setLeftContentPadding -> editorView.onDidAttach"
+      @clearCursorStylesheets(editorView)
+      @debug 'called setLeftContentPadding'
+      editor = editorView.model
+      lineHeight = editor.getLineHeightInPixels()
+      buffer = editor.getBuffer()
+      # Generated stylesheet to fix offsets caused by left padding.
+      cursorLineStyles = """
+        <style data-name="apathy-cursor-styles">
+          atom-text-editor /deep/ .line.cursor-line,
+          :host(.is-focused) .line.cursor-line {
+            transform: translateX(-#{leftPixels}px);
+            padding-left: #{leftPixels}px;
+          }
+          atom-text-editor /deep/ .lines, :host .lines {
+            left: #{leftPixels}px !important;
+          }
+          :host .jshint-line::after {
+            content: ' ';
+            position: absolute;
+            width: #{leftPixels}px;
+            top: 0;
+            bottom: 0;
+            background-color: inherit;
+            left: -#{leftPixels}px;
+          }
+          atom-text-editor .highlights .region:after {
+            content: ' ';
+            position: absolute;
+            width: 100%;
+            top: 0;
+            bottom: 0;
+            background-color: inherit;
+            transform: translateX(-#{editor.getWidth()}px) translateY(#{lineHeight}px);
+            right: 0;
+            left: 0;
+          }
+        </style>
+      """
+      stylesName = 'style[data-name=apathy-cursor-styles]'
+      unless $(stylesName, editorView.stylesElement).length > 0
+        $(cursorLineStyles).appendTo(editorView.stylesElement)
+    , 500
   ###*
    * Destroy styles added to body to offset cursor line styles.
    * @method clearCursorStylesheets

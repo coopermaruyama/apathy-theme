@@ -75,12 +75,14 @@
     // ex: function myFunc(args) {...} (these can be declared after calls).
     .meta.function.js {
       .storage.type.function {
-        color: hsl(190, 30%, 65%); 
+        color: hsl(59, 11%, 75%);
+        font-weight: 400;
+        -webkit-text-stroke-width: 0.04em;
+
       }
       .entity.name.function {
         font-weight: 700;
-        color: hsl(48, 68%, 50%);
-        font-style: italic;
+        color: hsl(82, 90%, 62%);
       }
     }
     /*-------  A defined function's name  -------*/
@@ -112,9 +114,8 @@
       }
     }
     .keyword {
-      color: @red;
-      text-shadow: 0 0 1px black;
-      -webkit-text-stroke-width: 0;
+      color: hsl(256, 50%, 60%);
+      font-weight: 800;
       &:not(.operator) + span:not(.string):not(.brace):not(.terminator):not(.operator) {
         color: @blue;
         font-style: normal;
@@ -127,7 +128,9 @@
           color: @raspberry;
         }
         &.new {
-          font-weight: normal;
+          color: hsl(250, 21%, 82%);
+          font-weight: bold;
+          -webkit-text-stroke: 0.01em;
         }
       }
     }
@@ -135,11 +138,12 @@
     // ------------------------------------------------------------------------
     // Strings
     @string-sulu: multiply(@string-color, @sulu);
+    @js-string-color: hsl(74, 50%, 55%);
     .string.quoted.single {
-      color: saturate(lighten(@string-sulu, 10%), 10%);
+      color: @js-string-color;
     }
     .string.quoted.double {
-      color: saturate(lighten(@string-sulu, 10%), 10%);
+      color: @js-string-color;
     }
     .string.begin + .entity.name.function,
     .string.begin:first-child,
@@ -176,8 +180,8 @@
       }
     }
     .variable.parameter {
-      font-weight: normal;
-      color: @bright-ube;
+      font-weight: 200;
+      color: hsl(300, 35%, 70%);
     }
     .leading-whitespace ~ .keyword.operator {
       color: spin(saturate(darken(@js-foreground-color, 30%),70%), 330);

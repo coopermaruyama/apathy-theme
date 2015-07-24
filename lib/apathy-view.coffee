@@ -428,4 +428,4 @@ class ApathyView
 
   debugLog: []
 
-  getDebugLog: => console.log @debugLog.join("\n") if @getSetting('debug')
+  getDebugLog: => console.log @debugLog.join("\n")

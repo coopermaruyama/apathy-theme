@@ -11,7 +11,8 @@ atom-text-editor, :host {
   // font-family: 'Inconsolata';
   font-weight: normal;
   // text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: subpixel-antialiased !important;
+  -webkit-font-smoothing: antialiased !important;
+  -webkit-text-stroke-width: 0.03em;
   text-shadow: none;
   // letter-spacing: -0.01em !important;
 }
@@ -156,11 +157,13 @@ atom-text-editor::shadow .find-result .region {
 //
 .source {
 	color: @foreground-color;
+  -webkit-text-stroke-width: 0.05em;
   -webkit-filter: saturate(@syntax-saturate) brightness(@syntax-brightness) contrast(@syntax-contrast);
 }
 .comment {
   color: @comment-color;
-	font-weight: 700;
+	font-weight: normal;
+  -webkit-text-stroke-width: 0.04em;
 	.block.documentation {
 		color: lighten(@comment-color, 3%);
 	}
@@ -212,7 +215,7 @@ atom-text-editor::shadow .find-result .region {
 .keyword {
 	color: @red;
 	font-weight: bold;
-	-webkit-text-stroke: 0;
+	-webkit-text-stroke: 0.02em;
 	&.operator {
 		color: @orange;
 	}

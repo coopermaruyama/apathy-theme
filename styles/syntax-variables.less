@@ -2,14 +2,14 @@
 // include a syntax-variables.less file.
 
 // General colors
-@syntax-text-color: rgba(237, 224, 206, 0.91);
+@syntax-text-color: hsl(260, 10%, 90%);
 @syntax-cursor-color: #ff1018;
-@syntax-selection-color: hsla(290, 30%, 61%, 0.28);
+@syntax-selection-color: hsla(245, 30%, 63%, 0.5);
 
 @apathy-background-color: hsl(260, 25%, 6%);
 @apathy-underlayer-bg-color: hsl(258, 6%, 6%);
-@apathy-inactive-bg-color: hsl(200, 5%, 11%);
-@apathy-inactive-overlay-color: hsla(261, 34%, 15%, 0.9);
+@apathy-inactive-bg-color: hsl(260,5%,11%);
+@apathy-inactive-overlay-color: hsla(261, 34%, 5%, 0.9);
 
 @syntax-background-color: @apathy-background-color;
 @syntax-underlayer-bg-color: @apathy-underlayer-bg-color;
@@ -39,8 +39,8 @@
 // Gutter colors
 @syntax-gutter-text-color: hsl(273, 5%, 27%);
 @syntax-gutter-text-color-selected: rgba(237, 224, 206, 0.19);
-@syntax-gutter-background-color: hsl(264, 37%, 9%);
-@syntax-gutter-background-color-selected: hsla(280, 45%, 41%, 0.1);
+@syntax-gutter-background-color: hsl(260, 25%, 5%);
+@syntax-gutter-background-color-selected:  hsla(273, 20%, 35%, 0.3);
 
 // Scrollbar
 @scrollbar-bg-color: hsla(230, 2%, 7%, 0.8);
@@ -48,7 +48,7 @@
 // Minimap
 @minimap-bg-color: hsla(261, 12%, 9%, 0.4);
 @minimap-gradient-from: hsl(250, 5%, 25%);
-@minimap-gradient-to: hsl(250, 18%, 70%);
+@minimap-gradient-to: hsl(250, 18%, 80%);
 
 // For git diff info. i.e. in the gutter
 // These are static and were not extracted from your textmate theme
@@ -170,7 +170,7 @@
 //
 // Define Classes
 //
-@foreground-color: hsl(60, 7%, 85%);
+@foreground-color: hsl(60, 2%, 80%);
 @comment-color: lighten(@gray-blend, 10%);
 @string-color: @sunrise;
 @string-bright-color: @caper;

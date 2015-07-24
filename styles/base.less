@@ -53,11 +53,10 @@ atom-pane-container atom-pane:before {
 atom-text-editor .gutter, :host .gutter {
   background-color: @syntax-gutter-background-color;
   color: @syntax-gutter-text-color;
-  box-shadow: none; 
   // Soften edge between gutter and text editor.
   & > .line-numbers:first-child {
     background-color: hsl(265, 38%, 9%);
-    box-shadow: inset -1px 0px hsl(0, 0%, 13%);
+    box-shadow: inset 1px 0px hsl(257, 24%, 12%), inset -1px 0px hsl(0, 0%, 0%);
   }
 }
 atom-text-editor::shadow atom-text-editor-minimap, atom-text-editor atom-text-editor-minimap {

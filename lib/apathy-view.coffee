@@ -246,7 +246,8 @@ class ApathyView
             background-color: inherit;
             left: -#{leftPixels}px;
           }
-          atom-text-editor .highlights .region:after {
+          atom-text-editor .highlights .region:after,
+          :host .highlights .region:after {
             content: ' ';
             position: absolute;
             width: 100%;
@@ -426,4 +427,4 @@ class ApathyView
 
   debugLog: []
 
-  getDebugLog: => @debugLog.join("\n")
+  getDebugLog: => console.log @debugLog.join("\n") if @getSetting('debug')

@@ -95,7 +95,7 @@ class ApathyView
         wrapWith = '<span class="apathy-span"/>'
         @wrapTextNodes(editorView, '.line > .source', wrapWith)
       @editorDisposables.add(softWrapDisposable)
-      editor.onDidDestroy -> softWrapDisposable.dispose()
+      editor.onDidDestroy -> softWrapDisposable?.dispose()
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
@@ -191,7 +191,6 @@ class ApathyView
     @leftWrapGuides ?= []
     @debug 'called: addLeftWrapGuides'
     $existing = $('.scroll-view .apathy-wrap-guide', editorView.shadowRoot)
-    console.log('existing', $existing)
     return if $existing.length
     wrapGuideLeft = """
       <div class=\"wrap-guide apathy-wrap-guide" style=\"left: -5px; display: block;\"></div>

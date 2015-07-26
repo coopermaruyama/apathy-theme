@@ -2,23 +2,35 @@
 
 [![Join the chat at https://gitter.im/coopermaruyama/apathy-theme](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/coopermaruyama/apathy-theme?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-![Apathy main screenshot](https://s3.amazonaws.com/f.cl.ly/items/2H0w160E1T2y332e0f3G/apathy.png)
+![Apathy main screenshot](https://www.dropbox.com/s/o6dxnd2t481rsfg/hero-fontsz15px.png?dl=1)
+[View full-screen](https://www.dropbox.com/s/dt8y45icuw6co8e/full-screen.png?dl=0)
 
 
+This dark syntax theme sports a subtle, deep purple base with vivid candy-like colors which bring your syntax to life without going too far to the point of being impractical. It's also one of the only syntax themes with the ability to configure its colors through the settings panel.
 
-A vivid syntax theme that I polished over the years. Includes custom bundled fonts with multiple font-weights, **antialiased font smoothing** for clean rendering of text, and tons of other features!
+#### Recommended Settings:
+
+* **UI Theme:**  **[Atom Material UI](https://atom.io/themes/atom-material-ui)** or **[One Dark](https://github.com/atom/one-dark-ui)**
+
+* **Font size:** 13-14px depending on resolution.
+
+* **Font Family:** Source Code Pro
 
 
-# README before customizing colors!
+## Read me before customizing colors!
 
-* First I'd like to mention that the intention for the adjustable colors was not for changing the hue, but rather the lightness or saturation in order to counter-act differences between color profiles and calibrations of monitors.
+* Technically, overriding the LESS variables of a theme is not supported by atom (see [#5903](https://github.com/atom/atom/issues/5903)). The solution in place is hacky and can cause errors.
 
-* Technically, overriding the LESS variables of a theme is not supported by atom (see [#5903](https://github.com/atom/atom/issues/5903)). The solution in place is VERY hacky and causes errors if not done correctly. Without getting into the details, it looks like Atom had worked on this and then were not able to get it implemented, so the way it's working in this theme is that it's actually writing your custom settings into a file within the package every time you change the values.
+* When you change the color settings, you won't see the changes applied until you do a live reload (cmd-alt-ctrl-L). This is because atom has already compiled all the LESS files to CSS. For this reason, it's easier to open up dev tools and find the color you want there, then update your settings after - this way you don't have to reload over and over.
 
-  Also, when you change the values, the UI theme won't read the changes because it's already compiled LESS to CSS! So you have to live reload (`ctrl+alt+cmd+L`) _every_ time you change a color setting. Note that this will persist through updates fine since the settinsg are stored in your own config, but it's a hassle.
-  
 * If you want to go back to default, open your config (File > Open your config) and delete the color stuff under the 'apathy-theme' key.
 
+
+### Roadmap
+
+* The name of this theme will soon be changed to **"Vivid syntax"**.
+
+* Features such as semantic highlights, wrap guide, etc. will be exported into their own packages so that you can use them with any syntax theme.
 
 
 # Features
@@ -55,33 +67,32 @@ Applied only to text that is grammars leave unscoped:
 
 ![Directory guides](https://s3.amazonaws.com/f.cl.ly/items/2L0z3R2K1Y1w3L3x3y2E/Image%202015-06-03%20at%202.26.45%20AM.png)
 
-### 6. Now supports semantic highlighting!
+### 6. Calibration
 
-
-
-Although this is meant to be an opinionated theme, I am aware that not everyone has the same setup but I still want everyone to be able to get the most out of this theme, so it has a settings panel with options to configure stuff (more below).
+Calibrate brightness, saturation, and contrast in the settings panel:
+![colors calibration](https://www.dropbox.com/s/luij8bj2hzzzyjs/Screenshot%202015-07-24%2005.00.44.png?dl=1)
 
 
 
 ### Notes
-  - This will most likely override your current font in 'Settings'. If you don't like the font provided, you can override it in your custom stylesheet.  
-  - This theme is meant to be combined with **[One Dark](https://github.com/atom/one-dark-ui)** - I personally think they match very well.
+  - This theme will most likely override your current font in 'Settings'. If you don't like the font provided, you can override it in your custom stylesheet, using this selector: `atom-text-editor::shadow .source` (make sure to add `!important`).
+  - I highly recommend you combine this theme with either **[Atom Material UI](https://atom.io/themes/atom-material-ui)** or **[One Dark](https://github.com/atom/one-dark-ui)** - I personally think they match very well.
   - This syntax theme styles a few things that is out of its scope (e.g. the tree view), so I wouldn't be surpised if it has issues with some UI themes.
-  - This theme includes the following font weights in case you want to use them in your user stylesheet: 300, 400, 700, 900
+  - This theme includes the following font weights in case you want to use them in your user stylesheet: 200, 300, 400, 700, 800, 900 (Source Code Pro only!)
 
 
 ---
 
-# Screenshots
+# Language Previews
 
-### Javascript Colors:
-![JS Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2g403i3V0w2B2K0v2G2D/Image%202015-05-01%20at%207.36.00%20PM.png)
+### Javascript:
+![JS Screenshot](https://www.dropbox.com/s/k16waf5hwbbyj4h/Screenshot%202015-07-25%2022.49.41.png?dl=1)
 
 ### Coffeescript:
-![Coffeescript Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2e2v1z1Q2S0r443z0u2j/Image%202015-05-01%20at%207.47.31%20PM.png)
+![Coffeescript Screenshot](https://www.dropbox.com/s/j3v86tzekwbx9ie/Screenshot%202015-07-26%2012.19.55.png?dl=1)
 
 ### MeteorJS (w/ tree view styling enabled)
-![Meteor Screenshot](https://s3.amazonaws.com/f.cl.ly/items/3b3s200N3C151Z101X12/Image%202015-05-01%20at%207.31.18%20PM.png)
+![Meteor Screenshot](https://www.dropbox.com/s/v3jowyau6q1dtt1/Screenshot%202015-07-26%2012.48.00.png?dl=1)
 
 ### Spacebars:
 ![Spacebars](https://s3.amazonaws.com/f.cl.ly/items/3J070V2h070X182c3F1R/Image%202015-05-01%20at%207.42.33%20PM.png)
@@ -107,5 +118,3 @@ Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2P453t1f2E250B1u2U3c/Image%20
 
 ### HTML:
 ![HTML Screenshot](https://s3.amazonaws.com/f.cl.ly/items/0L3E1F1F1r3G2y242a0E/Image%202015-05-01%20at%207.39.59%20PM.png)
-
-

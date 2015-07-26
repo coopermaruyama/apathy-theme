@@ -34,10 +34,12 @@ class Apathy
     customStylePath = "#{__dirname}/../styles/custom.less"
     @writeConfig customStylePath
     # watch for changes
-    customColors = ["customSyntaxBgColor", "customUnderlayerBgColor", "customInactivePaneBgColor", "customInactiveOverlayColor"]
-    for color in customColors
-      @disposables.add atom.config.observe "#{@packageName}.#{color}", =>
-        @writeConfig customStylePath
+    lessVariables = ["customSyntaxBgColor", "customUnderlayerBgColor", "customInactivePaneBgColor", "customInactiveOverlayColor", "syntaxBrightness", "syntaxSaturation", "syntaxContrast"]
+    for variable in lessVariables
+      theKey = "#{@packageName}.#{variable}"
+      cbLessVarChanged = => @writeConfig(customStylePath)
+      @disposables.add atom.config.onDidChange(theKey, cbLessVarChanged)
+
 
 
   generateConfig: =>

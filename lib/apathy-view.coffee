@@ -253,9 +253,14 @@ class ApathyView
             top: 0;
             bottom: 0;
             background-color: inherit;
-            transform: translateX(-#{editor.getWidth()}px) translateY(#{lineHeight}px);
             right: 0;
-            left: 0;
+            left: -100%;
+          }
+          atom-text-editor .highlights .region:after, :host .highlights .region:first-child:last-child:after {
+            width: 100%;
+            right: 0;
+            left: auto;
+            margin-right: #{editor.getWidth()}px;
           }
         </style>
       """

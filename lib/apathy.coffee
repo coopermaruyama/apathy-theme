@@ -24,7 +24,7 @@ class Apathy
     """, => @setTreeViewBackground()
 
     @disposables.add atom.config.observe """
-      #{@packageName}.enaAbleTreeViewBorder
+      #{@packageName}.enableTreeViewBorder
     """, => @setTreeViewBorder()
 
     @disposables.add atom.config.observe "#{@packageName}.altStyle", => @doAltStyle()

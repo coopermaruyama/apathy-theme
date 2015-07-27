@@ -217,7 +217,6 @@ class ApathyView
     ###
   setLeftContentPadding: (editorView, leftPixels = 30) =>
     setTimeout =>
-      @debug "did event - setLeftContentPadding -> editorView.onDidAttach"
       @clearCursorStylesheets(editorView)
       @debug 'called setLeftContentPadding'
       editor = editorView.model

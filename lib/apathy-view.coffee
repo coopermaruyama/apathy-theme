@@ -410,7 +410,9 @@ class ApathyView
    * @method remeasureCharacters
    * @param  {object}            editor - Atom TextEditor instance.
   ###
-  remeasureCharacters: (editor) ->
+  timesRemeasured: 0 # counter for remeasure calls.
+  remeasureCharacters: (editor) =>
+    return if @timesRemeasured > 3
     @tmpDisposables ?= new CompositeDisposable()
     if editor?
       @tmpDisposables.add editor?.onDidChangeCursorPosition (event) =>
@@ -418,6 +420,7 @@ class ApathyView
         editorView.component?.linesComponent?.remeasureCharacterWidths?()
         editorView.component?.remeasureCharacterWidths?()
         @tmpDisposables?.dispose()
+        @timesRemeasured++
 
   # ----------------------------------------------------------------------------
   # Debugging helpers

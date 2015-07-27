@@ -426,9 +426,11 @@ class ApathyView
   # > apathy = atom.packages.getActivePackage('apathy-theme').mainModule
   # > apathy.apathyView.getDebugLog()
   debug: (message) =>
+    @debugLog.shift() if @debugLog.length > 100
+    @debugLog.push("Apathy Theme: #{message}")
     if @getSetting('debug')
       atom.notifications.addInfo "Apathy Theme: #{message}"
-      @debugLog.push("Apathy Theme: #{message}")
+
 
   debugLog: []
 

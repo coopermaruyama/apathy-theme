@@ -35,7 +35,7 @@ class ApathyView
     # --------------------------------------------------------------------------
     # Wrap Guide: toggle
     wrapKeyPath = "#{@packageName}.enableLeftWrapGuide"
-    @wrapGuideDisposables ?= new CompositeDisposable()
+    @viewDisposables ?= new CompositeDisposable()
     wrapGuideConfigObserver =
       atom.config.onDidChange wrapKeyPath, (isEnabled) =>
         @debug 'got event - config.enableLeftWrapGuide changed.'
@@ -46,7 +46,7 @@ class ApathyView
             @updateWrapGuides(editorView, editorScope)
         else
           @destroyLeftWrapGuides()
-    @wrapGuideDisposables.add(wrapGuideConfigObserver)
+    @viewDisposables.add(wrapGuideConfigObserver)
 
     # --------------------------------------------------------------------------
     # Content padding setting
@@ -113,10 +113,8 @@ class ApathyView
   # Tear down any state and detach
   destroy: ->
     # dispose disposables
-    @textWrapObservers?.dispose()
     @viewDisposables?.dispose()
     @tmpDisposables?.dispose()
-    @wrapGuideDisposables?.dispose()
 
     @destroyLeftWrapGuides()
     @unwrapTextNodes()

@@ -166,6 +166,7 @@
 @sulu: hsl(80, 77%, 58%);
 @scooter: hsl(190, 60%, 50%);
 @disco: hsl(280, 80%, 55%);
+@candlelight: hsl(48, 100%, 54%);
 //
 //
 // Define Classes
@@ -327,5 +328,67 @@ to {
              0 0 20px #ff00de,
              0 0 35px #ff00de,
              0 0 80px #ff00de,
+}
+}
+
+
+/*=============================================================================
+=    Subtle Animations for source text
+=============================================================================*/
+@-webkit-keyframes text-pink {
+from {
+  text-shadow: 0 0 0px #fff,
+             0 0 10px #fff,
+						0 0 10px #fff,
+             0 0 0px #ff00de,
+             0 0 7px #ff00de,
+             0 0 15px #ff00de,
+}
+to {
+  text-shadow: 0 0 5px #fff,
+             0 0 17px #fff,
+						0 0 25px #fff,
+             0 0 10px #ff00de,
+             0 0 20px #ff00de,
+             0 0 30px #ff00de,
+}
+}
+
+@-webkit-keyframes text-blue {
+from {
+  text-shadow: 0 0 10px #fff,
+             0 0 20px  #fff,
+             0 0 20px  #fff,
+             0 0 30px  #228DFF,
+             0 0 50px  #228DFF,
+             0 0 70px  #228DFF,
+             0 0 100px #228DFF;
+}
+to {
+  text-shadow: 0 0 5px #fff,
+             0 0 10px #fff,
+             0 0 10px #fff,
+             0 0 10px #228DFF,
+             0 0 25px #228DFF,
+             0 0 30px #228DFF,
+             0 0 45px #228DFF;
+}
+}
+@-webkit-keyframes text-orange {
+from {
+  text-shadow: 0px 0px 1px 0px #fff,
+							0px 0px 4px 0.5px #fff,
+							0px 0px 4.5px 0.9px #fff,
+							0px 0px 5px 3px hsl(40, 85%, 44%),
+							0px 0px 7px 5px hsl(40, 85%, 44%),
+							0px 0px 35px 0px hsl(40, 85%, 44%)
+}
+to {
+  text-shadow: 0px 0px 3.3px 0px #fff,
+							0px 0px 6.3px 0.5px #fff,
+							0px 0px 6.8px 1.6px #fff,
+							0px 0px 7.3px 3.7px hsl(40, 85%, 44%),
+							0px 0px 9.3px 5.7px hsl(40, 85%, 44%),
+							0px 0px 37.3px 2px hsl(40, 85%, 44%)
 }
 }

@@ -82,14 +82,14 @@
       }
       .entity.name.function {
         font-weight: 700;
-        color: hsl(82, 90%, 62%);
+        color: hsl(82, 50%, 55%);
       }
     }
     /*-------  A defined function's name  -------*/
     // example: 'myFunc' ===> var myFunc = function() {...
     .entity.name.function {
       font-weight: 700;
-      color: hsl(48, 74%, 49%);
+      color: @candlelight;
     }
     /*-------  an operator which follows a defined function's name  -------*/
     // example: the '=' operator in the above example.
@@ -113,10 +113,10 @@
         text-shadow: none;
       }
     }
-    .keyword {
+    & .keyword {
       color: hsl(256, 50%, 60%);
       font-weight: 800;
-      &:not(.operator) + span:not(.string):not(.brace):not(.terminator):not(.operator) {
+      &:not(.operator) + span:not(.string):not(.brace):not(.terminator):not(.operator):not(.meteor):not(.mongo) {
         color: @blue;
         font-style: normal;
         font-weight: bold;

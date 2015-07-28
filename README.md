@@ -3,7 +3,8 @@
 [![Join the chat at https://gitter.im/coopermaruyama/apathy-theme](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/coopermaruyama/apathy-theme?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ![Apathy main
-screenshot](https://www.dropbox.com/s/drf557efo3dwfk3/hero.png?dl=1)
+screenshot](https://dl.dropboxusercontent.com/u/1406414/cloud/hero.png)
+
 [View full-screen](https://www.dropbox.com/s/dt8y45icuw6co8e/full-screen.png?dl=0)
 
 

@@ -49,17 +49,6 @@ class ApathyView
     @viewDisposables.add(wrapGuideConfigObserver)
 
     # --------------------------------------------------------------------------
-    # Content padding setting
-    cfgLeftPadding = "#{@packageName}.contentPaddingLeft"
-    leftPaddingConfigObserver =
-      atom.config.onDidChange cfgLeftPadding, (newValue) =>
-        softWrapEnabled = @getSetting('editor.softWrap')
-        return unless softWrapEnabled?
-        @forAllEditorViews (editorView) =>
-          @setLeftContentPadding editorView, newValue
-    @viewDisposables.add(leftPaddingConfigObserver)
-
-    # --------------------------------------------------------------------------
     # Semantic highlights enabled/disabled
     semHighlightPath = "#{@packageName}.semanticHighlighting"
     highlightConfigObserver =
@@ -118,9 +107,6 @@ class ApathyView
 
     @destroyLeftWrapGuides()
     @unwrapTextNodes()
-    @forAllEditorViews (editorView) =>
-      @setLeftContentPadding editorView, 0
-      @clearCursorStylesheets(editorView)
 
   ###===========================================================================
   = Apathy Methods =
@@ -165,21 +151,15 @@ class ApathyView
     leftWrapGuideEnabled =
       atom.config.get "#{@packageName}.enableLeftWrapGuide", cfgOptions
     softWrapEnabled = editor.isSoftWrapped()
-    leftContentPadding =
-      atom.config.get "#{@packageName}.contentPaddingLeft", cfgOptions
-    @debug "leftContentPadding: #{leftContentPadding}"
-    @debug "softWraEnabled: #{softWrapEnabled}"
+    @debug "softWrapEnabled: #{softWrapEnabled}"
     @debug "leftWrapGuideEnabled: #{leftWrapGuideEnabled}"
     # Add or remove wrap guide accordingly.
     if leftWrapGuideEnabled and softWrapEnabled
       @debug "Should add left wrap guides: true"
       @addLeftWrapGuides(editorView)
-      if leftContentPadding?
-        @setLeftContentPadding(editorView, leftContentPadding)
     else
       @debug "Should add left wrap guides: false"
       @removeLeftWrapGuides editorView
-      @clearCursorStylesheets(editorView)
 
   ###*
    * Adds a wrap guide to the left side of the text.
@@ -206,72 +186,7 @@ class ApathyView
   removeLeftWrapGuides: (editorView) =>
     $root = $(editorView.shadowRoot)
     $root.find('.apathy-wrap-guide').remove()
-    @clearCursorStylesheets(editorView)
-  ###*
-   * Sets the 'left' pixel value of left wrap guides, effectively moving both
-   *  wrap guides as well as the content within in to the left without causing
-   *  the cursor to become misaligned.
-   * @method setLeftContentPadding
-   * @param  {Number}      leftPixels - Spacing between gutter and left wrap
-   *                                     guide in pixels.
-    ###
-  setLeftContentPadding: (editorView, leftPixels = 30) =>
-    setTimeout =>
-      @clearCursorStylesheets(editorView)
-      @debug 'called setLeftContentPadding'
-      editor = editorView.model
-      lineHeight = editor.getLineHeightInPixels()
-      buffer = editor.getBuffer()
-      # Generated stylesheet to fix offsets caused by left padding.
-      cursorLineStyles = """
-        <style data-name="apathy-cursor-styles">
-          atom-text-editor /deep/ .line.cursor-line,
-          :host(.is-focused) .line.cursor-line {
-            transform: translateX(-#{leftPixels}px);
-            padding-left: #{leftPixels}px;
-          }
-          atom-text-editor /deep/ .lines, :host .lines {
-            left: #{leftPixels}px !important;
-          }
-          :host .jshint-line::after {
-            content: ' ';
-            position: absolute;
-            width: #{leftPixels}px;
-            top: 0;
-            bottom: 0;
-            background-color: inherit;
-            left: -#{leftPixels}px;
-          }
-          atom-text-editor .highlights .region:after,
-          :host .highlights .region:after {
-            content: ' ';
-            position: absolute;
-            width: 100%;
-            top: 0;
-            bottom: 0;
-            background-color: inherit;
-            right: 0;
-            left: -100%;
-          }
-          atom-text-editor .highlights .region:after, :host .highlights .region:first-child:last-child:after {
-            width: 100%;
-            right: 0;
-            left: auto;
-            margin-right: #{editor.getWidth()}px;
-          }
-        </style>
-      """
-      stylesName = 'style[data-name=apathy-cursor-styles]'
-      unless $(stylesName, editorView.stylesElement).length > 0
-        $(cursorLineStyles).appendTo(editorView.stylesElement)
-    , 500
-  ###*
-   * Destroy styles added to body to offset cursor line styles.
-   * @method clearCursorStylesheets
-  ###
-  clearCursorStylesheets: (editorView) ->
-    @debug 'Clearing cursor styles'
-    $('style[data-name=apathy-cursor-styles]', editorView.stylesElement).remove()
+
   ###*
    * Destroy left wrap guides. Must be called on deactivate, otherwise if users
    *  switch themes from apathy to something else, the guides will stay.

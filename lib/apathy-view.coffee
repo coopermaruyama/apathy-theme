@@ -23,12 +23,6 @@ class ApathyView
           wrapWith = '<span class="apathy-span"/>'
           @wrapTextNodes(editorView, '.line > .source', wrapWith)
           @debug 'Wrapped text nodes.'
-          # HACK Fixes misaligned cursors due to character measurement
-          # occuring  before our custom font is actually loaded. Here we
-          # fix this by waiting a bit then forcing another measurement.
-          # TODO Only run this on already-open editors.
-          @remeasureCharacters editor
-          @debug('Remeasured characters')
         , 500
 
 
@@ -316,23 +310,6 @@ class ApathyView
   unwrapTextNodes: ->
     for node in @customWrappedTextNodes
       $(node).unwrap()
-  ###*
-   * Fixes the cursor getting mis-aligned upon re-opening files due to the
-   *  characters being measured too early.
-   * @method remeasureCharacters
-   * @param  {object}            editor - Atom TextEditor instance.
-  ###
-  timesRemeasured: 0 # counter for remeasure calls.
-  remeasureCharacters: (editor) =>
-    return if @timesRemeasured > 3
-    @tmpDisposables ?= new CompositeDisposable()
-    if editor?
-      @tmpDisposables.add editor?.onDidChangeCursorPosition (event) =>
-        editorView = atom.views.getView?(event.cursor.editor)
-        editorView.component?.linesComponent?.remeasureCharacterWidths?()
-        editorView.component?.remeasureCharacterWidths?()
-        @tmpDisposables?.dispose()
-        @timesRemeasured++
 
   # ----------------------------------------------------------------------------
   # Debugging helpers

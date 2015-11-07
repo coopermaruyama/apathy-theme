@@ -16,13 +16,6 @@ enableLeftWrapGuide:
   title: 'Enable wrap guide on left side'
   order: 3
   default: true
-contentPaddingLeft:
-  type: 'integer'
-  title: 'Padding for left side of buffer in pixels'
-  description: 'Use numbers only.'
-  order: 4
-  default: 30
-  minimum: 0
 bgColorDescription:
   type: 'boolean'
   title: 'Override Core Colors (NOTE: READ THE NOTES BELOW BEFORE TOUCHING THESE!!)'

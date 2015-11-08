@@ -1,54 +1,56 @@
-span.keyword.operator.stylus,
-.constant.numeric {
-    color: #eeffe0;
-}
-.string {
-    color: #ffc91b;
-}
-.string-contents.quoted {
-    color: #bfdee3;
-}
-.punctuation.definition.tag.html {
-    color: white;
-}
-.brace + .string,
-.begin ~ .string:not(:last-child) {
-    color: #ffc91b;
-}
-.support.function {
+atom-text-editor::shadow {
+  span.keyword.operator.stylus,
+  .constant.numeric {
+      color: #eeffe0;
+  }
+  .string {
+      color: #ffc91b;
+  }
+  .string-contents.quoted {
+      color: #bfdee3;
+  }
+  .punctuation.definition.tag.html {
+      color: white;
+  }
+  .brace + .string,
+  .begin ~ .string:not(:last-child) {
+      color: #ffc91b;
+  }
+  .support.function {
+      color: #00ffcf;
+  }
+  .support.type {
+      color: #89d4f5;
+  }
+  .keyword.operator {
+      color: #ff0202;
+      font-weight: 900;
+  }
+  .entity.name.tag {
+  	color: #00c9a1;
+  }
+  .entity.other.attribute-name {
+    color: #ff7317;
+    letter-spacing: 1px;
+  }
+  .variable {
+    color: #fc0d63;
+  }
+  .comment {
+    color: #5a5b6b;
+  }
+  .support.class {
+    color: #2bbc13;
+    font-weight: bold;
+  }
+  .source.js .meta.brace.curly,
+  .source.js .punctuation.terminator.statement.js {
+    color: #7b95a2;
+  }
+  .entity.other.attribute-name.pseudo-class {
     color: #00ffcf;
-}
-.support.type {
-    color: #89d4f5;
-}
-.keyword.operator {
-    color: #ff0202;
-    font-weight: 900;
-}
-.entity.name.tag {
-	color: #00c9a1;
-}
-.entity.other.attribute-name {
-  color: #ff7317;
-  letter-spacing: 1px;
-}
-.variable {
-  color: #fc0d63;
-}
-.comment {
-  color: #5a5b6b;
-}
-.support.class {
-  color: #2bbc13;
-  font-weight: bold;
-}
-.source.js .meta.brace.curly,
-.source.js .punctuation.terminator.statement.js {
-  color: #7b95a2;
-}
-.entity.other.attribute-name.pseudo-class {
-  color: #00ffcf;
-}
-.entity.other.attribute-name.pseudo-class.stylus {
-  color: #00ffcf;
+  }
+  .entity.other.attribute-name.pseudo-class.stylus {
+    color: #00ffcf;
+  }
 }

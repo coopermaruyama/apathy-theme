@@ -117,7 +117,7 @@ class Apathy
   applyStylesheet: (sourcePath, preliminaryContent = "") ->
     stylesheetContent = fs.readFileSync sourcePath, 'utf8'
     source = atom.themes.lessCache.cssForFile sourcePath, [preliminaryContent, stylesheetContent].join '\n'
-    atom.styles.addStyleSheet source, sourcePath: sourcePath, priority: 0, context: 'atom-text-editor'
+    atom.styles.addStyleSheet source, sourcePath: sourcePath, priority: 2, context: 'atom-text-editor'
 
   noAltSyleSelected: ->
     @selectedAltStyle() is atom.config.get "#{@packageName}.altStyle", {excludeSources: [atom.config.getUserConfigPath()]}

@@ -1,58 +1,62 @@
 atom-panel-container, :host {
-.tree-view {
-  padding-left: 10px;
-  background: transparent !important;
-  z-index: 2;
-}
-.tree-view-resizer {
-  z-index: 2;
-  margin-left: 10px;
-  &.tool-panel {
-    background-color: hsl(263, 22%, 11%);
+  .tree-view {
+    padding-left: 10px;
+    background: transparent !important;
+    z-index: 2;
+  }
+  .tree-view.list-tree li.list-nested-item {
+    > .list-item span.name,
+    .entries.list-tree li {
+      color: hsla(0,0%,75%,1);
+    }
+   .list-item span.name:before {
+      -webkit-filter: contrast(90%) brightness(75%);
+    }
+  }
+  .tree-view-resizer.tool-panel {
     -webkit-filter: brightness(90%);
   }
+  .tree-view-resizer .tree-view-scroller {
+    z-index: 2;
+  }
+  .tree-view-resizer.tool-panel::after {
+    background: #030303 url(atom://apathy-theme/styles/stars-bg.jpg);
+    background-position: center bottom;
+    background-size: cover;
+    -webkit-mask-box-image: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 35%, #000000 100%);
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    pointer-events: none;
+    -webkit-filter: hue-rotate(20deg) brightness(0.7);
+  }
+  .tree-view-resizer {
+    & .tree-view-resize-handle::before {
+      content: '';
+      position: fixed;
+      font-size: 11px;
+      line-height: 9px;
+      background: -webkit-linear-gradient(90deg, hsla(0, 0%, 0%, 0.9) 0%, hsla(257, 30%, 18%, 0.9) 20%, hsla(257, 30%, 23%, 0.9) 80%, hsla(0, 0%, 0%, 0.9) 100%);
+      padding: 3px 2px;
+      border-radius: 2px;
+      margin: 0 0 0 1px;
+      z-index: 12;
+      width: 3px;
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+      color: hsl(265, 5%, 52%);
+      text-shadow: 0px -1px hsl(260, 7%, 13%);
+      height: 100%;
+    }
+  }
 }
-.tree-view-resizer .tre-view-resize-handle {
-  z-index: 3;
-  width: 15px;
-height: 100%;
-background: hsl(260, 25%, 21%);
-position: relative;
-top: -100%;
-bottom: auto;
-margin-top: 0;
-font-family: 'Octicons Regular';
-left: -5px;
-}
-.tree-view-resizer.tool-panel::after {
-  background: hsl(263, 1%, 1%) url(atom://apathy-theme/styles/stars-bg.jpg);
-  background-position: center bottom;
-  background-size: cover;
-  -webkit-mask-box-image: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 35%, rgba(0, 0, 0, 1) 100%);
-  content: ' ';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  pointer-events: none;
-  -webkit-filter: hue-rotate(20deg) brightness(0.7);
-}
-.tree-view-resizer .tree-view-resize-handle::before {
-  content: '\f05e \ \f05e';
-  position: fixed;
-  font-size: 11px;
-  line-height: 9px;
-  background: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.8) 42%, rgba(0, 0, 0, 0.9) 100%);
-  padding: 3px 2px;
-  border-radius: 2px;
-  margin: -51% 0 0 5px;
-  z-index: 12;
-  width: 14px;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0;
-  color: hsl(265, 5%, 52%);
-  text-shadow: 0px -1px hsl(260, 7%, 13%);
-}
+atom-panel-container.left {
+  .tree-view.list-tree > li.expanded {
+    padding-right: 0 !important;
+    &.project-root{border: none !important;}
+  }
 }

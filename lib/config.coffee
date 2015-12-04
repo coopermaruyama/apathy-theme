@@ -79,5 +79,11 @@ syntaxContrast:
   description: 'How much contrast?'
   enum: ['70%', '80%', '90%', '100%', '110%', '120%', '130%']
   order: 15
+altStyle:
+  type: 'string'
+  title: 'Alternative Themes'
+  default: 'Default'
+  enum: ['Default', 'Color Pop']
+  order: 16
 
 module.exports = ApathyConfig

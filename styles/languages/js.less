@@ -4,7 +4,7 @@
 // 	------------------------------------------------------------------
 // 	Javascript
 //
-@js-foreground-color: hsl(60, 10%, 90%);
+@js-foreground-color: hsl(220, 10%, 85%);
 @js-alt-color: multiply(@tower-gray, @js-foreground-color);
 @js-desaturated-alt-color: desaturate(@js-alt-color,20%);
 @js-parens-active-color: darken(@js-desaturated-alt-color, 10%);
@@ -17,6 +17,7 @@
     .comment {
       color: hsl(233, 15%, 35%);
     }
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
     // SYMBOLS
@@ -60,6 +61,15 @@
       color: @yellow;
       font-weight: 700;
     }
+
+    /**
+     * Parentheses used in method calls
+     */
+     .punctuation.bracket.round.js.arguments {
+      &.begin, &.end {
+        color: hsl(191, 9%, 38%);
+      }
+     }
     //
     //
     // ------------------------------------------------------------------------
@@ -70,6 +80,10 @@
       font-style: normal;
       font-weight: 700;
       -webkit-text-stroke-width: 0.02em;
+    }
+    .storage.type.var {
+      color: @tomato;
+      font-style: italic;
     }
     /*----- Function declarations ------*/
     // ex: function myFunc(args) {...} (these can be declared after calls).
@@ -85,11 +99,13 @@
         color: hsl(82, 50%, 55%);
       }
     }
-    /*-------  A defined function's name  -------*/
-    // example: 'myFunc' ===> var myFunc = function() {...
+    /**
+     * A function name when called.
+     * e.g. `method` in instance.method()
+     */
     .entity.name.function {
-      font-weight: 700;
-      color: @candlelight;
+      font-weight: 400;
+      color: @js-foreground-color;
     }
     /*-------  an operator which follows a defined function's name  -------*/
     // example: the '=' operator in the above example.
@@ -178,6 +194,15 @@
       .meta& {
         color: @sulu;
       }
+    }
+    .variable {
+      color: @js-foreground-color;
+      font-weight: 400;
+      font-style: normal;
+    }
+    .variable.language.js {
+      color: @orange;
+      font-weight: bold;
     }
     .variable.parameter {
       font-weight: 200;

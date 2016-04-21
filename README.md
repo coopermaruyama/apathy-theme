@@ -1,5 +1,8 @@
 # Apathy   ////  Atom Syntax Theme
 
+### Note:
+**In newer versions of Atom this syntax theme only works correctly when run in development mode. To get a version which only includes the syntax styles and supports newer versions of Atom, download ![vivid-syntax](https://atom.io/themes/vivid).
+
 [![Join the chat at https://gitter.im/coopermaruyama/apathy-theme](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/coopermaruyama/apathy-theme?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ![Apathy main
@@ -37,24 +40,24 @@ This dark syntax theme sports a subtle, deep purple base with vivid candy-like c
 
 # Features
 
-### 1. _Source Code Pro_ and _Inconsolata_ Font Included:  
+### 1. _Source Code Pro_ and _Inconsolata_ Font Included:
 
-**Source Code Pro:**  
+**Source Code Pro:**
 ![Source code pro Screenshot](https://s3.amazonaws.com/f.cl.ly/items/3C0y3L400K2S0g2F132o/Image%202015-06-03%20at%202.19.53%20AM.png)
 
-**Inconsolata:**  
+**Inconsolata:**
 ![Inconsolata Screenshot](https://s3.amazonaws.com/f.cl.ly/items/0W0N2F181t2k0Z0a2M3x/Image%202015-06-03%20at%202.20.22%20AM.png)
 
 
 
-### 2. Left wrap guide & customizable padding (optional)  
+### 2. Left wrap guide & customizable padding (optional)
 ![left wrap guide ss](https://s3.amazonaws.com/f.cl.ly/items/0e3O2E2s472q1w15383y/Image%202015-06-03%20at%202.37.21%20AM.png)
 
 
 
 ### 3. Semantic highlighting (Optional)
 
-Applied only to text that is grammars leave unscoped:  
+Applied only to text that is grammars leave unscoped:
 ![Semantic Screenshot](https://s3.amazonaws.com/f.cl.ly/items/2p1F2I451d3n3l0Z1M3p/Image%202015-06-03%20at%202.23.51%20AM.png)
 
 

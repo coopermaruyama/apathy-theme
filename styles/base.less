@@ -75,7 +75,8 @@ box-shadow: inset 0px 17px 38px hsla(0, 0%, 0%, 0.4);
 atom-text-editor .gutter .line-number.cursor-line, :host .gutter .line-number.cursor-line {
   background-color: @syntax-gutter-background-color-selected;
   color: @syntax-gutter-text-color-selected;
-  text-shadow: 0px -1px hsla(0, 0%, 0%, 0.2), 0px 1px hsla(0, 100%, 100%, 0.1);
+    /*color: hsl(0, 0%, 25%);*/
+    text-shadow: none;
 }
 
 atom-text-editor .gutter .line-number.cursor-line-no-selection, :host .gutter .line-number.cursor-line-no-selection {
@@ -114,14 +115,16 @@ atom-text-editor.is-focused .cursor, :host(.is-focused) .cursor {
 
 
 :host(.is-focused) .selection .region {
-  background-color: hsla(280, 22%, 45%, .5);
+  background-color: @syntax-selection-color;
+  z-index: 1;
 }
 
 atom-text-editor.is-focused .line-number.cursor-line-no-selection, atom-text-editor.is-focused .line.cursor-line, :host(.is-focused) .line-number.cursor-line-no-selection, :host(.is-focused) .line.cursor-line {
-  background-color: hsl(265, 25%, 11%);
+  background-color: hsl(265, 15%, 13%);
   border: none;
   z-index: 101;
-	& .entity.name.function {
+	& .source:not(.coffee) .entity.name.function,
+	& .source.coffee .meta.function .entity.name.function {
 		-webkit-transition: all 1s;
 		-webkit-animation: neon6 1s ease-in-out infinite alternate;
 	}
@@ -399,6 +402,7 @@ atom-text-editor::shadow .find-result .region {
 // Language Imports
 //
 @import "languages/js.less";
+@import "languages/jsx.less";
 @import "languages/meteor.less"; // includes spacebars
 @import "languages/css.less";
 @import "languages/markdown.less";

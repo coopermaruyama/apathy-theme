@@ -123,8 +123,8 @@ class ApathyView
     @debug 'method called: decorateEditorView'
     # ___________________________________________
     # custom wrap unselectable .source text nodes
-    # wrapTextWith = '<span class="apathy-span"/>'
-    # @wrapTextNodes editorView, '.source', wrapTextWith
+    wrapTextWith = '<span class="apathy-span"/>'
+    @wrapTextNodes editorView, '.source', wrapTextWith
 
   ###*
    * Perform all actions relevant to the wrap guides for the passed-in view.

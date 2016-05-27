@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>config.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>config.coffee</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="apathy-view.html">
+                    apathy-view.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="apathy.html">
+                    apathy.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="config.html">
+                    config.coffee
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        
+        
+          <div class='highlight'><pre>ApathyConfig =
+semanticHighlighting:
+  type: <span class="hljs-string">'boolean'</span>
+  title: <span class="hljs-string">'Enable semantic highlighting'</span>
+  description: <span class="hljs-string">'Looks for text that has no grammar applied and semantically highlights them.'</span>
+  default: <span class="hljs-literal">true</span>
+  order: <span class="hljs-number">1</span>
+altFont:
+  type: <span class="hljs-string">'string'</span>
+  title: <span class="hljs-string">'Select Font'</span>
+  default: <span class="hljs-string">'Source Code Pro'</span>
+  enum: [<span class="hljs-string">'Source Code Pro'</span>, <span class="hljs-string">'Inconsolata'</span>]
+  order: <span class="hljs-number">2</span>
+enableLeftWrapGuide:
+  type: <span class="hljs-string">'boolean'</span>
+  title: <span class="hljs-string">'Enable wrap guide on left side'</span>
+  order: <span class="hljs-number">3</span>
+  default: <span class="hljs-literal">true</span>
+bgColorDescription:
+  type: <span class="hljs-string">'boolean'</span>
+  title: <span class="hljs-string">'Override Core Colors (NOTE: READ THE NOTES BELOW BEFORE TOUCHING THESE!!)'</span>
+  description: <span class="hljs-string">'(checkbox does nothing) Make sure to reload atom (ctrl+alt+cmd+L) after changing a color!'</span>
+  order: <span class="hljs-number">5</span>
+  default: <span class="hljs-literal">false</span>
+customSyntaxBgColor:
+  type: <span class="hljs-string">'color'</span>
+  title: <span class="hljs-string">'Override syntax background color'</span>
+  description: <span class="hljs-string">'Changes the background color your text lays on.'</span>
+  default: <span class="hljs-string">'hsl(260, 25%, 6%)'</span>
+  order: <span class="hljs-number">6</span>
+customInactiveOverlayColor:
+  type: <span class="hljs-string">'color'</span>
+  title: <span class="hljs-string">'Custom overlay background color'</span>
+  description: <span class="hljs-string">'Changes overall color of everything except tabs, tree-view, and the bottom bar.'</span>
+  default: <span class="hljs-string">'hsla(261, 34%, 15%, 0.9)'</span>
+  order: <span class="hljs-number">7</span>
+customUnderlayerBgColor:
+  type: <span class="hljs-string">'color'</span>
+  title: <span class="hljs-string">'Custom under-layer background color'</span>
+  description: <span class="hljs-string">'Dim color for inactive panes, under text.'</span>
+  default: <span class="hljs-string">'hsl(258, 6%, 6%)'</span>
+  order: <span class="hljs-number">8</span>
+customInactivePaneBgColor:
+  type: <span class="hljs-string">'color'</span>
+  title: <span class="hljs-string">'Custom inactive pane background color'</span>
+  description: <span class="hljs-string">'Dim color for inactive panes, above text.'</span>
+  default: <span class="hljs-string">'hsl(260,5%,11%)'</span>
+  order: <span class="hljs-number">9</span>
+enableTreeViewStyles:
+  title: <span class="hljs-string">'Enable tree view background image'</span>
+  description: <span class="hljs-string">'Adds a background image to your tree view'</span>
+  type: <span class="hljs-string">'boolean'</span>
+  default: <span class="hljs-literal">false</span>
+  order: <span class="hljs-number">10</span>
+enableTreeViewBorder:
+  title: <span class="hljs-string">'Enable tree view border'</span>
+  description: <span class="hljs-string">'Makes it really easy to discern nesting'</span>
+  type: <span class="hljs-string">'boolean'</span>
+  default: <span class="hljs-literal">false</span>
+  order: <span class="hljs-number">11</span>
+syntaxSaturation:
+  type: <span class="hljs-string">'string'</span>
+  title: <span class="hljs-string">'Syntax Saturation (requires reload)'</span>
+  default: <span class="hljs-string">'90%'</span>
+  description: <span class="hljs-string">'How colorful do you want your syntax highlights?'</span>
+  enum: [<span class="hljs-string">'70%'</span>, <span class="hljs-string">'80%'</span>, <span class="hljs-string">'90%'</span>, <span class="hljs-string">'100%'</span>, <span class="hljs-string">'110%'</span>, <span class="hljs-string">'120%'</span>, <span class="hljs-string">'130%'</span>]
+  order: <span class="hljs-number">13</span>
+syntaxBrightness:
+  type: <span class="hljs-string">'string'</span>
+  title: <span class="hljs-string">'Syntax Brightness (requires reload)'</span>
+  default: <span class="hljs-string">'90%'</span>
+  description: <span class="hljs-string">'How bright?'</span>
+  enum: [<span class="hljs-string">'70%'</span>, <span class="hljs-string">'80%'</span>, <span class="hljs-string">'90%'</span>, <span class="hljs-string">'100%'</span>, <span class="hljs-string">'110%'</span>, <span class="hljs-string">'120%'</span>, <span class="hljs-string">'130%'</span>]
+  order: <span class="hljs-number">14</span>
+syntaxContrast:
+  type: <span class="hljs-string">'string'</span>
+  title: <span class="hljs-string">'Syntax Contrast (requires reload)'</span>
+  default: <span class="hljs-string">'90%'</span>
+  description: <span class="hljs-string">'How much contrast?'</span>
+  enum: [<span class="hljs-string">'70%'</span>, <span class="hljs-string">'80%'</span>, <span class="hljs-string">'90%'</span>, <span class="hljs-string">'100%'</span>, <span class="hljs-string">'110%'</span>, <span class="hljs-string">'120%'</span>, <span class="hljs-string">'130%'</span>]
+  order: <span class="hljs-number">15</span>
+altStyle:
+  type: <span class="hljs-string">'string'</span>
+  title: <span class="hljs-string">'Alternative Themes'</span>
+  default: <span class="hljs-string">'Default'</span>
+  enum: [<span class="hljs-string">'Default'</span>, <span class="hljs-string">'Color Pop'</span>]
+  order: <span class="hljs-number">16</span>
+
+<span class="hljs-built_in">module</span>.exports = ApathyConfig</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

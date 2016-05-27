@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>apathy-view.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>apathy-view.coffee</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="apathy-view.html">
+                    apathy-view.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="apathy.html">
+                    apathy.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="config.html">
+                    config.coffee
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        
+        
+          <div class='highlight'><pre>{CompositeDisposable} = <span class="hljs-built_in">require</span>(<span class="hljs-string">'atom'</span>)
+{$} = <span class="hljs-built_in">require</span> <span class="hljs-string">'atom-space-pen-views'</span>
+
+<span class="hljs-built_in">module</span>.exports =
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ApathyView</span></span>
+  constructor: <span class="hljs-function"><span class="hljs-params">(serializedState)</span> -&gt;</span>
+    @packageName = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../package.json'</span>).name
+    @viewDisposables = <span class="hljs-keyword">new</span> CompositeDisposable()
+    self = <span class="hljs-keyword">this</span>
+
+    $ =&gt;
+      @debug <span class="hljs-string">'Got event - jQuery.ready'</span></pre></div>
+        
+      
+        
+        <p>##*</p>
+
+        
+          <div class='highlight'><pre>       * Initialize &amp; decorate newly-created TextEditor instances.
+       * @param {TextEditor} editor - Text editor to decorate using config.
+       * @return {Disposable}</pre></div>
+        
+      
+        
+        <p>##</p>
+
+        
+          <div class='highlight'><pre>      @viewDisposables.add atom.workspace.observeTextEditors (editor) =&gt;
+        editorView = atom.views.getView editor
+        @decorateEditorView editorView
+        @debug <span class="hljs-string">'event triggered - observeTextEditor'</span>
+        setTimeout =&gt;
+          wrapWith = <span class="hljs-string">'&lt;span class="apathy-span"/&gt;'</span>
+          @wrapTextNodes(editorView, <span class="hljs-string">'.line &gt; .source'</span>, wrapWith)
+          @debug <span class="hljs-string">'Wrapped text nodes.'</span>
+        , <span class="hljs-number">500</span></pre></div>
+        
+      
+        
+        <hr>
+
+        
+      
+        
+        <p>Wrap Guide: toggle</p>
+
+        
+          <div class='highlight'><pre>    wrapKeyPath = <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.enableLeftWrapGuide"</span>
+    @viewDisposables ?= <span class="hljs-keyword">new</span> CompositeDisposable()
+    wrapGuideConfigObserver =
+      atom.config.onDidChange wrapKeyPath, <span class="hljs-function"><span class="hljs-params">(isEnabled)</span> =&gt;</span>
+        @debug <span class="hljs-string">'got event - config.enableLeftWrapGuide changed.'</span>
+        <span class="hljs-keyword">if</span> isEnabled
+          @forAllEditorViews (editorView) =&gt;
+            theEditor = editorView.model
+            editorScope = theEditor.getLastCursor().getScopeDescriptor()
+            @updateWrapGuides(editorView, editorScope)
+        <span class="hljs-keyword">else</span>
+          @destroyLeftWrapGuides()
+    @viewDisposables.add(wrapGuideConfigObserver)</pre></div>
+        
+      
+        
+        <hr>
+
+        
+      
+        
+        <p>Semantic highlights enabled/disabled</p>
+
+        
+          <div class='highlight'><pre>    semHighlightPath = <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.semanticHighlighting"</span>
+    highlightConfigObserver =
+      atom.config.onDidChange semHighlightPath, <span class="hljs-function"><span class="hljs-params">(isEnabled)</span> =&gt;</span>
+        @forAllEditorViews (editorView) =&gt;
+          <span class="hljs-keyword">if</span> isEnabled
+            wrapWith = <span class="hljs-string">'&lt;span class="apathy-span"/&gt;'</span>
+            @wrapTextNodes(editorView, <span class="hljs-string">'.line &gt; .source'</span>, wrapWith)
+          <span class="hljs-keyword">else</span>
+            @removeSemanticHighlights(editorView)
+    @viewDisposables.add(highlightConfigObserver)</pre></div>
+        
+      
+        
+        <hr>
+
+        
+      
+        
+        <p>Event: user enables/disables soft wrap.</p>
+
+        
+          <div class='highlight'><pre>    softWrapConfigObserver =
+      atom.config.onDidChange <span class="hljs-string">"editor.softWrap"</span>, <span class="hljs-function"><span class="hljs-params">(isEnabled)</span> =&gt;</span>
+        @debug <span class="hljs-string">'got event - editor.softwrap config changed'</span>
+        @forAllEditorViews (editorView) =&gt;
+          editorModel = editorView.model
+          editorScope = editorModel.getLastCursor().getScopeDescriptor()
+          @updateWrapGuides(editorView, editorScope)
+    @viewDisposables.add(softWrapConfigObserver)</pre></div>
+        
+      
+        
+        <p>Text editor observers</p>
+
+        
+          <div class='highlight'><pre>    @editorDisposables = <span class="hljs-keyword">new</span> CompositeDisposable()
+    @viewDisposables.add atom.workspace.observeTextEditors (editor) =&gt;
+      editorView = atom.views.getView(editor)
+      editorScope = editor.getLastCursor().getScopeDescriptor()
+      softWrapDisposable = editor.onDidChangeSoftWrapped =&gt;
+        @updateWrapGuides(editorView, editorScope)
+      semanticDisposable = editor.onDidStopChanging =&gt;
+        wrapWith = <span class="hljs-string">'&lt;span class="apathy-span"/&gt;'</span>
+        @wrapTextNodes(editorView, <span class="hljs-string">'.line &gt; .source'</span>, wrapWith)
+      @editorDisposables.add(softWrapDisposable)
+      editor.onDidDestroy -&gt; softWrapDisposable?.dispose()</pre></div>
+        
+      
+        
+        <p>Returns an object that can be retrieved when package is activated</p>
+
+        
+          <div class='highlight'><pre>  serialize: <span class="hljs-function">-&gt;</span>
+    state =
+      characterWidths: {}
+    editors = atom.workspace.getTextEditors()
+    $.each editors, <span class="hljs-function"><span class="hljs-params">(editor)</span> -&gt;</span>
+      ev = atom.views.getView(editor)
+      characterWidths =
+        ev.component.linesComponent?.presenter?.characterWidthsByScope
+      $.extend state.characterWidths, characterWidths
+    <span class="hljs-keyword">return</span> state</pre></div>
+        
+      
+        
+        <p>Tear down any state and detach</p>
+
+        
+          <div class='highlight'><pre>  destroy: <span class="hljs-function">-&gt;</span></pre></div>
+        
+      
+        
+        <p>dispose disposables</p>
+
+        
+          <div class='highlight'><pre>    @viewDisposables?.dispose()
+    @tmpDisposables?.dispose()
+
+    @destroyLeftWrapGuides()
+    @unwrapTextNodes()</pre></div>
+        
+      
+        
+        <p>##===========================================================================</p>
+
+        
+          <div class='highlight'><pre>  = Apathy Methods =
+  ===========================================================================<span class="hljs-comment">###
+  forAllEditors: (callback) -&gt;
+    for editor in atom.workspace.getTextEditors()
+      callback(editor)
+
+  forAllEditorViews: (callback) -&gt;
+    @forAllEditors (editor) -&gt;
+      callback(atom.views.getView(editor))
+
+  getSetting: (configPath, external = false) =&gt;
+    fullConfigPath =
+      if external then configPath else "#{@packageName}.#{configPath}"
+    return atom.config.get(fullConfigPath)
+
+  decorateEditorView: (editorView) =&gt;
+    @updateWrapGuides(editorView)
+    @debug 'method called: decorateEditorView'
+</span></pre></div>
+        
+      
+        
+        <hr>
+<p>custom wrap unselectable .source text nodes
+wrapTextWith = ‘<span class="apathy-span"/>‘
+@wrapTextNodes editorView, ‘.source’, wrapTextWith</p>
+
+        
+      
+        
+        <p>##*</p>
+
+        
+          <div class='highlight'><pre>   * Perform all actions relevant to the wrap guides <span class="hljs-keyword">for</span> the passed-<span class="hljs-keyword">in</span> view.
+   * Should be called after any event occurs that should affect the state <span class="hljs-keyword">of</span>
+   * the wrap guides, such as disabling soft wrap <span class="hljs-keyword">or</span> left wrap guide padding.
+   * @param {obj} editorView The view <span class="hljs-keyword">of</span> any {TextEditor} instance.
+   * @return {<span class="hljs-literal">null</span>}</pre></div>
+        
+      
+        
+        <p>##</p>
+
+        
+          <div class='highlight'><pre>  updateWrapGuides: <span class="hljs-function"><span class="hljs-params">(editorView, editorScope)</span> =&gt;</span>
+    <span class="hljs-keyword">unless</span> editorView?
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error(<span class="hljs-string">'updateWrapGuides: editorView undefined'</span>)
+      @debug <span class="hljs-string">'ERROR: editorView undefined in updateWrapGuides!'</span>
+      <span class="hljs-keyword">return</span>
+    @debug <span class="hljs-string">'method called: updateWrapGuides'</span>
+    editor = editorView.model</pre></div>
+        
+      
+        
+        <p>Get config</p>
+
+        
+          <div class='highlight'><pre>    cfgOptions = {scope: editorScope}
+    leftWrapGuideEnabled =
+      atom.config.get <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.enableLeftWrapGuide"</span>, cfgOptions
+    softWrapEnabled = editor.isSoftWrapped()
+    @debug <span class="hljs-string">"softWrapEnabled: <span class="hljs-subst">#{softWrapEnabled}</span>"</span>
+    @debug <span class="hljs-string">"leftWrapGuideEnabled: <span class="hljs-subst">#{leftWrapGuideEnabled}</span>"</span></pre></div>
+        
+      
+        
+        <p>Add or remove wrap guide accordingly.</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">if</span> leftWrapGuideEnabled <span class="hljs-keyword">and</span> softWrapEnabled
+      @debug <span class="hljs-string">"Should add left wrap guides: true"</span>
+      @addLeftWrapGuides(editorView)
+    <span class="hljs-keyword">else</span>
+      @debug <span class="hljs-string">"Should add left wrap guides: false"</span>
+      @removeLeftWrapGuides editorView</pre></div>
+        
+      
+        
+        <p>##*</p>
+
+        
+          <div class='highlight'><pre>   * Adds a wrap guide to the left side <span class="hljs-keyword">of</span> the text.
+   * @method addLeftWrapGuides</pre></div>
+        
+      
+        
+        <p>##</p>
+
+        
+          <div class='highlight'><pre>  addLeftWrapGuides: <span class="hljs-function"><span class="hljs-params">(editorView)</span> =&gt;</span>
+    @leftWrapGuides ?= []
+    @debug <span class="hljs-string">'called: addLeftWrapGuides'</span>
+    $existing = $(<span class="hljs-string">'.scroll-view .apathy-wrap-guide'</span>, editorView.shadowRoot)
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> $existing.length
+    wrapGuideLeft = <span class="hljs-string">"""
+      &lt;div class=\"wrap-guide apathy-wrap-guide" style=\"left: -5px; display: block;\"&gt;&lt;/div&gt;
+    """</span>
+    $lines = $(<span class="hljs-string">'.scroll-view .lines'</span>, editorView.shadowRoot)
+    wrapGuideElement = $(wrapGuideLeft).prependTo($lines)
+    @leftWrapGuides.push(wrapGuideElement)</pre></div>
+        
+      
+        
+        <p>##*</p>
+
+        
+          <div class='highlight'><pre>   * Removes all previously injected left wrap guides from the view, <span class="hljs-keyword">unless</span>
+   * <span class="hljs-literal">no</span> guides exist, <span class="hljs-keyword">in</span> which case it does nothing.
+   * @param {View} editorView The view object <span class="hljs-keyword">for</span> the editor.
+   * @return {<span class="hljs-literal">null</span>}</pre></div>
+        
+      
+        
+        <p>##</p>
+
+        
+          <div class='highlight'><pre>  removeLeftWrapGuides: <span class="hljs-function"><span class="hljs-params">(editorView)</span> =&gt;</span>
+    $root = $(editorView.shadowRoot)
+    $root.find(<span class="hljs-string">'.apathy-wrap-guide'</span>).remove()</pre></div>
+        
+      
+        
+        <p>##*</p>
+
+        
+          <div class='highlight'><pre>   * Destroy left wrap guides. Must be called <span class="hljs-literal">on</span> deactivate, otherwise <span class="hljs-keyword">if</span> users
+   *  <span class="hljs-keyword">switch</span> themes from apathy to something <span class="hljs-keyword">else</span>, the guides will stay.
+   * @method destroyLeftWrapGuides</pre></div>
+        
+      
+        
+        <p>##</p>
+
+        
+          <div class='highlight'><pre>  destroyLeftWrapGuides: <span class="hljs-function">-&gt;</span>
+    @debug <span class="hljs-string">'destroying wrap guides'</span>
+    <span class="hljs-keyword">if</span> @leftWrapGuides?.length
+      $(wrapGuide).remove() <span class="hljs-keyword">for</span> wrapGuide <span class="hljs-keyword">in</span> @leftWrapGuides</pre></div>
+        
+      
+        
+        <hr>
+
+        
+      
+        
+        <p>Words to exclude from semantic highlighting</p>
+
+        
+          <div class='highlight'><pre>  excludedWords: [<span class="hljs-string">'function'</span>, <span class="hljs-string">'var'</span> ,<span class="hljs-string">'each'</span>, <span class="hljs-string">'extend'</span>, <span class="hljs-string">'_'</span>, <span class="hljs-string">'return'</span>, <span class="hljs-string">'unless'</span>, <span class="hljs-string">'if'</span>, <span class="hljs-string">'else'</span>, <span class="hljs-string">'not'</span>, <span class="hljs-string">'for'</span>, <span class="hljs-string">'while'</span>]</pre></div>
+        
+      
+        
+        <p>##*</p>
+
+        
+          <div class='highlight'><pre>   * Looks <span class="hljs-keyword">for</span> text nodes <span class="hljs-keyword">and</span> wraps them with a tag. Assuming we have the
+   *  following HTML:
+   *   &lt;span&gt;
+   *     &lt;span&gt;lorem&lt;/span&gt;
+   *     hello <span class="hljs-regexp">//</span> wraps <span class="hljs-keyword">this</span> since we can<span class="hljs-string">'t select just this via CSS otherwise.
+   *   &lt;/span&gt;
+   *  There'</span>s <span class="hljs-literal">no</span> way to select just <span class="hljs-string">'hello'</span> with a CSS selector. Therefore, <span class="hljs-keyword">this</span>
+   *  method looks <span class="hljs-keyword">for</span> these <span class="hljs-keyword">and</span> wraps them with a `<span class="javascript">&lt;span&gt;</span>` to make them
+   *  selectable, <span class="hljs-keyword">and</span> adds the first word <span class="hljs-keyword">in</span> the tag into data-word attribute.
+   * @method wrapTextNodes
+   * @param  {string}      selector - Selector to .source.grammar nodes.
+   * @param  {string}      wrapWith - String that will be used to generate a
+   *                                  jQuery object to wrap matched text nodes
+   *                                  with. example: <span class="hljs-string">'&lt;span class="js"&gt;&lt;/span&gt;'</span>.</pre></div>
+        
+      
+        
+        <p>##</p>
+
+        
+          <div class='highlight'><pre>  wrapTextNodes: <span class="hljs-function"><span class="hljs-params">(editorView, selector, wrapWith)</span> -&gt;</span>
+    @customWrappedTextNodes ?= []
+    @apathyWordTracker ?= [] <span class="hljs-comment"># store number of times a keyword is used.</span>
+    @debug <span class="hljs-string">'called: wrapTextNodes'</span>
+    self = <span class="hljs-keyword">this</span>
+    $root = $(editorView.shadowRoot)
+    $root.find(<span class="hljs-string">'[data-apathy-selected]'</span>).attr(<span class="hljs-string">'data-apathy-selected'</span>, <span class="hljs-string">'false'</span>)
+    $root.find(selector).each -&gt;
+      $(<span class="hljs-keyword">this</span>)
+        .contents()
+        .filter (i, val) -&gt; val.nodeType <span class="hljs-keyword">is</span> <span class="hljs-number">3</span>
+        .each (i, val) -&gt;</pre></div>
+        
+      
+        
+        <p>add tag which can be used for CSS</p>
+
+        
+          <div class='highlight'><pre>          theText = $(<span class="hljs-keyword">this</span>).text().trim()
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> theText? <span class="hljs-comment"># move on if empty</span>
+          match = theText.match <span class="hljs-regexp">/\b[\w]+\b/g</span>
+          firstWord = match?[<span class="hljs-number">0</span>]</pre></div>
+        
+      
+        
+        <p>wrap the text</p>
+
+        
+          <div class='highlight'><pre>          $wrapped = $(<span class="hljs-keyword">this</span>).wrap wrapWith
+          self.customWrappedTextNodes.push $wrapped</pre></div>
+        
+      
+        
+        <hr>
+
+        
+      
+        
+        <p>semantic highligting</p>
+
+        
+          <div class='highlight'><pre>          self.decorateSemantic $root, $wrapped, firstWord</pre></div>
+        
+      
+        
+        <p>##*</p>
+
+        
+          <div class='highlight'><pre>   *  Given a bunch <span class="hljs-keyword">of</span> text nodes as input, determines the importance <span class="hljs-keyword">of</span> each
+   *  <span class="hljs-keyword">by</span> counting occurences <span class="hljs-keyword">and</span> whether the word <span class="hljs-keyword">is</span> selected, <span class="hljs-keyword">and</span> semantically
+   *  highlights all occurences <span class="hljs-keyword">of</span> those words.
+   *
+   *  @param   {Object} $rootNode - jQuery element used as a starting point <span class="hljs-keyword">of</span>
+   *                                which all children will be processed.
+   *  @param   {Object} $textNode - jQuery element containing the text node to
+   *                                possibly semantically highlight.
+   *  @param   {String} firstWord - First word inside $textNode.</pre></div>
+        
+      
+        
+        <p>##</p>
+
+        
+          <div class='highlight'><pre>  decorateSemantic: <span class="hljs-function"><span class="hljs-params">($rootNode, $textNode, firstWord)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> @validateSemantic(firstWord)</pre></div>
+        
+      
+        
+        <p>count how many times this word is used.</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">unless</span> $.inArray(firstWord, @apathyWordTracker) &gt; <span class="hljs-number">-1</span>
+      @apathyWordTracker.push firstWord
+    numMatches =
+      $rootNode.find(<span class="hljs-string">"[data-apathy-word=<span class="hljs-subst">#{firstWord}</span>]"</span>).length <span class="hljs-keyword">or</span> <span class="hljs-number">1</span></pre></div>
+        
+      
+        
+        <p>Check if word is under cursor</p>
+
+        
+          <div class='highlight'><pre>    re = <span class="hljs-keyword">new</span> RegExp firstWord
+    isSelectedWord = re.test @getWordUnderCursor()</pre></div>
+        
+      
+        
+        <p>Apply to DOM</p>
+
+        
+          <div class='highlight'><pre>    $textNode.parent().attr <span class="hljs-string">'data-apathy-word'</span>, firstWord
+    self = <span class="hljs-keyword">this</span>
+    $rootNode.find(<span class="hljs-string">"[data-apathy-word=<span class="hljs-subst">#{firstWord}</span>]"</span>).each -&gt;
+      $(<span class="hljs-keyword">this</span>).attr <span class="hljs-string">'data-apathy-count'</span>, numMatches
+      semanticIndex = $.inArray(firstWord, self.apathyWordTracker) % <span class="hljs-number">6</span></pre></div>
+        
+      
+        
+        <p>Only style iff 2 or more matches</p>
+
+        
+          <div class='highlight'><pre>      <span class="hljs-keyword">if</span> semanticIndex &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> numMatches &gt;= <span class="hljs-number">2</span>
+        $(<span class="hljs-keyword">this</span>).attr <span class="hljs-string">'data-apathy-index'</span>, semanticIndex</pre></div>
+        
+      
+        
+        <p>Glow if the word is under the cursor.</p>
+
+        
+          <div class='highlight'><pre>      <span class="hljs-keyword">if</span> isSelectedWord
+        $(<span class="hljs-keyword">this</span>).attr <span class="hljs-string">'data-apathy-selected'</span>, <span class="hljs-string">'true'</span>
+
+
+  validateSemantic: <span class="hljs-function"><span class="hljs-params">(theWord)</span> -&gt;</span></pre></div>
+        
+      
+        
+        <p>Can’t decorate if no text editor exists to be decorated!</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> atom.workspace.getActiveTextEditor()?</pre></div>
+        
+      
+        
+        <p>Skip if user disabled this setting.</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> atom.config.get <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.semanticHighlighting"</span></pre></div>
+        
+      
+        
+        <p>Strings only!</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> <span class="hljs-keyword">typeof</span> theWord <span class="hljs-keyword">is</span> <span class="hljs-string">'string'</span></pre></div>
+        
+      
+        
+        <p>require at least 3 letters</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">unless</span> theWord?.length &gt; <span class="hljs-number">3</span></pre></div>
+        
+      
+        
+        <p>check against invalid words</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">if</span> $.inArray(theWord, @excludedWords) &gt; <span class="hljs-number">-1</span></pre></div>
+        
+      
+        
+        <p>Ok, should be fine</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span></pre></div>
+        
+      
+        
+        <p>##*</p>
+
+        
+          <div class='highlight'><pre>   *  Get the word under the <span class="hljs-number">1</span>st cursor <span class="hljs-keyword">in</span> the active text editor. Note that it
+   *  won<span class="hljs-string">'t return anything if you'</span>re <span class="hljs-keyword">in</span> whitespace, <span class="hljs-keyword">or</span> between punctuation <span class="hljs-keyword">or</span>
+   *  something.
+   *  @return  {String} - Word under cursor.</pre></div>
+        
+      
+        
+        <p>##</p>
+
+        
+          <div class='highlight'><pre>  getWordUnderCursor: <span class="hljs-function">-&gt;</span>
+    editor = atom.workspace.getActiveTextEditor()
+    <span class="hljs-keyword">return</span> <span class="hljs-string">""</span> <span class="hljs-keyword">unless</span> editor?
+    editorCursors = editor.cursors
+    <span class="hljs-keyword">return</span> <span class="hljs-string">""</span> <span class="hljs-keyword">unless</span> editorCursors?.length &gt; <span class="hljs-number">0</span>
+    cursorWordBufferRange = editorCursors[<span class="hljs-number">0</span>].getCurrentWordBufferRange()
+    wordUnderCursor = editor.buffer.getTextInRange(cursorWordBufferRange)
+    <span class="hljs-keyword">return</span> wordUnderCursor
+
+  removeSemanticHighlights: <span class="hljs-function"><span class="hljs-params">(editorView)</span> -&gt;</span>
+    attrs = <span class="hljs-string">'data-apathy-index data-apathy-count'</span>
+    $(editorView.shadowRoot).find(<span class="hljs-string">'[data-apathy-index]'</span>).removeAttr attrs</pre></div>
+        
+      
+        
+        <p>##*</p>
+
+        
+          <div class='highlight'><pre>   * Unwrap nodes wrapped <span class="hljs-keyword">by</span> @wrapTextNodes().
+   * @method unwrapTextNodes</pre></div>
+        
+      
+        
+        <p>##</p>
+
+        
+          <div class='highlight'><pre>  unwrapTextNodes: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> @customWrappedTextNodes
+      $(node).unwrap()</pre></div>
+        
+      
+        
+        <hr>
+
+        
+      
+        
+        <p>Debugging helpers</p>
+<p>To view debugging info, run the following in console:</p>
+<blockquote>
+<p>apathy = atom.packages.getActivePackage(‘apathy-theme’).mainModule
+apathy.apathyView.getDebugLog()</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  debug: <span class="hljs-function"><span class="hljs-params">(message)</span> =&gt;</span>
+    @debugLog.shift() <span class="hljs-keyword">if</span> @debugLog.length &gt; <span class="hljs-number">100</span>
+    @debugLog.push(<span class="hljs-string">"Apathy Theme: <span class="hljs-subst">#{message}</span>"</span>)
+    <span class="hljs-keyword">if</span> @getSetting(<span class="hljs-string">'debug'</span>)
+      atom.notifications.addInfo <span class="hljs-string">"Apathy Theme: <span class="hljs-subst">#{message}</span>"</span>
+
+
+  debugLog: []
+
+  getDebugLog: <span class="hljs-function">=&gt;</span> <span class="hljs-built_in">console</span>.log @debugLog.join(<span class="hljs-string">"\n"</span>)</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>apathy.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>apathy.coffee</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="apathy-view.html">
+                    apathy-view.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="apathy.html">
+                    apathy.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="config.html">
+                    config.coffee
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        
+        
+          <div class='highlight'><pre>fs = <span class="hljs-built_in">require</span> <span class="hljs-string">'fs'</span>
+path = <span class="hljs-built_in">require</span> <span class="hljs-string">'path'</span>
+{CompositeDisposable, Color} = <span class="hljs-built_in">require</span> <span class="hljs-string">'atom'</span>
+ApathyView = <span class="hljs-built_in">require</span> <span class="hljs-string">'./apathy-view'</span>
+ApathyConfig = <span class="hljs-built_in">require</span> <span class="hljs-string">'./config'</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Apathy</span></span>
+
+  config: ApathyConfig</pre></div>
+        
+      
+        
+        <p>Option: Choose antialiasing/subpixel-antialiasing
+Option: Choose brightness, saturation, contrast</p>
+
+        
+          <div class='highlight'><pre>
+  activate: <span class="hljs-function"><span class="hljs-params">(state)</span> -&gt;</span></pre></div>
+        
+      
+        
+        <p>Build initial state (previous state available at state.apathyViewState).</p>
+
+        
+          <div class='highlight'><pre>    @apathyView = <span class="hljs-keyword">new</span> ApathyView state.apathyViewState
+    @disposables = <span class="hljs-keyword">new</span> CompositeDisposable
+    @packageName = <span class="hljs-built_in">require</span>(<span class="hljs-string">'../package.json'</span>).name
+    @customStylePath = <span class="hljs-string">"<span class="hljs-subst">#{__dirname}</span>/../styles/custom.less"</span></pre></div>
+        
+      
+        
+        <hr>
+
+        
+      
+        
+        <p>Handle tree-view styles</p>
+
+        
+          <div class='highlight'><pre>    @disposables.add atom.config.observe <span class="hljs-string">"""
+      <span class="hljs-subst">#{@packageName}</span>.enableTreeViewStyles
+    """</span>, <span class="hljs-function">=&gt;</span> @setTreeViewBackground()
+
+    @disposables.add atom.config.observe <span class="hljs-string">"""
+      <span class="hljs-subst">#{@packageName}</span>.enableTreeViewBorder
+    """</span>, <span class="hljs-function">=&gt;</span> @setTreeViewBorder()
+
+    @disposables.add atom.config.observe <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.altStyle"</span>, <span class="hljs-function">=&gt;</span> @doAltStyle()
+    @disposables.add atom.config.observe <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.altFont"</span>, <span class="hljs-function">=&gt;</span>
+      @doAltFont()
+
+    customStylePath = <span class="hljs-string">"<span class="hljs-subst">#{__dirname}</span>/../styles/custom.less"</span>
+    @writeConfig customStylePath</pre></div>
+        
+      
+        
+        <p>watch for changes</p>
+
+        
+          <div class='highlight'><pre>    lessVariables = [<span class="hljs-string">"customSyntaxBgColor"</span>, <span class="hljs-string">"customUnderlayerBgColor"</span>, <span class="hljs-string">"customInactivePaneBgColor"</span>, <span class="hljs-string">"customInactiveOverlayColor"</span>, <span class="hljs-string">"syntaxBrightness"</span>, <span class="hljs-string">"syntaxSaturation"</span>, <span class="hljs-string">"syntaxContrast"</span>]
+    <span class="hljs-keyword">for</span> variable <span class="hljs-keyword">in</span> lessVariables
+      theKey = <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.<span class="hljs-subst">#{variable}</span>"</span>
+<span class="hljs-function">      <span class="hljs-title">cbLessVarChanged</span> = =&gt;</span> @writeConfig(customStylePath)
+      @disposables.add atom.config.onDidChange(theKey, cbLessVarChanged)
+
+
+
+  generateConfig: <span class="hljs-function">=&gt;</span>
+<span class="hljs-function">    <span class="hljs-title">getConfig</span> = <span class="hljs-params">(theConfig)</span> =&gt;</span> atom.config.get(<span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.<span class="hljs-subst">#{theConfig}</span>"</span>)
+<span class="hljs-function">    <span class="hljs-title">getColorConfig</span> = <span class="hljs-params">(theConfig)</span> =&gt;</span>
+      atom.config.get(<span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.<span class="hljs-subst">#{theConfig}</span>"</span>).toRGBAString()
+    syntaxBgColor = getColorConfig( <span class="hljs-string">"customSyntaxBgColor"</span>)
+    underlayerBgColor = getColorConfig( <span class="hljs-string">"customUnderlayerBgColor"</span>)
+    inactivePaneBgColor = getColorConfig( <span class="hljs-string">"customInactivePaneBgColor"</span>)
+    inactiveOverlayColor = getColorConfig( <span class="hljs-string">"customInactiveOverlayColor"</span>)
+    syntaxBrightness = getConfig(<span class="hljs-string">"syntaxBrightness"</span>)
+    syntaxSaturation = getConfig(<span class="hljs-string">"syntaxSaturation"</span>)
+    syntaxContrast = getConfig(<span class="hljs-string">"syntaxContrast"</span>)
+    theConfig = <span class="hljs-string">"""
+      @apathy-background-color: <span class="hljs-subst">#{syntaxBgColor}</span> !important;
+      @apathy-underlayer-bg-color: <span class="hljs-subst">#{underlayerBgColor}</span> !important;
+      @apathy-inactive-bg-color: <span class="hljs-subst">#{inactivePaneBgColor}</span> !important;
+      @apathy-inactive-overlay-color: <span class="hljs-subst">#{inactiveOverlayColor}</span> !important;
+      @config-syntax-brightness : <span class="hljs-subst">#{syntaxBrightness}</span>;
+      @config-syntax-saturation : <span class="hljs-subst">#{syntaxSaturation}</span>;
+      @config-syntax-contrast : <span class="hljs-subst">#{syntaxContrast}</span>;
+    """</span>
+    <span class="hljs-keyword">return</span> theConfig
+  writeConfig: <span class="hljs-function"><span class="hljs-params">(path)</span> -&gt;</span>
+    fs.writeFileSync path, @generateConfig()
+
+  setTreeViewBackground: <span class="hljs-function">-&gt;</span>
+    isEnabled = atom.config.get <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.enableTreeViewStyles"</span>
+    treeViewStylePath = <span class="hljs-string">"<span class="hljs-subst">#{__dirname}</span>/../styles/tree-view.less"</span>
+    <span class="hljs-keyword">if</span> isEnabled
+      @activeTreeStyle = @applyStylesheet treeViewStylePath
+    <span class="hljs-keyword">else</span>
+      @activeTreeStyle?.dispose()
+
+  setTreeViewBorder: <span class="hljs-function">-&gt;</span>
+    isEnabled = atom.config.get <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.enableTreeViewBorder"</span>
+    treeViewBorderPath = <span class="hljs-string">"<span class="hljs-subst">#{__dirname}</span>/../styles/tree-view-border.less"</span>
+    <span class="hljs-keyword">if</span> isEnabled
+      @activeTreeBorder = @applyStylesheet treeViewBorderPath
+    <span class="hljs-keyword">else</span>
+      @activeTreeBorder?.dispose()
+
+
+  deactivate: <span class="hljs-function">-&gt;</span>
+    @disposables?.dispose()
+    @activeTreeStyle?.dispose()
+    @activeTreeBorder?.dispose()
+    @apathyView?.destroy()
+
+  doAltStyle: <span class="hljs-function">-&gt;</span>
+    @activeStyleSheet?.dispose()</pre></div>
+        
+      
+        
+        <p>No need to enable the theme if it is already active.</p>
+
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> @noAltSyleSelected()
+    <span class="hljs-keyword">try</span></pre></div>
+        
+      
+        
+        <p>Try to enable the requested theme.</p>
+
+        
+          <div class='highlight'><pre>      @activeStyleSheet = @applyStylesheet @getStylePath(@selectedAltStyle())
+      @activeAltStyle = @selectedAltStyle
+    <span class="hljs-keyword">catch</span></pre></div>
+        
+      
+        
+        <p>If unsuccessfull enable the default theme.</p>
+
+        
+          <div class='highlight'><pre>      <span class="hljs-built_in">console</span>.debug <span class="hljs-string">'setting default altStyle'</span>
+
+  doAltFont: <span class="hljs-function">-&gt;</span>
+    @renderedFontStyle?.dispose()
+    selectedFont = atom.config.get <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.altFont"</span>
+    <span class="hljs-keyword">unless</span> selectedFont <span class="hljs-keyword">is</span> atom.config.get <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.altFont"</span>, {excludeSources: [atom.config.getUserConfigPath()]}
+      altFontStylePath = <span class="hljs-string">"<span class="hljs-subst">#{__dirname}</span>/../styles/<span class="hljs-subst">#{@getNormalizedName(selectedFont)}</span>.less"</span>
+      @renderedFontStyle = @applyStylesheet altFontStylePath
+
+  getStylePath: <span class="hljs-function"><span class="hljs-params">(altStyle)</span> -&gt;</span>
+     path.join __dirname, <span class="hljs-string">".."</span>, <span class="hljs-string">"themes"</span>, <span class="hljs-string">"<span class="hljs-subst">#{@getNormalizedName(altStyle)}</span>.less"</span>
+
+  isActiveStyle: <span class="hljs-function"><span class="hljs-params">(altStyle)</span> -&gt;</span>
+     altStyle <span class="hljs-keyword">is</span> @activeAltStyle
+
+  applyStylesheet: <span class="hljs-function"><span class="hljs-params">(sourcePath, preliminaryContent = <span class="hljs-string">""</span>)</span> -&gt;</span>
+    stylesheetContent = fs.readFileSync sourcePath, <span class="hljs-string">'utf8'</span>
+    source = atom.themes.lessCache.cssForFile sourcePath, [preliminaryContent, stylesheetContent].join <span class="hljs-string">'\n'</span>
+    atom.styles.addStyleSheet source, sourcePath: sourcePath, priority: <span class="hljs-number">2</span>, context: <span class="hljs-string">'atom-text-editor'</span>
+
+  noAltSyleSelected: <span class="hljs-function">-&gt;</span>
+    @selectedAltStyle() <span class="hljs-keyword">is</span> atom.config.get <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.altStyle"</span>, {excludeSources: [atom.config.getUserConfigPath()]}
+
+  selectedAltStyle: <span class="hljs-function">-&gt;</span>
+    atom.config.get <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.altStyle"</span>
+
+  getNormalizedName: <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span>
+    <span class="hljs-string">"<span class="hljs-subst">#{name}</span>"</span>
+      .replace <span class="hljs-string">' '</span>, <span class="hljs-string">'-'</span>
+      .replace <span class="hljs-regexp">/\./g</span>, <span class="hljs-string">''</span>
+      .replace <span class="hljs-regexp">/\b\w/g</span>, <span class="hljs-function"><span class="hljs-params">(character)</span> -&gt;</span> character.toLowerCase()
+
+  setThemeConfig: <span class="hljs-function"><span class="hljs-params">(altStyle)</span> -&gt;</span>
+    atom.config.set <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.altStyle"</span>, altStyle
+
+
+  isSelectedStyle: <span class="hljs-function"><span class="hljs-params">(altStyle)</span> -&gt;</span>
+    selectedAltStyle = atom.config.get <span class="hljs-string">"<span class="hljs-subst">#{@packageName}</span>.altStyle"</span>
+    altStyle <span class="hljs-keyword">is</span> selectedAltStyle</pre></div>
+        
+      
+        
+        <p>Resolve and apply the stylesheet specified by the path.</p>
+<p>This supports both CSS and Less stylsheets.</p>
+<ul>
+<li><code>stylesheetPath</code> A {String} path to the stylesheet that can be an
+absolute path or a relative path that will be resolved against the
+load path.</li>
+</ul>
+<p>Returns a {Disposable} on which <code>.dispose()</code> can be called to
+remove the required stylesheet.</p>
+
+        
+          <div class='highlight'><pre>  requireStylesheet: <span class="hljs-function"><span class="hljs-params">(stylesheetPath)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> fullPath = @resolveStylesheet(stylesheetPath)
+      content = @loadStylesheet(fullPath)
+      @applyStylesheet(fullPath, content)
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Error(<span class="hljs-string">"Could not find a file at path '<span class="hljs-subst">#{stylesheetPath}</span>'"</span>)
+
+
+
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-keyword">new</span> Apathy</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

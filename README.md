@@ -1,7 +1,7 @@
 # Apathy   ////  Atom Syntax Theme
 
 ### Note:
-**In newer versions of Atom this syntax theme only works correctly when run in development mode. To get a version which only includes the syntax styles and supports newer versions of Atom, download ![vivid-syntax](https://atom.io/themes/vivid).
+**In newer versions of Atom this syntax theme only works correctly when run in development mode. To get a version which only includes the syntax styles and supports newer versions of Atom, download [vivid-syntax](https://atom.io/themes/vivid).
 
 [![Join the chat at https://gitter.im/coopermaruyama/apathy-theme](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/coopermaruyama/apathy-theme?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
